@@ -6,7 +6,8 @@
   "scripts": {
     "test:single": "mocha .setup-test.js",
     "test": "mocha .setup-test.js app/**/*.test.js",
-    "start": "node server"
+    "start": "node server.js",
+    "new": "node cli.js new"
   },
   "repository": {
     "type": "git",

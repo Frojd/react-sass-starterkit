@@ -82,7 +82,8 @@ function getDirectories(srcpath) {
 
 function getMergedTemplate(template, snippet) {
     let mergedTemplate = _baseTemplate().replace('</body>', template + '</body>');
-    if(snippet) {
+
+    if(snippet && snippet.replace(/[\r\n\s]*/g, '')) {
         mergedTemplate = mergedTemplate.replace(`<div id="${container}"></div>`, snippet);
     }
     return mergedTemplate;

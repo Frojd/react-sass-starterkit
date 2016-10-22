@@ -1,5 +1,6 @@
 # Ignore dist folder
 /dist
 
-# Ignore errorlog
+# Ignore nodestuff
 npm-debug*
+node_modules/*
