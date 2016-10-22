@@ -63,7 +63,8 @@ module.exports = [{
     devtool: 'source-map',
     entry: {
         styles: [
-            __dirname + '/app/scss/index.scss'
+            __dirname + '/app/scss/index.scss',
+            __dirname + '/app/components/'
         ]
     }, output: {
         path: __dirname + '/dist/css',
