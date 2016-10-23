@@ -109,7 +109,7 @@ function _baseTemplate() {
             <head>
               <meta charset="UTF-8">
               <title>React testingground</title>
-              <script src="/js/vendor.bundle.js"></script>
+              <script src="/js/vendor.js"></script>
               <link rel="stylesheet" href="/css/index.css">
             </head>
             <body>
