@@ -1,9 +1,10 @@
-let fs = require('fs');
+const fs = require('fs');
 
 const rootFolder = '/app';
 const components = '/components/';
 const scssFolder = rootFolder + '/scss/';
 const componentFolder = rootFolder + components;
+const baseFolder = __dirname + '/..';
 
 class Cli {
     constructor() {
@@ -17,7 +18,7 @@ class Cli {
     }
 
     startapp(appName) {
-        let folderPath = __dirname + componentFolder + appName;
+        let folderPath = baseFolder + componentFolder + appName;
         if(fs.existsSync(folderPath)) {
             console.error('Component folder already exists.', appName);
             return;
@@ -28,16 +29,16 @@ class Cli {
             fs.writeFileSync(`${folderPath}/${appName}.html`, this._emptyTemplate());
             fs.writeFileSync(`${folderPath}/${appName}.json`, this._dataTemplate());
             fs.writeFileSync(`${folderPath}/${appName}.test.js`, this._testTemplate(appName));
-            fs.writeFileSync(`${__dirname}${componentFolder}/index.js`, this._updateIndex(appName));
-            if(process.argv.indexOf('class') !== -1) {
-                fs.writeFileSync(`${folderPath}/${appName}.js`, this._componentClassTemplate(appName));
-            } else {
+            fs.writeFileSync(`${baseFolder}${componentFolder}/index.js`, this._updateIndex(appName));
+            if(process.argv.indexOf('no-class') !== -1) {
                 fs.writeFileSync(`${folderPath}/${appName}.js`, this._componentTemplate(appName));
+            } else {
+                fs.writeFileSync(`${folderPath}/${appName}.js`, this._componentClassTemplate(appName));
             }
 
-            if(process.argv.indexOf('scss') !== -1) {
+            if(process.argv.indexOf('no-scss') === -1) {
                 fs.writeFileSync(`${folderPath}/${appName}.scss`, this._scssTemplate(appName));
-                fs.writeFileSync(`${__dirname}${scssFolder}/index.scss`, this._updateScss(appName));
+                fs.writeFileSync(`${baseFolder}${scssFolder}/index.scss`, this._updateScss(appName));
             }
 
         } catch(e) {
@@ -51,7 +52,7 @@ class Cli {
         let template = `import ${appName} from './${appName}';
 
 export default ${appName};
-        `;
+`;
 
         return template;
     }
@@ -63,16 +64,14 @@ export default ${appName};
 
 import React from 'react';
 
-const ${appName} = () => {
-    return (
-        <div className="${appName.toLowerCase()}">
-            ${appName}
-        </div>
-    )
-};
+const ${appName} = ({ title }) => (
+    <div className="${appName.toLowerCase()}">
+        ${appName} - {title}
+    </div>
+);
 
 export default ${appName};
-        `
+`;
 
         return template;
     }
@@ -102,19 +101,19 @@ ${appName}.defaultProps = {
 };
 
 export default ${appName};
-        `;
+`;
 
         return template;
     }
 
     _dataTemplate() {
-        let template = `{}
+        const template = `{}
         `;
         return template;
     }
 
     _emptyTemplate() {
-        let template = ``;
+        const template = ``;
 
         return template;
     }
@@ -137,7 +136,7 @@ describe('<${appName} />', () => {
         expect(wrapper.find(${appName})).to.have.length(1);
     });
 });
-        `;
+`;
         return template;
     }
 
@@ -150,19 +149,20 @@ describe('<${appName} />', () => {
     }
 
     _updateIndex(appName) {
-        let index = fs.readFileSync(__dirname + componentFolder + 'index.js', 'utf8');
+        let index = fs.readFileSync(baseFolder + componentFolder + 'index.js', 'utf8');
         let newComponent = `import ${appName} from './${appName}';
-`
+`;
         index = newComponent.concat(index);
 
         index = index.replace(`export {`, `export {
-    ${appName},`)
+    ${appName},`);
         return index;
     }
 
     _updateScss(appName) {
-        let index = fs.readFileSync(__dirname + scssFolder + 'index.scss', 'utf8');
-        let importString = `@import '..${components}${appName}/${appName}.scss';`
+        let index = fs.readFileSync(baseFolder + scssFolder + 'index.scss', 'utf8');
+        const importString = `@import '..${components}${appName}/${appName}.scss';
+`;
 
         index = index.concat(importString);
         return index;

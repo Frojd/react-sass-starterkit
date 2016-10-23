@@ -1,9 +1,13 @@
 // Settings here:
 // Absolute path to components folder:
-const componentPath = __dirname + '/app/components';
+const componentPath = __dirname + '/../app/components';
 
 // Port
-const port = 7000;
+let portNr = 7000;
+if(/^[0-9]+$/.test(process.argv[2])) {
+    portNr = process.argv[2];
+}
+const port = portNr;
 
 // Container
 const container = 'container';
@@ -16,11 +20,15 @@ let webpack = require('webpack');
 let webpackDevServer = require('webpack-dev-server');
 let fs = require('fs');
 
-let config = require('./webpack.config.js');
+let config = require('../webpack.config.js');
+
+if(process.argv.indexOf('no-inline') === -1) {
+    config[0].entry.app.unshift('webpack-dev-server/client?http://localhost:' + port);
+}
+
 let compiler = webpack(config);
 let server = new webpackDevServer(compiler, {
-    contentBase: config[0].output.publicPath,
-    // hot: true,
+    // contentBase: config[0].output.publicPath,
     setup: allPaths,
     headers: { 'Access-Control-Allow-Origin': '*' },
     stats: { colors: true }
@@ -102,7 +110,6 @@ function _baseTemplate() {
               <meta charset="UTF-8">
               <title>React testingground</title>
               <script src="/js/vendor.bundle.js"></script>
-              <script src="/webpack-dev-server.js"></script>
               <link rel="stylesheet" href="/css/index.css">
             </head>
             <body>

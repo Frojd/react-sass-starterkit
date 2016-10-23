@@ -1,6 +1,5 @@
 let autoprefixer = require('autoprefixer');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
-let CopyWebpackPlugin = require('copy-webpack-plugin');
 let webpack = require('webpack');
 let path = require('path');
 
@@ -9,16 +8,15 @@ module.exports = [{
     devtool: 'source-map',
     entry:  {
         app: [
-            __dirname + '/app/index.js'
+            './app/index.js'
         ],
         vendor: [
-            __dirname + '/app/vendor.js'
+            './app/vendor.js'
         ]
     },
     output: {
         path: __dirname + '/dist/js',
-        filename: 'index.js',
-        publicPath: 'dist'
+        filename: 'index.js'
     },
     module: {
         preLoaders: [
@@ -38,19 +36,18 @@ module.exports = [{
                     plugins: ['transform-class-properties', 'transform-decorators-legacy']
 
                 }
-            },
-            {
-                test: /\.json$/,
-                loader: 'json'
             }
         ]
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+        // new webpack.DefinePlugin({
+        //     'process.env': {
+        //         'NODE_ENV': JSON.stringify('production')
+        //     }
+        // })
     ],
     externals: {
-        // Use external version of React (from CDN for client-side, or
-        // bundled with ReactJS.NET for server-side)
         'react': 'React',
         'react-dom': 'ReactDOM'
     },
