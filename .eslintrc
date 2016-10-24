@@ -20,5 +20,7 @@
         "no-useless-constructor": 1,
         "import/prefer-default-export": 1,
         "no-console": 0,
+        "quote-props": 0,
+        "object-curly-spacing": 0
     }
 }
