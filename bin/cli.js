@@ -65,7 +65,7 @@ export default ${appName};
 import React from 'react';
 
 const ${appName} = ({ title }) => (
-    <div className="${appName.toLowerCase()}">
+    <div className="${appName}">
         ${appName} - {title}
     </div>
 );
@@ -90,7 +90,7 @@ class ${appName} extends React.Component {
 
     render() {
         return (
-            <div className="${appName.toLowerCase()}">
+            <div className="${appName}">
                 ${appName}
             </div>
         );
@@ -141,7 +141,7 @@ describe('<${appName} />', () => {
     }
 
     _scssTemplate(appName) {
-        let template = `.${appName.toLowerCase()} {
+        let template = `.${appName} {
 
 }`;
 
