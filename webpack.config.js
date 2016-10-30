@@ -43,9 +43,6 @@ module.exports = [{
         'react': 'React',
         'react-dom': 'ReactDOM',
     },
-    resolveLoader: {
-        fallback: path.resolve(__dirname, './node_modules'),
-    },
 },
 {
     name: 'vendor',
@@ -63,6 +60,13 @@ module.exports = [{
             exclude: /node_modules/,
             loader: 'babel',
         },
+    ],
+    plugins: [
+        // new webpack.DefinePlugin({
+        //     'process.env': {
+        //         'NODE_ENV': JSON.stringify('production')
+        //     }
+        // })
     ],
 },
 {
