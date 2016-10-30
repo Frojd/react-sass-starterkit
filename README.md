@@ -74,4 +74,23 @@ Use this for productionbuild (uncomment the production NODE_ENV plugin first in 
 
 ## Throubleshooting
 
-Eslint warning when having only 1 component. This boilerplate is supposed to be used with multiple components, so as soon as you have more than 1, it will go away.
+Using react addons? Getting trouble with multiple react loaded?
+Change externals to look like this:
+
+    externals: {
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+        'react/lib/ReactTransitionGroup': 'React.addons.TransitionGroup',
+        'react/lib/ReactCSSTransitionGroup': 'React.addons.CSSTransitionGroup',
+    },
+
+And change vendor.js to:
+
+    /*eslint-disable*/
+    require('expose?React!react');
+    require('expose?ReactDOM!react-dom');
+    require('expose?React.addons.TransitionGroup!react/lib/reactTransitionGroup');
+    require('expose?React.addons.CSSTransitionGroup!react/lib/ReactCSSTransitionGroup');
+    /*eslint-enable*/
+
+If you are running into similar problems with react loading multiple times, it might be that you need to add some more external library (especially if you are using the addons libraries).
