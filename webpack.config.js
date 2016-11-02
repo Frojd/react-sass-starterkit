@@ -19,13 +19,13 @@ module.exports = [{
     name: 'js',
     devtool: 'source-map',
     context: context,
-    publicPath: staticPath,
     entry: {
         app: ['./index.js'],
     },
     output: {
         path: outputPath + '/js',
         filename: 'index.js',
+        publicPath: staticPath,
     },
     module: {
         preLoaders: [
