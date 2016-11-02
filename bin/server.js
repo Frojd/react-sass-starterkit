@@ -17,7 +17,7 @@ let webpackDevServer = require('webpack-dev-server');
 let fs = require('fs');
 
 let config = require('../webpack.config.js');
-const publicPath = config[0].publicPath || '/';
+const publicPath = config[0].output.publicPath || '/';
 const componentPath = config[0].context + '/components';
 
 if(process.argv.indexOf('no-inline') === -1) {
