@@ -119,8 +119,7 @@ export default ${appName};
     }
 
     _dataTemplate() {
-        const template = `{}
-        `;
+        const template = `{}`;
         return template;
     }
 
