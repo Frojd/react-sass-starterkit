@@ -1,7 +1,3 @@
-// Settings here:
-// Absolute path to components folder:
-const componentPath = __dirname + '/../app/components';
-
 // Port
 let portNr = 7000;
 if(/^[0-9]+$/.test(process.argv[2])) {
@@ -21,6 +17,8 @@ let webpackDevServer = require('webpack-dev-server');
 let fs = require('fs');
 
 let config = require('../webpack.config.js');
+const publicPath = config[0].output.publicPath || '/';
+const componentPath = config[0].context + '/components';
 
 if(process.argv.indexOf('no-inline') === -1) {
     config[0].entry.app.unshift('webpack-dev-server/client?http://localhost:' + port);
@@ -28,10 +26,11 @@ if(process.argv.indexOf('no-inline') === -1) {
 
 let compiler = webpack(config);
 let server = new webpackDevServer(compiler, {
-    // contentBase: config[0].output.publicPath,
+    contentBase: './app',
     setup: allPaths,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    stats: { colors: true }
+    stats: { colors: true },
+    publicPath: publicPath,
 });
 server.listen(port);
 
@@ -109,12 +108,12 @@ function _baseTemplate() {
             <head>
               <meta charset="UTF-8">
               <title>React testingground</title>
-              <script src="/js/vendor.js"></script>
-              <link rel="stylesheet" href="/css/index.css">
+              <script src="${publicPath}js/vendor.js"></script>
+              <link rel="stylesheet" href="${publicPath}css/index.css">
             </head>
             <body>
             <div id="${container}"></div>
-            <script src="/js/index.js"></script>
+            <script src="${publicPath}js/index.js"></script>
 
             </body>
             </html>

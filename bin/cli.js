@@ -26,19 +26,31 @@ class Cli {
         try {
             fs.mkdirSync(folderPath);
             fs.writeFileSync(`${folderPath}/index.js`, this._indexTemplate(appName));
-            fs.writeFileSync(`${folderPath}/${appName}.html`, this._emptyTemplate());
+
+            if(process.argv.indexOf('add-html') !== -1) {
+                fs.writeFileSync(`${folderPath}/${appName}.html`, this._emptyTemplate());
+                console.log(`Added ${appName}.html`);
+            }
+
             fs.writeFileSync(`${folderPath}/${appName}.json`, this._dataTemplate());
+            console.log(`Added ${appName}.json`);
             fs.writeFileSync(`${folderPath}/${appName}.test.js`, this._testTemplate(appName));
+            console.log(`Added ${appName}.test.js`);
             fs.writeFileSync(`${baseFolder}${componentFolder}/index.js`, this._updateIndex(appName));
+            console.log(`Updated index.js`);
             if(process.argv.indexOf('no-class') !== -1) {
                 fs.writeFileSync(`${folderPath}/${appName}.js`, this._componentTemplate(appName));
+                console.log(`Added ${appName}.js`);
             } else {
                 fs.writeFileSync(`${folderPath}/${appName}.js`, this._componentClassTemplate(appName));
+                console.log(`Added ${appName}.js`);
             }
 
             if(process.argv.indexOf('no-scss') === -1) {
                 fs.writeFileSync(`${folderPath}/${appName}.scss`, this._scssTemplate(appName));
+                console.log(`Added ${appName}.scss`);
                 fs.writeFileSync(`${baseFolder}${scssFolder}/index.scss`, this._updateScss(appName));
+                console.log(`Updated index.scss`);
             }
 
         } catch(e) {
@@ -107,8 +119,7 @@ export default ${appName};
     }
 
     _dataTemplate() {
-        const template = `{}
-        `;
+        const template = `{}`;
         return template;
     }
 
