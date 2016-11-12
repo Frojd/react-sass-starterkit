@@ -76,9 +76,21 @@ For regular watch:
 
     npm run watch
 
-Use this for productionbuild (uncomment the production NODE_ENV plugin first in webpack.config.js):
+For a regular build:
 
-    webpack -p
+    npm run build
+
+For productionbuild
+
+    npm run build:prod
+
+For all tests:
+
+    npm run test
+
+For single test:
+
+    npm run test:single app\components\YourComponent\YourComponent.test.js
 
 ## Additional settings ##
 
@@ -89,10 +101,10 @@ Ex index.html:
     <!DOCTYPE html>
     <html lang="en">
     <head>
-      <meta charset="UTF-8">
-      <title>React testingground</title>
-      <script src="/static/js/vendor.js"></script>
-      <link rel="stylesheet" href="/static/css/index.css">
+        <meta charset="UTF-8">
+        <title>React testingground</title>
+        <script src="/static/js/vendor.js"></script>
+        <link rel="stylesheet" href="/static/css/index.css">
     </head>
     <body>
     <div id="container"></div>
