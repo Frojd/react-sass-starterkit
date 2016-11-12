@@ -24,6 +24,19 @@ if(process.argv.indexOf('no-inline') === -1) {
     config[0].entry.index.unshift('webpack-dev-server/client?http://localhost:' + port);
 }
 
+let proxy;
+let proxyFrontendPath = '';
+if(process.argv.indexOf('proxy') !== -1) {
+    let proxyInfo = process.argv[process.argv.indexOf('proxy') + 1];
+    proxyFrontendPath = process.argv[process.argv.indexOf('proxy') + 2] ?
+                        process.argv[process.argv.indexOf('proxy') + 2] : '/frontend';
+    if(proxyInfo) {
+        proxy = {
+            '*': proxyInfo
+        };
+    }
+}
+
 let compiler = webpack(config);
 let server = new webpackDevServer(compiler, {
     contentBase: './app',
@@ -35,18 +48,25 @@ let server = new webpackDevServer(compiler, {
         version: false,
         hash: false,
     },
+    proxy: proxy,
     publicPath: publicPath,
 });
 server.listen(port);
 
 function allPaths(app) {
+    //app.set('trust proxy', 'loopback, linklocal, uniquelocal');
     let files = getDirectories(componentPath);
+    let compPath = '';
+    if(proxyFrontendPath) {
+        compPath = proxyFrontendPath;
+    }
+
     files = files.map(function(i) { return '/' + i});
-    app.get(files, function(req, res) {
+    app.get(compPath + files, function(req, res) {
         let template = '';
         let snippet;
         try {
-            let component = req.path.replace('/', '');
+            let component = req.path.replace(compPath + '/', '');
             template = getTemplate(component, getData(component));
             snippet = getSnippet(component);
         } catch(e) {
@@ -56,8 +76,12 @@ function allPaths(app) {
         res.end(getMergedTemplate(template, snippet));
     });
 
-    app.get('/', function(req, res) {
-        let listOfComponents = files.map(function(item) { return `<a href="${item}">${item}</a><br/>`}).join();
+    let rootPath = `${compPath}/`;
+    console.log(rootPath);
+    app.get(rootPath, function(req, res) {
+        let listOfComponents = files
+            .map(function(item) { return `<a href="${compPath}${item}">${item}</a><br/>`})
+            .join();
         let template = getMergedTemplate(listOfComponents);
         res.end(template);
     })

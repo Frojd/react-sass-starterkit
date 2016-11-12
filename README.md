@@ -37,7 +37,6 @@ Create a component without classbase (it will be a functional component), and no
 
     npm run new ComponentName no-scss no-class
 
-
 no-scss and no-class is both optional.
 
 index.scss and index.js will be automatically updated when adding a component through the cli.
@@ -70,6 +69,24 @@ And both port and no-inline:
 
     npm start 4567 no-inline
 
+### Proxy ###
+
+All requests to the staticPath will go through the webpack devserver, also all components and / will do that as well.
+
+You can start the devserver with proxy with this command (change domain and port to your local devserver):
+
+    npm start proxy http://local.dev:8080
+
+Or by using ip, for instance:
+
+    npm start proxy http://127.0.0.1:8080
+
+By default the components will be served from /frontend/ when using proxy instead of root, to allow for your backend to server your pages. This can be overridden by the third argument for path:
+
+    npm start proxy http://local.dev:8080 /components
+
+And then you can see your components on http://localhost:7000/components
+
 ## Building css/js
 
 For regular watch:
@@ -90,7 +107,7 @@ For all tests:
 
 For single test:
 
-    npm run test:single app\components\YourComponent\YourComponent.test.js
+    npm run test:single app\components\ComponentName\ComponentName.test.js
 
 ## Additional settings ##
 
