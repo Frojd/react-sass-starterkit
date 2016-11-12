@@ -1,8 +1,10 @@
+/* eslint-disable no-undef */
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
+
 
 // Output base directory
 const outputPath = path.join(__dirname, '/dist');
@@ -14,17 +16,27 @@ const staticPath = '/static/';
 // Root app directory, unless you want a headache, don't change
 const context = path.join(__dirname, '/app');
 
+// Simple plugin for productionbuild
+let prod = process.argv && process.argv[3] === '--prod' ? 'production' : '';
+let envPlugin = () => {};
+if(prod) {
+    envPlugin = new webpack.DefinePlugin({
+        'process.env': {
+            'NODE_ENV': JSON.stringify(prod)
+        }
+    });
+}
 
 module.exports = [{
     name: 'js',
-    devtool: 'source-map',
+    devtool: prod ? '' : 'source-map',
     context: context,
     entry: {
-        app: ['./index.js'],
+        index: ['./index.js']
     },
     output: {
         path: outputPath + '/js',
-        filename: 'index.js',
+        filename: '[name].js',
         publicPath: staticPath,
     },
     module: {
@@ -48,11 +60,7 @@ module.exports = [{
         ],
     },
     plugins: [
-        // new webpack.DefinePlugin({
-        //     'process.env': {
-        //         'NODE_ENV': JSON.stringify('production')
-        //     }
-        // })
+        envPlugin
     ],
     externals: {
         'react': 'React',
@@ -61,7 +69,6 @@ module.exports = [{
 },
 {
     name: 'vendor',
-    devtool: 'eval',
     context: context,
     entry: {
         vendor: './vendor.js',
@@ -78,11 +85,7 @@ module.exports = [{
         },
     ],
     plugins: [
-        // new webpack.DefinePlugin({
-        //     'process.env': {
-        //         'NODE_ENV': JSON.stringify('production')
-        //     }
-        // })
+        envPlugin
     ],
 },
 {
@@ -103,7 +106,7 @@ module.exports = [{
 },
 {
     name: 'style',
-    devtool: 'source-map',
+    devtool: prod ? '' : 'source-map',
     context: context,
     entry: {
         styles: [
@@ -141,5 +144,7 @@ module.exports = [{
         new ExtractTextPlugin('index.css', {
             allChunks: true,
         }),
+        envPlugin
     ],
 }];
+/* eslint-enable */
