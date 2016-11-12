@@ -21,7 +21,7 @@ const publicPath = config[0].output.publicPath || '/';
 const componentPath = config[0].context + '/components';
 
 if(process.argv.indexOf('no-inline') === -1) {
-    config[0].entry.app.unshift('webpack-dev-server/client?http://localhost:' + port);
+    config[0].entry.index.unshift('webpack-dev-server/client?http://localhost:' + port);
 }
 
 let compiler = webpack(config);
@@ -29,7 +29,12 @@ let server = new webpackDevServer(compiler, {
     contentBase: './app',
     setup: allPaths,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    stats: { colors: true },
+    stats: {
+        colors: true,
+        chunks: false,
+        version: false,
+        hash: false,
+    },
     publicPath: publicPath,
 });
 server.listen(port);
@@ -106,10 +111,10 @@ function _baseTemplate() {
             <!DOCTYPE html>
             <html lang="en">
             <head>
-              <meta charset="UTF-8">
-              <title>React testingground</title>
-              <script src="${publicPath}js/vendor.js"></script>
-              <link rel="stylesheet" href="${publicPath}css/index.css">
+                <meta charset="UTF-8">
+                <title>React testingground</title>
+                <script src="${publicPath}js/vendor.js"></script>
+            <link rel="stylesheet" href="${publicPath}css/index.css">
             </head>
             <body>
             <div id="${container}"></div>
