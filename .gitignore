@@ -1,6 +1,6 @@
 # Ignore dist folder
 /dist
 
-# Ignore builderrors and node_modules
+# Ignore build errors and node_modules
 npm-debug*
 node_modules/*
