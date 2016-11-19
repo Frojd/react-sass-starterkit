@@ -1,6 +1,6 @@
 {
-  "name": "react-sass-boilerplate",
-  "version": "1.0.0",
+  "name": "react-sass-starterkit",
+  "version": "1.3.0",
   "description": "Frontend setup for react with sass and webpack",
   "private": true,
   "scripts": {
@@ -14,14 +14,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:frojd/react-sass-boilerplate.git"
+    "url": "git+ssh://git@github.com:frojd/react-sass-starterkit.git"
   },
   "keywords": [
     "webpack",
     "sass",
     "react",
     "frontend",
-    "boilerplate"
+    "boilerplate",
+    "starterkit",
+    "cli"
   ],
   "author": "Daniel Karlsson",
   "license": "MIT",
@@ -47,6 +49,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "jsdom": "^9.8.0",
+    "json-loader": "^0.5.4",
     "mocha": "^3.1.2",
     "node-sass": "^3.11.3",
     "postcss-loader": "^1.1.1",

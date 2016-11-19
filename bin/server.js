@@ -19,8 +19,11 @@ let fs = require('fs');
 let config = require('../webpack.config.js');
 const publicPath = config[0].output.publicPath || '/';
 const componentPath = config[0].context + '/components';
+const folders = getDirectories(componentPath);
 
 if(process.argv.indexOf('no-inline') === -1) {
+    let jsons = folders.map((folder) => `./components/${folder}/${folder}.json`);
+    config[0].entry.index = config[0].entry.index.concat(jsons);
     config[0].entry.index.unshift('webpack-dev-server/client?http://localhost:' + port);
 }
 
@@ -55,14 +58,14 @@ server.listen(port);
 
 function allPaths(app) {
     //app.set('trust proxy', 'loopback, linklocal, uniquelocal');
-    let files = getDirectories(componentPath);
+
     let compPath = '';
     if(proxyFrontendPath) {
         compPath = proxyFrontendPath;
     }
 
-    files = files.map(function(i) { return '/' + i});
-    app.get(compPath + files, function(req, res) {
+    let files = folders.map(function(i) { return '/' + i});
+    app.get(files.map((file) => `${compPath}${file}`), function(req, res) {
         let template = '';
         let snippet;
         try {
@@ -77,11 +80,10 @@ function allPaths(app) {
     });
 
     let rootPath = `${compPath}/`;
-    console.log(rootPath);
     app.get(rootPath, function(req, res) {
         let listOfComponents = files
-            .map(function(item) { return `<a href="${compPath}${item}">${item}</a><br/>`})
-            .join();
+            .map((item) => `<a href="${compPath}${item}">${item}</a><br/>`)
+            .join('');
         let template = getMergedTemplate(listOfComponents);
         res.end(template);
     })
@@ -89,8 +91,10 @@ function allPaths(app) {
 
 function getData(component) {
     let data = {};
+    let jsonComp = `${componentPath}/${component}/${component}.json`;
     try {
-        data = require(componentPath + '/' + component + '/' + component + '.json');
+        data = require(jsonComp);
+        purgeCache(jsonComp);
     } catch(e) {
         //console.log(e);
     }
@@ -141,9 +145,8 @@ function _baseTemplate() {
             <link rel="stylesheet" href="${publicPath}css/index.css">
             </head>
             <body>
-            <div id="${container}"></div>
-            <script src="${publicPath}js/index.js"></script>
-
+                <div id="${container}"></div>
+                <script src="${publicPath}js/index.js"></script>
             </body>
             </html>
         `
@@ -163,3 +166,49 @@ function getTemplate(component, data = '{}', snippet = '') {
     `;
     return template;
 }
+
+/* eslint-disable */
+// Removes cached json
+// Taken from http://stackoverflow.com/questions/9210542/node-js-require-cache-possible-to-invalidate
+function purgeCache(moduleName) {
+    // Traverse the cache looking for the files
+    // loaded by the specified module name
+    searchCache(moduleName, function (mod) {
+        delete require.cache[mod.id];
+    });
+
+    // Remove cached paths to the module.
+    // Thanks to @bentael for pointing this out.
+    Object.keys(module.constructor._pathCache).forEach(function(cacheKey) {
+        if (cacheKey.indexOf(moduleName)>0) {
+            delete module.constructor._pathCache[cacheKey];
+        }
+    });
+};
+
+/**
+ * Traverses the cache to search for all the cached
+ * files of the specified module name
+ */
+function searchCache(moduleName, callback) {
+    // Resolve the module identified by the specified name
+    var mod = require.resolve(moduleName);
+
+    // Check if the module has been resolved and found within
+    // the cache
+    if (mod && ((mod = require.cache[mod]) !== undefined)) {
+        // Recursively go over the results
+        (function traverse(mod) {
+            // Go over each of the module's children and
+            // traverse them
+            mod.children.forEach(function (child) {
+                traverse(child);
+            });
+
+            // Call the specified callback providing the
+            // found cached module
+            callback(mod);
+        }(mod));
+    }
+};
+/* eslint-enable */
