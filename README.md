@@ -15,11 +15,12 @@ That can be used for serverside rendering in for example reactjs.net
 ## Installation and quickstart
 
 1. Clone the project
-2. npm install
-3. npm run new MyComponent
-4. npm start
+2. `npm install`
+3. `npm run new MyComponent`
+4. `npm start`
+5. Done!
 
-Visit http://localhost:7000 and look click at the component you just created.
+Visit [http://localhost:7000](http://localhost:7000) and look at the component you just created.
 
 ## CLI
 
@@ -37,7 +38,6 @@ Create a component without classbase (it will be a functional component), and no
 
     npm run new ComponentName no-scss no-class
 
-
 no-scss and no-class is both optional.
 
 index.scss and index.js will be automatically updated when adding a component through the cli.
@@ -54,7 +54,7 @@ Run it like this:
 
     npm start
 
-And visit your list of components at: http://localhost:7000
+And visit your list of components at: [http://localhost:7000](http://localhost:7000)
 
 Options:
 
@@ -70,15 +70,45 @@ And both port and no-inline:
 
     npm start 4567 no-inline
 
+### Proxy ###
+
+All requests to the staticPath will go through the webpack devserver, also all components and / will do that as well.
+
+You can start the devserver with proxy with this command (change domain and port to your local devserver):
+
+    npm start proxy http://local.dev:8080
+
+Or by using ip, for instance:
+
+    npm start proxy http://127.0.0.1:8080
+
+By default the components will be served from /frontend/ when using proxy instead of root, to allow for your backend to server your pages. This can be overridden by the third argument for path:
+
+    npm start proxy http://local.dev:8080 /components
+
+And then you can see your components on [http://localhost:7000/components](http://localhost:7000/components)
+
 ## Building css/js
 
 For regular watch:
 
     npm run watch
 
-Use this for productionbuild (uncomment the production NODE_ENV plugin first in webpack.config.js):
+For a regular build:
 
-    webpack -p
+    npm run build
+
+For productionbuild
+
+    npm run build:prod
+
+For all tests:
+
+    npm run test
+
+For single test:
+
+    npm run test:single app\components\ComponentName\ComponentName.test.js
 
 ## Additional settings ##
 
@@ -86,40 +116,46 @@ You can override the index.html if you want by adding a index.html in the rootfo
 
 Ex index.html:
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>React testingground</title>
-      <script src="/static/js/vendor.js"></script>
-      <link rel="stylesheet" href="/static/css/index.css">
-    </head>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React testingground</title>
+    <script src="/static/js/vendor.js"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
     <body>
-    <div id="container"></div>
-    <script src="/static/js/index.js"></script>
+        <div id="container"></div>
+        <script src="/static/js/index.js"></script>
     </body>
-    </html>
+</html>
+```
 
 ## Throubleshooting and support
 
 Using react addons? Getting trouble with multiple react loaded?
 Change externals to look like this:
 
-    externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM',
-        'react/lib/ReactTransitionGroup': 'React.addons.TransitionGroup',
-        'react/lib/ReactCSSTransitionGroup': 'React.addons.CSSTransitionGroup',
-    },
+```javascript
+externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM',
+    'react/lib/ReactTransitionGroup': 'React.addons.TransitionGroup',
+    'react/lib/ReactCSSTransitionGroup': 'React.addons.CSSTransitionGroup',
+},
+```
 
 And change vendor.js to:
 
-    /*eslint-disable*/
-    require('expose?React!react');
-    require('expose?ReactDOM!react-dom');
-    require('expose?React.addons.TransitionGroup!react/lib/reactTransitionGroup');
-    require('expose?React.addons.CSSTransitionGroup!react/lib/ReactCSSTransitionGroup');
-    /*eslint-enable*/
+```javascript
+/*eslint-disable*/
+require('expose?React!react');
+require('expose?ReactDOM!react-dom');
+require('expose?React.addons.TransitionGroup!react/lib/reactTransitionGroup');
+require('expose?React.addons.CSSTransitionGroup!react/lib/ReactCSSTransitionGroup');
+/*eslint-enable*/
+```
 
 If you are running into similar problems with react loading multiple times, it might be that you need to add some more external library (especially if you are using the addons libraries).
 
