@@ -5,13 +5,13 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
-
 // Output base directory
 const outputPath = path.join(__dirname, '/dist');
 
 // static prefix where the static files will be served on the webserver
 // Eg: /static/ will be: http://localhost:7000/static/js/index.js
 const staticPath = '/static/';
+
 
 // Root app directory, unless you want a headache, don't change
 const context = path.join(__dirname, '/app');
@@ -32,7 +32,9 @@ module.exports = [{
     devtool: prod ? '' : 'source-map',
     context: context,
     entry: {
-        index: ['./index.js']
+        index: [
+            './index.js',
+        ],
     },
     output: {
         path: outputPath + '/js',
@@ -57,6 +59,10 @@ module.exports = [{
                     plugins: ['transform-class-properties', 'transform-decorators-legacy'],
                 },
             },
+            {
+                test: /\.json$/,
+                loader: 'json-loader'
+            }
         ],
     },
     plugins: [
