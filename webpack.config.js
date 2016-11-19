@@ -16,7 +16,7 @@ const staticPath = '/static/';
 // Root app directory, unless you want a headache, don't change
 const context = path.join(__dirname, '/app');
 
-// Simple plugin for productionbuild
+// Simple plugin for production build
 let prod = process.argv && process.argv[3] === '--prod' ? 'production' : '';
 let envPlugin = () => {};
 if(prod) {
