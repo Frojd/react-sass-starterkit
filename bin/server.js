@@ -22,8 +22,13 @@ const componentPath = config[0].context + '/components';
 const folders = getDirectories(componentPath);
 
 if(process.argv.indexOf('no-inline') === -1) {
-    let jsons = folders.map((folder) => `./components/${folder}/${folder}.json`);
-    config[0].entry.index = config[0].entry.index.concat(jsons);
+    let jsons = folders.map((folder) => `${componentPath}/${folder}/${folder}.json`);
+    for(let i = 0; i < jsons.length; i++) {
+        if(fs.existsSync(jsons[i])) {
+            config[0].entry.index.push(jsons[i]);
+        }
+    }
+
     config[0].entry.index.unshift('webpack-dev-server/client?http://localhost:' + port);
 }
 
