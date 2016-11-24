@@ -1,4 +1,4 @@
-# React sass boilerplate
+# React sass starterkit
 
 ## Description
 
@@ -167,3 +167,6 @@ To use jquery and with old plugins you can with ease use the script loader for w
 require('expose?jQuery!jquery');
 require('script!jquery.flipster');  // Example plugin
 ```
+
+## License
+react-sass-starterkit is released under the [MIT License](http://www.opensource.org/licenses/MIT).
