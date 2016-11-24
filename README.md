@@ -134,8 +134,8 @@ Ex index.html:
 
 ## Throubleshooting and support
 
-Using react addons? Getting trouble with multiple react loaded?
-Change externals to look like this:
+### Using react addons? Getting trouble with multiple react loaded?
+Change externals to look like this in your webpack.config.js
 
 ```javascript
 externals: {
@@ -159,4 +159,11 @@ require('expose?React.addons.CSSTransitionGroup!react/lib/ReactCSSTransitionGrou
 
 If you are running into similar problems with react loading multiple times, it might be that you need to add some more external library (especially if you are using the addons libraries).
 
-To use jquery and with old plugins you can with ease use the script loader for webpack, and add them both to vendor.js in a similar way as react is done (require the addon after you expose jquery).
+### Using jQuery and plugins?
+
+To use jquery and with old plugins you can with ease use the script loader for webpack (`npm install script-loader`), and add them both to vendor.js in a similar way as react is done (require the addon after you expose jquery).
+
+```javascript
+require('expose?jQuery!jquery');
+require('script!jquery.flipster');  // Example plugin
+```
