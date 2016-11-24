@@ -127,7 +127,7 @@ module.exports = [{
     module: {
         loaders: [
             {
-                test: /\.scss$/,
+                test: /\.(scss|css)$/,
                 loader: ExtractTextPlugin.extract(
                     'style-loader',
                     'css-loader?sourceMap!postcss-loader?sourceMap!sass-loader?sourceMap'
