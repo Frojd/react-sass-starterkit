@@ -145,7 +145,7 @@ function _baseTemplate() {
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <title>React testingground</title>
+                <title>React testing ground</title>
                 <script src="${publicPath}js/vendor.js"></script>
             <link rel="stylesheet" href="${publicPath}css/index.css">
             </head>
