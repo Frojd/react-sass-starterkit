@@ -110,9 +110,15 @@ For single test:
 
     npm run test:single app\components\ComponentName\ComponentName.test.js
 
-## Additional settings ##
+## Additional settings and overrides ##
+
+There is three possible overrides in the html that can be used. The base index.html, the MyComponent.html snippet and also a complete MyComponent index.html override.
+
+### Base index override ###
 
 You can override the index.html if you want by adding a index.html in the rootfolder (next to webpack.config.js), and it will use that instead of the built in from server, thou if you change the id from container, you will have to edit the server.js as well.
+
+This can be used for a global addition of classes for examples to wrap the container or similar. 
 
 Ex index.html:
 
@@ -129,6 +135,41 @@ Ex index.html:
         <div id="container"></div>
         <script src="/static/js/index.js"></script>
     </body>
+</html>
+```
+
+### Snippet in component ###
+
+You can override the snippet writing out html if you want by adding a html file in your componentfolder, eg: MyComponent.html
+The div with the id container is required as that is where the component will be rendered.
+
+```html
+<h1>My component extra!</h1>
+<div id="container"></div>
+```
+
+### Full component override ###
+
+You can also add a index.html file in your component folder, and that file will be used as template. It will have a global variable placed above </head> tag with the data in the json file.
+
+Example index.html inside MyComponent folder:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Egen test</title>
+    <script src="/static/js/vendor.js"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+    <div id="container"></div>
+    <script src="/static/js/index.js"></script>
+    <script>
+        ReactDOM.render(React.createElement(Components.MyComponent, data), document.getElementById("container"));
+    </script>
+</body>
 </html>
 ```
 

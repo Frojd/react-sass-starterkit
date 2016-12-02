@@ -62,8 +62,6 @@ let server = new webpackDevServer(compiler, {
 server.listen(port);
 
 function allPaths(app) {
-    //app.set('trust proxy', 'loopback, linklocal, uniquelocal');
-
     let compPath = '';
     if(proxyFrontendPath) {
         compPath = proxyFrontendPath;
@@ -75,13 +73,18 @@ function allPaths(app) {
         let snippet;
         try {
             let component = req.path.replace(compPath + '/', '');
-            template = getTemplate(component, getData(component));
-            snippet = getSnippet(component);
+            let data = getData(component);
+            template = getComponentIndex(component, data);
+            if(!template) {
+                template = getTemplate(component, data);
+                snippet = getSnippet(component);
+                template = getMergedTemplate(template, snippet);
+            }
         } catch(e) {
             console.error(e);
         }
 
-        res.end(getMergedTemplate(template, snippet));
+        res.end(template);
     });
 
     let rootPath = `${compPath}/`;
@@ -134,10 +137,23 @@ function getMergedTemplate(template, snippet) {
     return mergedTemplate;
 }
 
+function getComponentIndex(component, data) {
+    let componentIndex = '';
+    try {
+        let componentIndexPath = `${componentPath}/${component}/index.html`;
+        componentIndex = fs.readFileSync(componentIndexPath, 'utf8');
+        componentIndex = _addData(componentIndex, data);
+    } catch(e) {
+        //console.log(e);
+    }
+
+    return componentIndex;
+}
+
 function _baseTemplate() {
     let template;
     try {
-        let path = __dirname + '/index.html';
+        let path = __dirname + '../index.html';
         template = fs.readFileSync(path, 'utf8');
     } catch(e) {
         template = `
@@ -158,6 +174,12 @@ function _baseTemplate() {
     }
 
     return template;
+}
+
+function _addData(template, data) {
+    let jsonData = JSON.stringify(data);
+    let dataTemplate = template.replace(`</head>`, `<script>var data = ${jsonData};</script></head>`);
+    return dataTemplate;
 }
 
 function getTemplate(component, data = '{}', snippet = '') {
