@@ -1,4 +1,5 @@
 const fs = require('fs');
+const readline = require('readline');
 
 const rootFolder = '/app';
 const components = '/components/';
@@ -12,8 +13,72 @@ class Cli {
             if(process.argv[3] && /^[A-Za-z0-9\-\_]+$/.test(process.argv[3])) {
                 this.startapp(process.argv[3]);
             } else {
-                console.log('new requires a third argument: "new mycomponentname"');
+                console.log('new requires a third argument: "new MyComponentName"');
             }
+        } else if(process.argv[2] === 'delete') {
+            if(process.argv[3] && /^[A-Za-z0-9\-\_]+$/.test(process.argv[3])) {
+                this.deleteApp(process.argv[3]);
+            } else {
+                console.log('delete requires a third argument: "delete MyComponentName"');
+            }
+        }
+    }
+
+    deleteApp(appName) {
+        let folderPath = baseFolder + componentFolder + appName;
+        if(!fs.existsSync(folderPath)) {
+            console.error('Component folder does not exist.', appName);
+            return;
+        }
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+
+        let files = fs.readdirSync(folderPath).filter(function(file) {
+            return fs.statSync(folderPath + '/' + file);
+        });
+        const deleteString = `@import '..${components}${appName}/${appName}.scss'`;
+        const newComponent = `import ${appName} from './${appName}'`;
+        rl.question(
+`You will delete these files in component ${appName} on this path
+${folderPath}/:\n
+${files.join('\n')}\n
+This from index.js:
+${newComponent}
+${appName},\n
+This from index.scss:
+${deleteString}\n
+Are you sure? (yes/no): `,
+            (answer) => {
+                if(answer === 'yes') {
+                    this.deleteFolderRecursive(folderPath);
+                    fs.writeFileSync(`${baseFolder}${scssFolder}/index.scss`, this._deleteScss(appName));
+                    fs.writeFileSync(`${baseFolder}${componentFolder}/index.js`, this._deleteIndex(appName));
+                    console.log(`Deleted component ${appName}`);
+                } else {
+                    console.log(`Exited without deletion.`);
+                }
+
+                rl.close();
+            }
+        );
+    }
+
+    deleteFolderRecursive(path) {
+        let self = this;
+        if(fs.existsSync(path)) {
+            fs.readdirSync(path).forEach(function(file) {
+                let curPath = `${path}/${file}`;
+                if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                    self.deleteFolderRecursive(curPath);
+                } else { // delete file
+                    console.log('Deleted file', curPath);
+                    fs.unlinkSync(curPath);
+                }
+            });
+            console.log('Deleted folder', path);
+            fs.rmdirSync(path);
         }
     }
 
@@ -170,12 +235,33 @@ describe('<${appName} />', () => {
         return index;
     }
 
+    _deleteIndex(appName) {
+        let index = fs.readFileSync(baseFolder + componentFolder + 'index.js', 'utf8');
+        let newComponent = `import ${appName} from './${appName}';
+`;
+        index = index.replace(newComponent, '');
+
+        index = index.replace(
+`    ${appName},
+`, '');
+        return index;
+    }
+
     _updateScss(appName) {
         let index = fs.readFileSync(baseFolder + scssFolder + 'index.scss', 'utf8');
         const importString = `@import '..${components}${appName}/${appName}.scss';
 `;
 
         index = index.concat(importString);
+        return index;
+    }
+
+    _deleteScss(appName) {
+        let index = fs.readFileSync(baseFolder + scssFolder + 'index.scss', 'utf8');
+        const deleteString = `@import '..${components}${appName}/${appName}.scss';
+`;
+
+        index = index.replace(deleteString, '');
         return index;
     }
 }

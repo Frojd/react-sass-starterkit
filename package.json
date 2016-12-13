@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack",
     "build:prod": "webpack -p --prod",
+    "delete": "node bin/cli.js delete",
     "new": "node bin/cli.js new",
     "start": "node bin/server.js",
     "test": "mocha internals/test/.setup-test.js app/**/*.test.js",
