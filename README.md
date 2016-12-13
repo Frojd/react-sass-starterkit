@@ -30,6 +30,10 @@ Create a component will both scss and classbase
 
     npm run new ComponentName
 
+Delete a component that have been created with the cli
+
+    npm run delete ComponentName
+
 Create a component without scss file
 
     npm run new ComponentName no-scss
