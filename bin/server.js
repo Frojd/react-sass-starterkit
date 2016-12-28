@@ -75,6 +75,11 @@ function allPaths(app) {
             let component = req.path.replace(compPath + '/', '');
             let data = getData(component);
             template = getComponentIndex(component, data);
+
+            if (template) {
+                template = eval('`'+template+'`');
+            }
+
             if(!template) {
                 template = getTemplate(component, data);
                 snippet = getSnippet(component);
