@@ -1,32 +1,121 @@
 const fs = require('fs');
 const readline = require('readline');
 
-const rootFolder = '/app';
-const components = '/components/';
-const scssFolder = rootFolder + '/scss/';
-const componentFolder = rootFolder + components;
-const baseFolder = __dirname + '/..';
+const ROOT_FOLDER = '/app';
+const COMPONENTS_FOLDER = '/components/';
+const SCSS_FOLDER = '/scss/';
+const SCSS_PATH = ROOT_FOLDER + SCSS_FOLDER;
+const COMPONENTS_PATH = ROOT_FOLDER + COMPONENTS_FOLDER;
+const BASE_PATH = __dirname + '/..';
+
+const FLAG_NO_CLASS = 'no-class';
+const FLAG_NO_SCSS = 'no-scss';
+const FLAG_ADD_HTML = 'add-html';
+
+
+const updateFile = (path, data, message = 'Updated') => {
+    writeFile(path, data, 'Updated');
+}
+
+const writeFile = (path, data, message = 'Added') => {
+    let name = path.split(BASE_PATH + ROOT_FOLDER)[1];
+    fs.writeFileSync(path, data);
+    console.log(message + ' ' + name);
+}
+
+const deleteFolderRecursive = (path) => {
+    if(fs.existsSync(path)) {
+        fs.readdirSync(path).forEach(function(file) {
+            let curPath = `${path}/${file}`;
+            if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                deleteFolderRecursive(curPath);
+            } else { // delete file
+                console.log('Deleted file', curPath);
+                fs.unlinkSync(curPath);
+            }
+        });
+        console.log('Deleted folder', path);
+        fs.rmdirSync(path);
+    }
+}
 
 class Cli {
     constructor() {
-        if(process.argv[2] === 'new') {
-            if(process.argv[3] && /^[A-Za-z0-9\-\_]+$/.test(process.argv[3])) {
-                this.startapp(process.argv[3]);
-            } else {
-                console.log('new requires a third argument: "new MyComponentName"');
-            }
-        } else if(process.argv[2] === 'delete') {
-            if(process.argv[3] && /^[A-Za-z0-9\-\_]+$/.test(process.argv[3])) {
-                this.deleteApp(process.argv[3]);
-            } else {
-                console.log('delete requires a third argument: "delete MyComponentName"');
-            }
+        let [ action, componentName, componentsFolder ] = process.argv.slice(2);
+
+        if ([FLAG_NO_CLASS, FLAG_NO_SCSS, FLAG_ADD_HTML].indexOf(componentsFolder) !== -1) {
+
+            componentsFolder = undefined;
+        }
+
+        if(process.argv.length < 4) {
+            console.log('new requires a third argument: "new MyComponentName"');
+            return;
+        }
+
+        if(!/^[A-Za-z0-9\-\_]+$/.test(componentName)) {
+            console.log(`ComponentName "${componentName}" is not valid`);
+            return;
+        }
+
+        componentsFolder = componentsFolder ? `/${componentsFolder}/` : null;
+        componentsFolder = componentsFolder || COMPONENTS_FOLDER;
+
+        switch (action) {
+            case 'new':
+                this.startApp(componentName, componentsFolder);
+                break;
+
+            case 'delete':
+                this.deleteApp(componentName, componentsFolder);
+                break;
         }
     }
 
-    deleteApp(appName) {
-        let folderPath = baseFolder + componentFolder + appName;
-        if(!fs.existsSync(folderPath)) {
+    startApp(appName, componentsFolder) {
+        const componentsPath = BASE_PATH + ROOT_FOLDER + componentsFolder;
+        const appPath = BASE_PATH + ROOT_FOLDER + componentsFolder + appName;
+
+        if(fs.existsSync(appPath)) {
+            console.error('Component folder already exists.', appName);
+            return;
+        }
+
+        try {
+            fs.mkdirSync(appPath);
+            fs.writeFileSync(`${appPath}/index.js`, this._indexTemplate(appName));
+
+            if(process.argv.indexOf(FLAG_ADD_HTML) !== -1) {
+                writeFile(`${appPath}/${appName}.html`, this._emptyTemplate());
+            }
+
+            writeFile(`${appPath}/${appName}.json`, this._dataTemplate());
+            writeFile(`${appPath}/${appName}.test.js`, this._testTemplate(appName));
+            updateFile(`${componentsPath}index.js`, this._updateIndex(appName, componentsFolder));
+
+            if(process.argv.indexOf(FLAG_NO_CLASS) !== -1) {
+                writeFile(`${appPath}/${appName}.js`, this._componentTemplate(appName));
+            } else {
+                writeFile(`${appPath}/${appName}.js`, this._componentClassTemplate(appName));
+            }
+
+            if(process.argv.indexOf(FLAG_NO_SCSS) === -1) {
+                writeFile(`${appPath}/${appName}.scss`, this._scssTemplate(appName));
+                updateFile(`${BASE_PATH}${SCSS_PATH}index.scss`, this._updateScss(appName, componentsFolder));
+            }
+
+        } catch(e) {
+            console.error(e);
+        }
+
+        console.log(`Component '${appName}' has been created.`);
+    }
+
+    deleteApp(appName, componentsFolder) {
+        const componentsPath = BASE_PATH + ROOT_FOLDER + componentsFolder;
+        const appPath = BASE_PATH + ROOT_FOLDER + componentsFolder + appName;
+
+        if(!fs.existsSync(appPath)) {
             console.error('Component folder does not exist.', appName);
             return;
         }
@@ -35,14 +124,14 @@ class Cli {
             output: process.stdout
         });
 
-        let files = fs.readdirSync(folderPath).filter(function(file) {
-            return fs.statSync(folderPath + '/' + file);
+        let files = fs.readdirSync(appPath).filter(function(file) {
+            return fs.statSync(appPath + '/' + file);
         });
-        const deleteString = `@import '..${components}${appName}/${appName}.scss'`;
+        const deleteString = `@import '..${componentsFolder}${appName}/${appName}.scss'`;
         const newComponent = `import ${appName} from './${appName}'`;
         rl.question(
 `You will delete these files in component ${appName} on this path
-${folderPath}/:\n
+${appPath}/:\n
 ${files.join('\n')}\n
 This from index.js:
 ${newComponent}
@@ -52,9 +141,9 @@ ${deleteString}\n
 Are you sure? (yes/no): `,
             (answer) => {
                 if(answer === 'yes') {
-                    this.deleteFolderRecursive(folderPath);
-                    fs.writeFileSync(`${baseFolder}${scssFolder}/index.scss`, this._deleteScss(appName));
-                    fs.writeFileSync(`${baseFolder}${componentFolder}/index.js`, this._deleteIndex(appName));
+                    deleteFolderRecursive(appPath);
+                    fs.writeFileSync(`${BASE_PATH}${SCSS_PATH}/index.scss`, this._deleteScss(appName, componentsFolder));
+                    fs.writeFileSync(`${componentsPath}/index.js`, this._deleteIndex(appName, componentsFolder));
                     console.log(`Deleted component ${appName}`);
                 } else {
                     console.log(`Exited without deletion.`);
@@ -63,66 +152,6 @@ Are you sure? (yes/no): `,
                 rl.close();
             }
         );
-    }
-
-    deleteFolderRecursive(path) {
-        let self = this;
-        if(fs.existsSync(path)) {
-            fs.readdirSync(path).forEach(function(file) {
-                let curPath = `${path}/${file}`;
-                if(fs.lstatSync(curPath).isDirectory()) { // recurse
-                    self.deleteFolderRecursive(curPath);
-                } else { // delete file
-                    console.log('Deleted file', curPath);
-                    fs.unlinkSync(curPath);
-                }
-            });
-            console.log('Deleted folder', path);
-            fs.rmdirSync(path);
-        }
-    }
-
-    startapp(appName) {
-        let folderPath = baseFolder + componentFolder + appName;
-        if(fs.existsSync(folderPath)) {
-            console.error('Component folder already exists.', appName);
-            return;
-        }
-        try {
-            fs.mkdirSync(folderPath);
-            fs.writeFileSync(`${folderPath}/index.js`, this._indexTemplate(appName));
-
-            if(process.argv.indexOf('add-html') !== -1) {
-                fs.writeFileSync(`${folderPath}/${appName}.html`, this._emptyTemplate());
-                console.log(`Added ${appName}.html`);
-            }
-
-            fs.writeFileSync(`${folderPath}/${appName}.json`, this._dataTemplate());
-            console.log(`Added ${appName}.json`);
-            fs.writeFileSync(`${folderPath}/${appName}.test.js`, this._testTemplate(appName));
-            console.log(`Added ${appName}.test.js`);
-            fs.writeFileSync(`${baseFolder}${componentFolder}/index.js`, this._updateIndex(appName));
-            console.log(`Updated index.js`);
-            if(process.argv.indexOf('no-class') !== -1) {
-                fs.writeFileSync(`${folderPath}/${appName}.js`, this._componentTemplate(appName));
-                console.log(`Added ${appName}.js`);
-            } else {
-                fs.writeFileSync(`${folderPath}/${appName}.js`, this._componentClassTemplate(appName));
-                console.log(`Added ${appName}.js`);
-            }
-
-            if(process.argv.indexOf('no-scss') === -1) {
-                fs.writeFileSync(`${folderPath}/${appName}.scss`, this._scssTemplate(appName));
-                console.log(`Added ${appName}.scss`);
-                fs.writeFileSync(`${baseFolder}${scssFolder}/index.scss`, this._updateScss(appName));
-                console.log(`Updated index.scss`);
-            }
-
-        } catch(e) {
-            console.error(e);
-        }
-
-        console.log(`Component '${appName}' has been created.`);
     }
 
     _indexTemplate(appName) {
@@ -224,8 +253,9 @@ describe('<${appName} />', () => {
         return template;
     }
 
-    _updateIndex(appName) {
-        let index = fs.readFileSync(baseFolder + componentFolder + 'index.js', 'utf8');
+    _updateIndex(appName, componentsFolder = COMPONENTS_FOLDER) {
+        const componentsPath = BASE_PATH + ROOT_FOLDER + componentsFolder;
+        let index = fs.readFileSync(componentsPath + 'index.js', 'utf8');
         let newComponent = `import ${appName} from './${appName}';
 `;
         index = newComponent.concat(index);
@@ -235,8 +265,9 @@ describe('<${appName} />', () => {
         return index;
     }
 
-    _deleteIndex(appName) {
-        let index = fs.readFileSync(baseFolder + componentFolder + 'index.js', 'utf8');
+    _deleteIndex(appName, componentsFolder = COMPONENTS_FOLDER) {
+        const componentsPath = BASE_PATH + ROOT_FOLDER + componentsFolder;
+        let index = fs.readFileSync(componentsPath + 'index.js', 'utf8');
         let newComponent = `import ${appName} from './${appName}';
 `;
         index = index.replace(newComponent, '');
@@ -247,18 +278,18 @@ describe('<${appName} />', () => {
         return index;
     }
 
-    _updateScss(appName) {
-        let index = fs.readFileSync(baseFolder + scssFolder + 'index.scss', 'utf8');
-        const importString = `@import '..${components}${appName}/${appName}.scss';
+    _updateScss(appName, componentsFolder = COMPONENTS_FOLDER) {
+        let index = fs.readFileSync(BASE_PATH + SCSS_PATH + 'index.scss', 'utf8');
+        const importString = `@import '..${componentsFolder}${appName}/${appName}.scss';
 `;
 
         index = index.concat(importString);
         return index;
     }
 
-    _deleteScss(appName) {
-        let index = fs.readFileSync(baseFolder + scssFolder + 'index.scss', 'utf8');
-        const deleteString = `@import '..${components}${appName}/${appName}.scss';
+    _deleteScss(appName, componentsFolder = COMPONENTS_FOLDER) {
+        let index = fs.readFileSync(BASE_PATH + SCSS_PATH + 'index.scss', 'utf8');
+        const deleteString = `@import '..${componentsFolder}${appName}/${appName}.scss';
 `;
 
         index = index.replace(deleteString, '');
