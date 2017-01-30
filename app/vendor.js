@@ -1,4 +1,4 @@
-/*eslint-disable*/
+/*eslint-disable no-undef*/
 require('expose?React!react');
 require('expose?ReactDOM!react-dom');
-/*eslint-enable*/
+/*eslint-enable no-undef*/

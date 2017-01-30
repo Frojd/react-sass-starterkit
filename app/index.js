@@ -1,3 +1,3 @@
-/*eslint-disable*/
+/*eslint-disable no-undef*/
 require('expose?Components!./components');
-/*eslint-enable*/
+/*eslint-enable no-undef*/

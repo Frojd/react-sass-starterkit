@@ -5,19 +5,20 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
+const config = require('./internals/config.js')();
+
 // Output base directory
-const outputPath = path.join(__dirname, '/dist');
+const outputPath = config.outputPath;
 
 // static prefix where the static files will be served on the webserver
 // Eg: /static/ will be: http://localhost:7000/static/js/index.js
-const staticPath = '/static/';
+const staticPath = config.staticPath;
 
-
-// Root app directory, unless you want a headache, don't change
-const context = path.join(__dirname, '/app');
+// Root app directory
+const context = path.join(__dirname, config.rootFolder);
 
 // Simple plugin for production build
-let prod = process.argv && process.argv[3] === '--prod' ? 'production' : '';
+const prod = process.argv && process.argv[3] === '--prod' ? 'production' : '';
 let envPlugin = () => {};
 if(prod) {
     envPlugin = new webpack.DefinePlugin({
@@ -117,7 +118,6 @@ module.exports = [{
     entry: {
         styles: [
             './scss/index.scss',
-            './components/',
         ],
     },
     output: {
