@@ -1,3 +1,3 @@
 /*eslint-disable no-undef*/
-require('expose?Components!./components');
+require('expose-loader?Components!./components');
 /*eslint-enable no-undef*/
