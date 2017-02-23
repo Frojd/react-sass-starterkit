@@ -52,7 +52,7 @@ Different port (must be first argument after start):
 
     npm start 4567
 
-### Proxy ###
+### Proxy (broken currently in v2.0.0) ###
 
 All requests to the staticPath will go through the webpack devserver, also all components and / will do that as well.
 
