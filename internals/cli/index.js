@@ -9,10 +9,10 @@ const fs = require('fs');
 const readline = require('readline');
 
 const config = require('../config')();
-const root = process.cwd();
-const componentsFolder = path.join(root, config.rootFolder, config.componentsFolder);
-const scssFolder = path.join(root, config.rootFolder, config.scssFolder);
-const templatePath = path.join(root, config.rootCliTemplatePath);
+const rootFolder = process.cwd();
+const componentsFolder = path.join(rootFolder, config.appFolder, config.componentsFolder);
+const scssFolder = path.join(rootFolder, config.appFolder, config.scssFolder);
+const templatePath = path.join(rootFolder, config.rootCliTemplatePath);
 const componentName = config.componentName;
 const folderPath = path.join(componentsFolder, componentName);
 let files;

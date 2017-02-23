@@ -13,7 +13,7 @@ const outputPath = path.join(__dirname, config.outputPath);
 const staticPath = config.staticPath;
 
 // Root app directory
-const context = path.join(__dirname, config.rootFolder);
+const context = path.join(__dirname, config.appFolder);
 
 module.exports = [{
     name: 'js',
