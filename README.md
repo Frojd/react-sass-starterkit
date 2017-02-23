@@ -52,7 +52,7 @@ Different port (must be first argument after start):
 
     npm start 4567
 
-### Proxy (broken currently in v2.0.0) ###
+### Proxy ###
 
 All requests to the staticPath will go through the webpack devserver, also all components and / will do that as well.
 
@@ -64,11 +64,13 @@ Or by using ip, for instance:
 
     npm start proxy http://127.0.0.1:8080
 
-By default the components will be served from /frontend/ when using proxy instead of root, to allow for your backend to server your pages. This can be overridden by the third argument for path:
+By default the components will be served from / when using proxy, so to be able to serve your backendpages instead you should specify a different publicPathPrefix in .frontendrc, then the components will be served from that folder instead and the / will be served from your proxy.
 
-    npm start proxy http://local.dev:8080 /components
+This can also be added through specifying a folder after the proxy address, eg:
 
-And then you can see your components on [http://localhost:7000/components](http://localhost:7000/components)
+    npm start proxy http://local.dev:8080 /components/
+
+And then you can see your components on [http://localhost:7000/components/](http://localhost:7000/components/)
 
 ## Building css/js
 

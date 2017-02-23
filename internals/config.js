@@ -26,6 +26,12 @@ const config = (argv = process.argv) => {
         }
     }
 
+    if(argv.indexOf('proxy') !== -1) {
+        if(argv[argv.indexOf('proxy') + 2]) {
+            defaultConf.publicPathPrefix = argv[argv.indexOf('proxy') + 2];
+        }
+    }
+
     if(defaultConf.createPure && defaultConf.createClass) {
         throw new Error('createPure and createClass can not be true at the same time');
     }
