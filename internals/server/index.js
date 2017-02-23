@@ -49,23 +49,6 @@ function renderListing(cb) {
     return template;
 }
 
-// function getData(componentName) {
-//     let data = {};
-//     let jsonComp = path.join(
-//         rootFolder,
-//         componentPath,
-//         componentName,
-//         `${componentName}.json`
-//     )
-
-//     if(fs.existsSync(jsonComp)) {
-//         data = require(jsonComp);
-//         purgeCache(jsonComp);
-//     }
-
-//     return data;
-// }
-
 function getRender(componentName) {
     let data = JSON.stringify(getData(componentName));
     let filePath = path.join(rootFolder, 'render.html');
@@ -107,7 +90,9 @@ function getSnippet(componentName) {
 
 function getIndexTemplate(componentName) {
     let filePath;
+    let data;
     if(componentName) {
+        data = JSON.stringify(getData(componentName));
         filePath = path.join(
             rootFolder,
             componentPath,
