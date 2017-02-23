@@ -1,0 +1,28 @@
+// All paths are relative to the application root
+{
+    // General
+    "outputPath": "/dist/",
+    "webpackConfig": "./webpack.config.js",
+    "appFolder": "app",
+    "componentsFolder": "components",
+    "containerId": "root",
+
+    // Server
+    "port": 7000,
+    "rootServerTemplatePath": "/internals/templates/server/",
+    "publicPathPrefix": "/",
+    "publicPath": "/static/",
+
+    // Cli
+    "rootCliTemplatePath": "/internals/templates/cli/",
+    "scssFolder": "scss",
+    "createScss": true,
+    "createHtml": false,
+    "createClass": true,
+    "createPure": false,
+    "createIndex": true,
+    "createData": true,
+    "createTest": true,
+    "updateIndexScss": true,
+    "updateIndexJs": true
+}

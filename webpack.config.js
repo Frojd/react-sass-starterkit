@@ -1,35 +1,23 @@
 /* eslint-disable no-undef */
-const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
-const webpack = require('webpack');
+
+const config = require('./internals/config.js')();
 
 // Output base directory
-const outputPath = path.join(__dirname, '/dist');
+const outputPath = path.join(__dirname, config.outputPath);
 
 // static prefix where the static files will be served on the webserver
 // Eg: /static/ will be: http://localhost:7000/static/js/index.js
-const staticPath = '/static/';
+const staticPath = config.staticPath;
 
-
-// Root app directory, unless you want a headache, don't change
-const context = path.join(__dirname, '/app');
-
-// Simple plugin for production build
-let prod = process.argv && process.argv[3] === '--prod' ? 'production' : '';
-let envPlugin = () => {};
-if(prod) {
-    envPlugin = new webpack.DefinePlugin({
-        'process.env': {
-            'NODE_ENV': JSON.stringify(prod)
-        }
-    });
-}
+// Root app directory
+const context = path.join(__dirname, config.appFolder);
 
 module.exports = [{
     name: 'js',
-    devtool: prod ? '' : 'source-map',
+    devtool: 'source-map',
     context: context,
     entry: {
         index: [
@@ -42,32 +30,19 @@ module.exports = [{
         publicPath: staticPath,
     },
     module: {
-        preLoaders: [
+        rules: [
             {
                 test: /\.js$/,
-                loader: 'eslint-loader',
-                exclude: /node_modules/,
+                enforce: 'pre',
+                loader: 'eslint-loader'
             },
-        ],
-        loaders: [
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: 'babel',
-                query: {
-                    presets: ['es2015', 'react', 'stage-0'],
-                    plugins: ['transform-class-properties', 'transform-decorators-legacy'],
-                },
-            },
-            {
-                test: /\.json$/,
-                loader: 'json-loader'
+                loader: 'babel-loader',
             }
         ],
     },
-    plugins: [
-        envPlugin
-    ],
     externals: {
         'react': 'React',
         'react-dom': 'ReactDOM',
@@ -83,28 +58,23 @@ module.exports = [{
         path: outputPath + '/js',
         filename: 'vendor.js',
     },
-    loaders: [
-        {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel',
-        },
-    ],
-    plugins: [
-        envPlugin
-    ],
-},
-{
-    name: 'copy',
-    context: context,
-    output: {
-        path: outputPath,
-        filename: '[name].[ext]'
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+            },
+        ],
     },
     plugins: [
         new CopyWebpackPlugin([
             {
                 from: 'img/**',
+                to: outputPath
+            },
+            {
+                from: 'fonts/**',
                 to: outputPath
             }
         ]),
@@ -112,12 +82,11 @@ module.exports = [{
 },
 {
     name: 'style',
-    devtool: prod ? '' : 'source-map',
+    devtool: 'source-map',
     context: context,
     entry: {
         styles: [
             './scss/index.scss',
-            './components/',
         ],
     },
     output: {
@@ -125,13 +94,17 @@ module.exports = [{
         filename: 'index.css',
     },
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.(scss|css)$/,
-                loader: ExtractTextPlugin.extract(
-                    'style-loader',
-                    'css-loader?sourceMap!postcss-loader?sourceMap!sass-loader?sourceMap'
-                ),
+                test: /\.(css|scss)$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader',
+                        'postcss-loader',
+                        'sass-loader'
+                    ]
+                })
             },
             {
                 test: /\.(svg|png|jpe?g|gif)$/,
@@ -139,18 +112,20 @@ module.exports = [{
                 loader: 'file?name=[path][name].[ext]',
             },
             {
-                test: /\.(woff2?|ttf|eot|otf|svg)$/,
+                test: /\.(woff|woff2|ttf|eot|otf|svg)$/,
                 exclude: /img/,
                 loader: 'file?name=[path][name].[ext]',
             },
         ],
     },
-    postcss: [autoprefixer({ browsers: ['last 3 versions'] })],
     plugins: [
-        new ExtractTextPlugin('index.css', {
+        new ExtractTextPlugin({
+            filename: 'index.css',
+            disable: false,
             allChunks: true,
         }),
-        envPlugin
+
     ],
-}];
+}
+];
 /* eslint-enable */

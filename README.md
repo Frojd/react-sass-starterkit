@@ -34,21 +34,7 @@ Delete a component that have been created with the cli
 
     npm run delete ComponentName
 
-Create a component without scss file
-
-    npm run new ComponentName no-scss
-
-Create a component without classbase (it will be a functional component), and no scss
-
-    npm run new ComponentName no-scss no-class
-
-no-scss and no-class is both optional.
-
 index.scss and index.js will be automatically updated when adding a component through the cli.
-
-You can also override the html if you want/need to for your component by adding a html file in the components folder, or have it created by adding this to the cli:
-
-    npm run new ComponentName add-html
 
 ## Devserver
 
@@ -66,14 +52,6 @@ Different port (must be first argument after start):
 
     npm start 4567
 
-Prevent automatic reload on changes to component/scss
-
-    npm start no-inline
-
-And both port and no-inline:
-
-    npm start 4567 no-inline
-
 ### Proxy ###
 
 All requests to the staticPath will go through the webpack devserver, also all components and / will do that as well.
@@ -86,11 +64,13 @@ Or by using ip, for instance:
 
     npm start proxy http://127.0.0.1:8080
 
-By default the components will be served from /frontend/ when using proxy instead of root, to allow for your backend to server your pages. This can be overridden by the third argument for path:
+By default the components will be served from / when using proxy, so to be able to serve your backendpages instead you should specify a different publicPathPrefix in .frontendrc, then the components will be served from that folder instead and the / will be served from your proxy.
 
-    npm start proxy http://local.dev:8080 /components
+This can also be added through specifying a folder after the proxy address, eg:
 
-And then you can see your components on [http://localhost:7000/components](http://localhost:7000/components)
+    npm start proxy http://local.dev:8080 /components/
+
+And then you can see your components on [http://localhost:7000/components/](http://localhost:7000/components/)
 
 ## Building css/js
 
@@ -114,9 +94,50 @@ For single test:
 
     npm run test:single app\components\ComponentName\ComponentName.test.js
 
-## Additional settings and overrides ##
+## .frontendrc and overrides ##
 
-There is three possible overrides in the html that can be used. The base index.html, the MyComponent.html snippet and also a complete MyComponent index.html override.
+The recommended way to change settings is by overriding the .frontendrc file that exists in internals folder.
+
+Copy the .frontendrc file and place it in the root folder, next to webpack.config.js, then change the values to what you would need.
+
+Current settings are:
+
+```javascript
+// All paths are relative to the application root
+{
+    // General
+    "outputPath": "/dist/", // Where files will be placed when using watch or build
+    "webpackConfig": "./webpack.config.js", // Config used
+    "appFolder": "app", // Foldername for the application
+    "componentsFolder": "components", // Foldername where components will be created
+    "containerId": "root", // Default container id that components will be rendered into
+
+    // Server
+    "port": 7000,
+    "rootServerTemplatePath": "/internals/templates/server/", // Templatefolder for servertemplates
+    "publicPathPrefix": "/", // Used with the proxy, to separate the componentindex from /
+    "publicPath": "/static/", // External static path
+
+    // Cli
+    "rootCliTemplatePath": "/internals/templates/cli/", // Templatefolder for cli
+    "scssFolder": "scss", // Folder for scss files
+    "createScss": true, // Create a scss file with the component
+    "createHtml": false, // Create a ComponentName.html with the component
+    "createClass": true, // Create the class version of a react component
+    "createPure": false, // Create the functional version of a react component
+    "createIndex": true, // Create an index.js file inside the ComponentName folder
+    "createData": true, // Create a ComponentName.json
+    "createTest": true, // Create a ComponentName.test.js for unittesting
+    "updateIndexScss": true, // Updated the default index.scss with the new component
+    "updateIndexJs": true // Updated the index.js with the new component
+}
+```
+
+## Overriding templates ##
+
+Currently all templates can be overridden, they all exists in internals/templates/cli and interal/templates/server
+
+Most of the templates can be overridden by placing a new file in the root folder, else a better way is to copy all templates and then change the rootServerTemplatePath in .frontendrc file
 
 ### Base index override ###
 
@@ -131,14 +152,16 @@ Ex index.html:
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>React testingground</title>
-    <script src="/static/js/vendor.js"></script>
-    <link rel="stylesheet" href="/static/css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React testing ground</title>
+    <script src="${publicPath}js/vendor.js"></script>
+    <script src="${publicPath}js/index.js"></script>
+    <link rel="stylesheet" href="${publicPath}css/index.css">
 </head>
-    <body>
-        <div id="container"></div>
-        <script src="/static/js/index.js"></script>
-    </body>
+<body>
+    <!-- content -->
+    <!-- react-render -->
+</body>
 </html>
 ```
 
@@ -149,7 +172,7 @@ The div with the id container is required as that is where the component will be
 
 ```html
 <h1>My component extra!</h1>
-<div id="container"></div>
+<div id="${containerId}"></div>
 ```
 
 ### Full component override ###
@@ -163,15 +186,17 @@ Example index.html inside MyComponent folder:
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Egen test</title>
-    <script src="/static/js/vendor.js"></script>
-    <link rel="stylesheet" href="/static/css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React testing ground</title>
+    <script src="${publicPath}js/vendor.js"></script>
+    <script src="${publicPath}js/index.js"></script>
+    <link rel="stylesheet" href="${publicPath}css/index.css">
 </head>
 <body>
-    <div id="container"></div>
-    <script src="/static/js/index.js"></script>
+    <h1>My component's own index!</h1>
+    <div id="${containerId}"></div>
     <script>
-        ReactDOM.render(React.createElement(Components.MyComponent, data), document.getElementById("container"));
+    ReactDOM.render(React.createElement(Components.${componentName}, ${data}), document.getElementById("${containerId}"));
     </script>
 </body>
 </html>
@@ -194,12 +219,11 @@ externals: {
 And change vendor.js to:
 
 ```javascript
-/*eslint-disable*/
-require('expose?React!react');
-require('expose?ReactDOM!react-dom');
-require('expose?React.addons.TransitionGroup!react/lib/reactTransitionGroup');
-require('expose?React.addons.CSSTransitionGroup!react/lib/ReactCSSTransitionGroup');
-/*eslint-enable*/
+/*eslint-disable no-undef*/
+require('expose-loader?React!react');
+require('expose-loader?ReactDOM!react-dom');
+require('expose-loader?React.addons.CSSTransitionGroup!react/lib/ReactCSSTransitionGroup');
+/*eslint-enable no-undef*/
 ```
 
 If you are running into similar problems with react loading multiple times, it might be that you need to add some more external library (especially if you are using the addons libraries).
@@ -209,7 +233,7 @@ If you are running into similar problems with react loading multiple times, it m
 To use jquery and with old plugins you can with ease use the script loader for webpack (`npm install script-loader`), and add them both to vendor.js in a similar way as react is done (require the addon after you expose jquery).
 
 ```javascript
-require('expose?jQuery!jquery');
+require('expose-loader?jQuery!jquery');
 require('script!jquery.flipster');  // Example plugin
 ```
 

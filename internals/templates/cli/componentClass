@@ -1,0 +1,24 @@
+/**
+ * ${componentName}
+ */
+
+import React from 'react';
+
+class ${componentName} extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div className="${componentName}">
+                ${componentName}
+            </div>
+        );
+    }
+}
+
+${componentName}.defaultProps = {
+};
+
+export default ${componentName};
