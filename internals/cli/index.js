@@ -17,7 +17,7 @@ const componentName = config.componentName;
 const folderPath = path.join(componentsFolder, componentName);
 let files;
 
-const createNewComponent = () => {
+function createNewComponent() {
     if(fs.existsSync(folderPath)) {
         console.error('Component folder already exists.', componentName);
         return;
@@ -65,7 +65,7 @@ const createNewComponent = () => {
     }
 }
 
-const deleteComponent = () => {
+function deleteComponent() {
     if(!fs.existsSync(folderPath)) {
         console.error('Component folder does not exist.', componentName);
         return;
@@ -95,14 +95,14 @@ const deleteComponent = () => {
     );
 }
 
-const createScss = () => {
+function createScss() {
     let template = _getTemplate('componentScss');
     let filePath = `${folderPath}/${componentName}.scss`;
     _writeFile(filePath, template);
     _log(`Created scss: ${filePath}`);
 }
 
-const createJs = (usePure = false) => {
+function createJs(usePure = false) {
     let templateName = usePure ? 'componentPure' : 'componentClass';
     let template = _getTemplate(templateName);
     let filePath = `${folderPath}/${componentName}.js`;
@@ -110,35 +110,35 @@ const createJs = (usePure = false) => {
     _log(`Created js: ${filePath}`);
 }
 
-const createIndex = () => {
+function createIndex() {
     let template = _getTemplate('componentIndex');
     let filePath = `${folderPath}/index.js`;
     _writeFile(filePath, template);
     _log(`Created index: ${filePath}`);
 }
 
-const createData = () => {
+function createData() {
     let template = _getTemplate('componentData');
     let filePath = `${folderPath}/${componentName}.json`;
     _writeFile(filePath, template);
     _log(`Created data: ${filePath}`);
 }
 
-const createTest = () => {
+function createTest() {
     let template = _getTemplate('componentTest');
     let filePath = `${folderPath}/${componentName}.test.js`;
     _writeFile(filePath, template);
     _log(`Created test: ${filePath}`);
 }
 
-const createHtml = () => {
+function createHtml() {
     let template = _getTemplate('componentHtml');
     let filePath = `${folderPath}/${componentName}.html`;
     _writeFile(filePath, template);
     _log(`Created html: ${filePath}`);
 }
 
-const updateIndexJs = (remove = false) => {
+function updateIndexJs(remove = false) {
     let filePath = path.join(componentsFolder, 'index.js')
     let index = fs.readFileSync(filePath, 'utf8');
     let newComponent = `import ${componentName} from './${componentName}';
@@ -159,7 +159,7 @@ const updateIndexJs = (remove = false) => {
     _log(`Updated index.js: ${filePath}`)
 }
 
-const updateIndexScss = (remove = false) => {
+function updateIndexScss(remove = false) {
     let filePath = path.join(scssFolder, 'index.scss')
     let index = fs.readFileSync(filePath, 'utf8');
     const importString = `@import '../${config.componentsFolder}/${componentName}/${componentName}';
@@ -175,7 +175,7 @@ const updateIndexScss = (remove = false) => {
     _log(`Updated index.scss: ${filePath}`)
 }
 
-const _writeFile = (filePath, content) => {
+function _writeFile(filePath, content) {
     try {
         fs.writeFileSync(filePath, content);
     } catch(e) {
@@ -183,13 +183,13 @@ const _writeFile = (filePath, content) => {
     }
 }
 
-const _getTemplate = (templateName) => {
+function _getTemplate(templateName) {
     let filePath = path.join(templatePath, templateName);
     let template = eval('`' + fs.readFileSync(filePath, 'utf8') + '`');
     return template;
 }
 
-const _deleteFolderRecursive = (path) => {
+function _deleteFolderRecursive(path) {
     if(fs.existsSync(path)) {
         fs.readdirSync(path).forEach(function(file) {
             let curPath = `${path}/${file}`;
@@ -205,7 +205,7 @@ const _deleteFolderRecursive = (path) => {
     }
 }
 
-const _log = (message) => {
+function _log(message) {
     console.log(message);
 }
 
