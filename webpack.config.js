@@ -72,6 +72,10 @@ module.exports = [{
             {
                 from: 'img/**',
                 to: outputPath
+            },
+            {
+                from: 'fonts/**',
+                to: outputPath
             }
         ]),
     ],

@@ -147,8 +147,8 @@ const updateIndexJs = (remove = false) => {
     if(remove) {
         index = index.replace(newComponent, '');
         index = index.replace(
-`    ${componentName},
-`, '');
+`
+    ${componentName},`, '');
     } else {
         index = newComponent.concat(index);
         index = index.replace(`export {`, `export {
