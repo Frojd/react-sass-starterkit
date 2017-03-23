@@ -97,19 +97,23 @@ function deleteComponent() {
     );
 }
 
-function publishComponent(customFolder) {
-    let template = internalServer.renderComponent(componentName);
-    if(!customFolder) {
+function publishComponent(customFolder = '', fileName = 'index.html') {
+    let template = internalServer.renderComponent(componentName, config.useServerRenderingOnPublish);
+    if(customFolder.indexOf('.html') !== -1) {
+        fileName = customFolder;
+    }
+
+    if(!customFolder || customFolder.indexOf('.html') !== -1) {
         customFolder = '';
     }
 
     let outputDir = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, customFolder);
-    let outputPath = path.join(outputDir, 'index.html');
+    let outputPath = path.join(outputDir, fileName);
 
     if (!fs.existsSync(outputDir)){
         fs.mkdirSync(outputDir);
     }
-
+    _log(`Published html: ${outputDir}/${fileName}`);
     _writeFile(outputPath, template);
 }
 

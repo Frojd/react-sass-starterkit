@@ -10,6 +10,8 @@
     "appFolder": "app",
     "componentsFolder": "components",
     "containerId": "root",
+    "useServerRendering": false,
+    "useServerRenderingOnPublish": true,
 
     // Server
     "port": 7000,

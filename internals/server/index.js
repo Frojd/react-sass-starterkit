@@ -6,7 +6,22 @@
 
 const fs = require('fs');
 const path = require('path');
+require('babel-register')({
+    'presets': [[
+        'env',
+        {
+            'targets': {
+                'browsers': ['last 2 versions', 'safari >= 7', 'ie >= 10']
+            },
+            'modules': 'commonjs'
+        }
+    ],
+        'react'
+    ]
+});
 
+const ReactDOMServer = require('react-dom/server')
+const React = require('react');
 const config = require('../config')();
 const getData = require('../utils').getData;
 
@@ -21,11 +36,14 @@ const componentPath = path.join(config.appFolder, config.componentsFolder);
 const context = config.context;
 const components = getDirectories(path.join(rootFolder, componentPath));
 
-
-function renderComponent(componentName, cb) {
+function renderComponent(componentName, useServerRendering = config.useServerRendering, cb) {
     let index = getIndexTemplate(componentName);
     let snippet = getSnippet(componentName);
     let render = getRender(componentName);
+    if(useServerRendering) {
+        let serverComponent = renderServerComponent(componentName);
+        snippet = snippet.replace('<!-- content -->', serverComponent);
+    }
     let template = index.replace('<!-- content -->', snippet).replace('<!-- react-render -->', render);
 
     if(cb) {
@@ -47,6 +65,14 @@ function renderListing(cb) {
     }
 
     return template;
+}
+
+function renderServerComponent(componentName) {
+    let componentsPath = path.join(rootFolder, componentPath);
+    let comp = require(componentsPath);
+    let element = React.createElement(comp[componentName], getData(componentName));
+    let renderedComponent = ReactDOMServer.renderToString(element);
+    return renderedComponent;
 }
 
 function getRender(componentName) {

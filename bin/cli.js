@@ -21,7 +21,7 @@ const cli = (args) => {
         break;
     case 'publish':
         if(args[3]) {
-            return internalCli.publishComponent(args[4]);
+            return internalCli.publishComponent(args[4], args[5]);
         }
         console.error('Need a componentname when publishing a component');
         break;
