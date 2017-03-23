@@ -19,6 +19,12 @@ const cli = (args) => {
         }
         console.error('Need a componentname when deleteing a new component');
         break;
+    case 'publish':
+        if(args[3]) {
+            return internalCli.publishComponent(args[4]);
+        }
+        console.error('Need a componentname when publishing a component');
+        break;
     default:
         console.warn('Not a valid argument');
     }

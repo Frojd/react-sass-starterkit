@@ -5,6 +5,7 @@
     "outputPathSubFolder": "static",
     "outputPathJsFolder": "js",
     "outputPathCssFolder": "css",
+    "outputPathHtmlFolder": "",
     "webpackConfig": "./webpack.config.js",
     "appFolder": "app",
     "componentsFolder": "components",
