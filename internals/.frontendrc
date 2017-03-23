@@ -1,7 +1,10 @@
 // All paths are relative to the application root
 {
     // General
-    "outputPath": "/dist/",
+    "outputPath": "dist",
+    "outputPathSubFolder": "static",
+    "outputPathJsFolder": "js",
+    "outputPathCssFolder": "css",
     "webpackConfig": "./webpack.config.js",
     "appFolder": "app",
     "componentsFolder": "components",

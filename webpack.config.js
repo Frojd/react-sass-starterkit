@@ -10,7 +10,7 @@ const outputPath = path.join(__dirname, config.outputPath);
 
 // static prefix where the static files will be served on the webserver
 // Eg: /static/ will be: http://localhost:7000/static/js/index.js
-const staticPath = config.staticPath;
+const staticPath = config.publicPath;
 
 // Root app directory
 const context = path.join(__dirname, config.appFolder);
@@ -25,7 +25,7 @@ module.exports = [{
         ],
     },
     output: {
-        path: outputPath + '/js',
+        path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
         filename: '[name].js',
         publicPath: staticPath,
     },
@@ -55,7 +55,7 @@ module.exports = [{
         vendor: './vendor.js',
     },
     output: {
-        path: outputPath + '/js',
+        path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
         filename: 'vendor.js',
     },
     module: {
@@ -71,11 +71,11 @@ module.exports = [{
         new CopyWebpackPlugin([
             {
                 from: 'img/**',
-                to: outputPath
+                to: path.join(outputPath, config.outputPathSubFolder)
             },
             {
                 from: 'fonts/**',
-                to: outputPath
+                to: path.join(outputPath, config.outputPathSubFolder)
             }
         ]),
     ],
@@ -90,7 +90,7 @@ module.exports = [{
         ],
     },
     output: {
-        path: outputPath + '/css',
+        path: path.join(outputPath, config.outputPathSubFolder, config.outputPathCssFolder),
         filename: 'index.css',
     },
     module: {
