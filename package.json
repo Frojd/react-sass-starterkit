@@ -1,6 +1,6 @@
 {
   "name": "react-sass-starterkit",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Frontend setup for react with sass and webpack",
   "private": true,
   "scripts": {
@@ -27,7 +27,8 @@
     "frontend",
     "boilerplate",
     "starterkit",
-    "cli"
+    "cli",
+    "staticgenerator"
   ],
   "author": "Daniel Karlsson",
   "license": "MIT",
