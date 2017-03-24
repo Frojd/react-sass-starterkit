@@ -94,6 +94,36 @@ For single test:
 
     npm run test:single app\components\ComponentName\ComponentName.test.js
 
+## Publishing static files ##
+
+There is now commands for publishing an index.html file that will use a component and serverrender it (then clientrender on top) for use on example Amazon S3 as a static site. By default it will also run the taskrunner for building assets.
+
+    npm run publish ComponentName
+
+Will create index.html in the dist folder (ie dist/index.html)
+
+    npm run publish ComponentName subfolder
+
+Will create index.html in the Subfolder to dist (ie dist/subfolder/index.html)
+
+    npm run publish ComponentName filename.html
+
+Will create filename.html in the dist folder (ie dist/filename.html). This will only work if you specify .html as the ending on filename, else it will create it as a folder.
+
+    npm run publish ComponentName subfolder filename.html
+
+Will create filename.html in subfolder to dist (ie dist/subfolder/filename.html)
+
+For production version of scripts, use publish:prod instead ie:
+
+    npm run publish:prod ComponentName
+
+To only create the html file without running the taskrunner for assets, use publish:only
+
+    npm run publish:only ComponentName
+
+This will only create the html file without any building of assets.
+
 ## .frontendrc and overrides ##
 
 The recommended way to change settings is by overriding the .frontendrc file that exists in internals folder.
@@ -106,11 +136,17 @@ Current settings are:
 // All paths are relative to the application root
 {
     // General
-    "outputPath": "/dist/", // Where files will be placed when using watch or build
+    "outputPath": "dist", // Where files will be placed when using watch or build
+    "outputPathSubFolder": "static", // Subfolder where the files will be placed in output path 
+    "outputPathJsFolder": "js", // Folder for javascript
+    "outputPathCssFolder": "css", // Folder for css
+    "outputPathHtmlFolder": "", // Folder for html (empty will place in root)
     "webpackConfig": "./webpack.config.js", // Config used
     "appFolder": "app", // Foldername for the application
     "componentsFolder": "components", // Foldername where components will be created
     "containerId": "root", // Default container id that components will be rendered into
+    "useServerRendering": false, // Use server rendering on develop, note that this requires restart of devserver on each change
+    "useServerRenderingOnPublish": true, // Use server rendering when publishing a html file
 
     // Server
     "port": 7000,
@@ -172,7 +208,7 @@ The div with the id container is required as that is where the component will be
 
 ```html
 <h1>My component extra!</h1>
-<div id="${containerId}"></div>
+<div id="${containerId}"><!-- content --></div>
 ```
 
 ### Full component override ###
@@ -234,7 +270,21 @@ To use jquery and with old plugins you can with ease use the script loader for w
 
 ```javascript
 require('expose-loader?jQuery!jquery');
-require('script!jquery.flipster');  // Example plugin
+require('script-loader!jquery.flipster');  // Example plugin
+```
+
+### Serverside rendering gets errors ###
+
+The serverside rendering is using it's own babel configuration, so you might need to add plugins twice to make it work currently. The configuration is found in internals/server/index.js
+
+#### window is not defined ####
+
+Common problem with serverside rendering, if you are using window on pre componentDidMount, you will need to check if it exists. Preferably thou you will need to set a state in componentDidMount for it to be rendered correctly on the serverside, however just to check if window exists you can write this:
+
+```javascript
+if(typeof window !== 'undefined') {
+    // do you window things here
+}
 ```
 
 ## License

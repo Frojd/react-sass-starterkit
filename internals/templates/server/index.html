@@ -1,15 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>React testing ground</title>
-    <script src="${publicPath}js/vendor.js"></script>
-    <script src="${publicPath}js/index.js"></script>
-    <link rel="stylesheet" href="${publicPath}css/index.css">
-</head>
-<body>
-    <!-- content -->
-    <!-- react-render -->
-</body>
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>React testing ground</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="${path.posix.join(publicPath, config.outputPathJsFolder)}/vendor.js"></script>
+        <script src="${path.posix.join(publicPath, config.outputPathJsFolder)}/index.js"></script>
+        <link rel="stylesheet" href="${path.posix.join(publicPath, config.outputPathCssFolder)}/index.css">
+    </head>
+    <body>
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+        <!-- content -->
+        <!-- react-render -->
+    </body>
 </html>

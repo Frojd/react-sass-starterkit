@@ -8,7 +8,9 @@ const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
 
+const internalServer = require('../server');
 const config = require('../config')();
+
 const rootFolder = process.cwd();
 const componentsFolder = path.join(rootFolder, config.appFolder, config.componentsFolder);
 const scssFolder = path.join(rootFolder, config.appFolder, config.scssFolder);
@@ -93,6 +95,26 @@ function deleteComponent() {
             rl.close();
         }
     );
+}
+
+function publishComponent(customFolder = '', fileName = 'index.html') {
+    let template = internalServer.renderComponent(componentName, config.useServerRenderingOnPublish);
+    if(customFolder.indexOf('.html') !== -1) {
+        fileName = customFolder;
+    }
+
+    if(!customFolder || customFolder.indexOf('.html') !== -1) {
+        customFolder = '';
+    }
+
+    let outputDir = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, customFolder);
+    let outputPath = path.join(outputDir, fileName);
+
+    if (!fs.existsSync(outputDir)){
+        fs.mkdirSync(outputDir);
+    }
+    _log(`Published html: ${outputDir}/${fileName}`);
+    _writeFile(outputPath, template);
 }
 
 function createScss() {
@@ -211,7 +233,8 @@ function _log(message) {
 
 module.exports = {
     createNewComponent,
-    deleteComponent
+    deleteComponent,
+    publishComponent
 };
 
 /*eslint-enable no-undef*/
