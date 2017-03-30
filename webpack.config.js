@@ -109,12 +109,12 @@ module.exports = [{
             {
                 test: /\.(svg|png|jpe?g|gif)$/,
                 exclude: /fonts/,
-                loader: 'file?name=[path][name].[ext]',
+                loader: 'file-loader?name=[path][name].[ext]',
             },
             {
                 test: /\.(woff|woff2|ttf|eot|otf|svg)$/,
                 exclude: /img/,
-                loader: 'file?name=[path][name].[ext]',
+                loader: 'file-loader?name=[path][name].[ext]',
             },
         ],
     },
