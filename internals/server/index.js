@@ -67,6 +67,14 @@ function renderListing(cb) {
     return template;
 }
 
+function renderStaticServerComponent(componentName) {
+    let componentsPath = path.join(rootFolder, componentPath);
+    let comp = require(componentsPath);
+    let element = React.createElement(comp[componentName], getData(componentName));
+    let renderedComponent = ReactDOMServer.renderToStaticMarkup(element);
+    return renderedComponent;
+}
+
 function renderServerComponent(componentName) {
     let componentsPath = path.join(rootFolder, componentPath);
     let comp = require(componentsPath);
@@ -192,7 +200,8 @@ module.exports = {
     renderListing: renderListing,
     renderComponent: renderComponent,
     components: components,
-    proxy: proxy
+    proxy: proxy,
+    renderStaticServerComponent: renderStaticServerComponent
 };
 
 /* eslint-enable no-undef, no-unused-vars */
