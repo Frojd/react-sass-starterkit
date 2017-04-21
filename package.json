@@ -12,6 +12,7 @@
     "publish:prod": "webpack -p && node bin/cli.js publish",
     "publish:only": "node bin/cli.js publish",
     "publish:all": "webpack && node bin/cli.js publishAll",
+    "publish:snippet": "webpack && node bin/cli.js publishSnippet",
     "start": "node bin/server.js",
     "test": "mocha internals/test/.setup-test.js app/**/*.test.js",
     "test:single": "mocha internals/test/.setup-test.js",

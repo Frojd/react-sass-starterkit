@@ -98,20 +98,28 @@ function deleteComponent() {
     );
 }
 
-function publishAllComponents() {
+function publishAllComponents(snippet) {
     let dirs = getDirectories(componentsFolder);
-    dirs.map((dir) => {
-        publishComponent(dir, 'index.html', dir);
-        let scssPath = path.join(componentsFolder, dir, `${dir}.scss`);
-        let scssFile = fs.readFileSync(scssPath, 'utf8');
-        let scssOutput = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, dir, `${dir}.scss`);
-        _writeFile(scssOutput, scssFile);
+    if(snippet) {
+        return createComponentFiles(snippet);
+    }
 
-        let staticComponent = internalServer.renderStaticServerComponent(dir);
-        let compOutput = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, dir, `${dir}.html`);
-        staticComponent = beautify(staticComponent);
-        _writeFile(compOutput, staticComponent);
+    dirs.map((dir) => {
+        createComponentFiles(dir);
     });
+}
+
+function createComponentFiles(dir) {
+    publishComponent(dir, 'index.html', dir);
+    let scssPath = path.join(componentsFolder, dir, `${dir}.scss`);
+    let scssFile = fs.readFileSync(scssPath, 'utf8');
+    let scssOutput = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, dir, `${dir}.scss`);
+    _writeFile(scssOutput, scssFile);
+
+    let staticComponent = internalServer.renderStaticServerComponent(dir);
+    let compOutput = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, dir, `${dir}.html`);
+    staticComponent = beautify(staticComponent);
+    _writeFile(compOutput, staticComponent);
 }
 
 function publishComponent(customFolder = '', fileName = 'index.html', component = componentName) {
@@ -258,7 +266,8 @@ module.exports = {
     createNewComponent,
     deleteComponent,
     publishComponent,
-    publishAllComponents
+    publishAllComponents,
+    createComponentFiles
 };
 
 /*eslint-enable no-undef*/
