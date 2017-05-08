@@ -9,7 +9,8 @@ require('babel-register')({
         }
         ],
         "react"
-    ]
+    ],
+    "plugins": ["transform-class-properties"]
 });
 
 var jsdom = require('jsdom').jsdom;
