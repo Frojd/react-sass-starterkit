@@ -70,6 +70,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5"
   }
 }
