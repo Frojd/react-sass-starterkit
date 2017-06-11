@@ -61,9 +61,7 @@
     "mocha": "^3.4.2",
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.5",
-    "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",
-    "react-dom": "^15.4.2",
     "sass-loader": "^6.0.5",
     "style-loader": "^0.18.2",
     "webpack": "^2.6.1",
@@ -71,6 +69,8 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
-    "classnames": "^2.2.5"
+    "classnames": "^2.2.5",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
   }
 }
