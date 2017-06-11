@@ -25,6 +25,15 @@ const cli = (args) => {
         }
         console.error('Need a componentname when publishing a component');
         break;
+    case 'publishAll':
+        internalCli.publishAllComponents();
+        break;
+    case 'publishSnippet':
+        if(args[3]) {
+            return internalCli.createComponentFiles(args[3]);
+        }
+        console.error('Need a componentname when publishing a component');
+        break;
     default:
         console.warn('Not a valid argument');
     }

@@ -7,6 +7,7 @@
 const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
+const beautify = require('js-beautify').html
 
 const internalServer = require('../server');
 const config = require('../config')();
@@ -15,7 +16,7 @@ const rootFolder = process.cwd();
 const componentsFolder = path.join(rootFolder, config.appFolder, config.componentsFolder);
 const scssFolder = path.join(rootFolder, config.appFolder, config.scssFolder);
 const templatePath = path.join(rootFolder, config.rootCliTemplatePath);
-const componentName = config.componentName;
+const componentName = config.componentName || '';
 const folderPath = path.join(componentsFolder, componentName);
 let files;
 
@@ -97,8 +98,32 @@ function deleteComponent() {
     );
 }
 
-function publishComponent(customFolder = '', fileName = 'index.html') {
-    let template = internalServer.renderComponent(componentName, config.useServerRenderingOnPublish);
+function publishAllComponents(snippet) {
+    let dirs = getDirectories(componentsFolder);
+    if(snippet) {
+        return createComponentFiles(snippet);
+    }
+
+    dirs.map((dir) => {
+        createComponentFiles(dir);
+    });
+}
+
+function createComponentFiles(dir) {
+    publishComponent(dir, 'index.html', dir);
+    let scssPath = path.join(componentsFolder, dir, `${dir}.scss`);
+    let scssFile = fs.readFileSync(scssPath, 'utf8');
+    let scssOutput = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, dir, `${dir}.scss`);
+    _writeFile(scssOutput, scssFile);
+
+    let staticComponent = internalServer.renderStaticServerComponent(dir);
+    let compOutput = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, dir, `${dir}.html`);
+    staticComponent = beautify(staticComponent);
+    _writeFile(compOutput, staticComponent);
+}
+
+function publishComponent(customFolder = '', fileName = 'index.html', component = componentName) {
+    let template = internalServer.renderComponent(component, config.useServerRenderingOnPublish);
     if(customFolder.indexOf('.html') !== -1) {
         fileName = customFolder;
     }
@@ -231,10 +256,18 @@ function _log(message) {
     console.log(message);
 }
 
+function getDirectories(srcPath) {
+    return fs.readdirSync(srcPath).filter(function(file) {
+        return fs.statSync(srcPath + '/' + file).isDirectory();
+    });
+}
+
 module.exports = {
     createNewComponent,
     deleteComponent,
-    publishComponent
+    publishComponent,
+    publishAllComponents,
+    createComponentFiles
 };
 
 /*eslint-enable no-undef*/
