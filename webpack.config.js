@@ -100,9 +100,20 @@ module.exports = [{
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
-                        'css-loader',
-                        'postcss-loader',
-                        'sass-loader'
+                        {
+                            loader: 'css-loader',
+                            options: { sourceMap: true, importLoaders: true, }
+                        },
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                sourceMap: 'inline'
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: { sourceMap: true }
+                        },
                     ]
                 })
             },
@@ -123,8 +134,7 @@ module.exports = [{
             filename: 'index.css',
             disable: false,
             allChunks: true,
-        }),
-
+        })
     ],
 }
 ];
