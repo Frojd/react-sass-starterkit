@@ -17,7 +17,8 @@ require('babel-register')({
         }
     ],
         'react'
-    ]
+    ],
+    'plugins': ['transform-class-properties']
 });
 
 const ReactDOMServer = require('react-dom/server')
