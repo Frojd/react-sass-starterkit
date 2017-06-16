@@ -19,6 +19,7 @@ const server = new webpackDevServer(webpack(internalServer.webpackConf(process.a
         version: false,
         hash: false,
     },
+    disableHostCheck: true,
     proxy: internalServer.proxy(process.argv),
     publicPath: config.publicPath,
 });
