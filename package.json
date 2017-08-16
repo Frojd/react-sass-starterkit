@@ -58,7 +58,7 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
     "js-beautify": "^1.6.14",
-    "jsdom": "^11.1.0",
+    "jsdom": "^9.12.0",
     "mocha": "^3.5.0",
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.6",
