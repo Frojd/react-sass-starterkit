@@ -27,7 +27,7 @@ module.exports = [{
     output: {
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
         filename: '[name].js',
-        publicPath: staticPath,
+        publicPath: path.join(staticPath, config.outputPathJsFolder),
     },
     module: {
         rules: [
@@ -57,6 +57,7 @@ module.exports = [{
     output: {
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
         filename: 'vendor.js',
+        publicPath: path.join(staticPath, config.outputPathJsFolder),
     },
     module: {
         rules: [
@@ -92,6 +93,7 @@ module.exports = [{
     output: {
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathCssFolder),
         filename: 'index.css',
+        publicPath: path.join(staticPath, config.outputPathCssFolder),
     },
     module: {
         rules: [
