@@ -16,6 +16,7 @@
     "start": "node bin/server.js",
     "test": "mocha internals/test/.setup-test.js app/**/*.test.js",
     "test:single": "mocha internals/test/.setup-test.js",
+    "test:watch": "mocha -w internals/test/.setup-test.js app/**/*.test.js",
     "watch": "webpack --watch"
   },
   "repository": {
