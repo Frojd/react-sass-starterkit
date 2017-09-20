@@ -1,17 +1,4 @@
-require('babel-register')({
-    "presets": [[
-        "env",
-        {
-            "targets": {
-                "browsers": ["last 2 versions", "safari >= 7", "ie >= 10"]
-            },
-            "modules": "commonjs"
-        }
-        ],
-        "react"
-    ],
-    "plugins": ["transform-class-properties", "transform-object-rest-spread"]
-});
+const config = require('../config')();
 
 var jsdom = require('jsdom').jsdom;
 

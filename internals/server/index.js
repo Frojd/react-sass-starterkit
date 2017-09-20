@@ -6,20 +6,6 @@
 
 const fs = require('fs');
 const path = require('path');
-require('babel-register')({
-    'presets': [[
-        'env',
-        {
-            'targets': {
-                'browsers': ['last 2 versions', 'safari >= 7', 'ie >= 10']
-            },
-            'modules': 'commonjs'
-        }
-    ],
-        'react'
-    ],
-    'plugins': ['transform-class-properties', 'transform-object-rest-spread']
-});
 
 const ReactDOMServer = require('react-dom/server')
 const React = require('react');
