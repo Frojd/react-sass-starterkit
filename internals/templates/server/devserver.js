@@ -1,19 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let stylesheet = getParameterByName('site') || 'Medborgarskolan'
-    let oldHref = document.getElementById('stylesheet').href;
-    let hrefSplit = oldHref.split('/');
-    let oldStyle = hrefSplit[hrefSplit.length-1];
-    let newStyle = oldHref.replace(oldStyle, stylesheet + '.css')
-    document.getElementById('stylesheet').href = newStyle;
+    // let stylesheet = getParameterByName('site') || 'Medborgarskolan'
+    // let oldHref = document.getElementById('stylesheet').href;
+    // let hrefSplit = oldHref.split('/');
+    // let oldStyle = hrefSplit[hrefSplit.length-1];
+    // let newStyle = oldHref.replace(oldStyle, stylesheet + '.css')
+    // document.getElementById('stylesheet').href = newStyle;
 
-    let sel = document.getElementById('themeselect');
-    let opts = sel.options;
-    for (let opt, j = 0; opt = opts[j]; j++) {
-        if (opt.value === stylesheet) {
-            sel.selectedIndex = j;
-            break;
-        }
-    }
+    // let sel = document.getElementById('themeselect');
+    // let opts = sel.options;
+    // for (let opt, j = 0; opt = opts[j]; j++) {
+    //     if (opt.value === stylesheet) {
+    //         sel.selectedIndex = j;
+    //         break;
+    //     }
+    // }
 });
 
 function getParameterByName(name, url) {

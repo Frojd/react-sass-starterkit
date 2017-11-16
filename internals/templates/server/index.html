@@ -9,14 +9,32 @@
 
         <script src="${path.posix.join(publicPath, config.outputPathJsFolder)}/vendor.js"></script>
         <script src="${path.posix.join(publicPath, config.outputPathJsFolder)}/index.js"></script>
+        <link rel="stylesheet" href="/devserver.css">
         <link rel="stylesheet" href="${path.posix.join(publicPath, config.outputPathCssFolder)}/index.css">
     </head>
-    <body>
-        <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-
+    <body onload="document.documentElement.classList.remove('no-js');">
+        <div class="devserver">
+            <form class='devserver__themeform'>
+                <a href='/' class='devserver__backlink'>Back to listing</a>
+                
+                <select
+                    class='devserver__themeselect'
+                    name='componentName'
+                    onChange='this.form.submit();'
+                    >
+                    <option disabled>Välj komponent</option>
+                    ${
+                        components.map((comp) => {
+                            let selected = componentName === comp ? "selected" : "";
+                            return "<option "+selected+">" + comp + "</option>";
+                        })
+                    }
+                </select>
+            </form>
+        </div>
         <!-- content -->
         <!-- react-render -->
+
+        <script src="/devserver.js"></script>
     </body>
 </html>

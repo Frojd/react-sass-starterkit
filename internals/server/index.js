@@ -23,7 +23,11 @@ const componentPath = path.join(config.appFolder, config.componentsFolder);
 const context = config.context;
 const components = getDirectories(path.join(rootFolder, componentPath));
 
-function renderComponent(componentName, useServerRendering = config.useServerRendering, cb) {
+function renderComponent(componentName, useServerRendering = config.useServerRendering, req, cb) {
+    if(req) {
+        componentName = req.query.componentName || componentName;
+    }
+
     let index = getIndexTemplate(componentName);
     let snippet = getSnippet(componentName);
     let render = getRender(componentName);

@@ -3,7 +3,8 @@
  */
 
 /* eslint-disable no-undef, no-unused-vars */
-
+const fs = require('fs');
+const path = require('path')
 const webpack = require('webpack');
 const webpackDevServer = require('webpack-dev-server');
 
@@ -25,6 +26,24 @@ const server = new webpackDevServer(webpack(internalServer.webpackConf(process.a
 });
 
 function paths(app) {
+    // Dev js
+    app.get('/devserver.js', (req, res) => {
+        const rootFolder = process.cwd();
+        const rootTemplatePath = config.rootServerTemplatePath;
+        const devJs = fs.readFileSync(`${path.posix.join(rootFolder, rootTemplatePath)}/devserver.js`)
+        res.setHeader('Content-Type', 'text/javascript');
+        res.end(devJs)
+    });
+
+    // Dev css
+    app.get('/devserver.css', (req, res) => {
+        const rootFolder = process.cwd();
+        const rootTemplatePath = config.rootServerTemplatePath;
+        const devCss = fs.readFileSync(`${path.posix.join(rootFolder, rootTemplatePath)}/devserver.css`)
+        res.setHeader('Content-Type', 'text/css');
+        res.end(devCss)
+    });
+
     // Root
     app.get(config.publicPathPrefix, (req, res) => {
         res.end(internalServer.renderListing())
@@ -32,7 +51,13 @@ function paths(app) {
 
     // Components
     app.get(internalServer.components.map((component) => `${config.publicPathPrefix}${component}`), (req, res) => {
-        res.end(internalServer.renderComponent(req.path.replace(config.publicPathPrefix, '')))
+        res.end(
+            internalServer.renderComponent(
+                req.path.replace(config.publicPathPrefix, ''),
+                config.useServerRendering, 
+                req
+            )
+        )
     });
 }
 
