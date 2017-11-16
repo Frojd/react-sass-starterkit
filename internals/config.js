@@ -43,6 +43,9 @@ const config = (argv = process.argv) => {
         if(argv[3]) {
             defaultConf.componentName = argv[3];
         }
+        if(argv[4]) {
+            defaultConf.subComponentName = argv[4];
+        }
     }
 
     if(argv.indexOf('proxy') !== -1) {
