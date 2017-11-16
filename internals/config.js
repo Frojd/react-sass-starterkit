@@ -17,9 +17,13 @@ require('babel-register')({
             'modules': 'commonjs'
         }
     ],
-        'react'
+    'react'
     ],
-    'plugins': ['transform-class-properties', 'transform-object-rest-spread']
+    'plugins': [
+        'transform-class-properties', 
+        'transform-object-rest-spread',
+        'inline-react-svg'
+    ]
 });
 
 const config = (argv = process.argv) => {

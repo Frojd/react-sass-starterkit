@@ -11,7 +11,7 @@ const internalServer = require('../internals/server');
 const config = require('../internals/config.js')();
 
 const server = new webpackDevServer(webpack(internalServer.webpackConf(process.argv)), {
-    setup: paths,
+    before: paths,
     headers: { 'Access-Control-Allow-Origin': '*' },
     stats: {
         colors: true,

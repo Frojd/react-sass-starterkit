@@ -34,7 +34,11 @@ module.exports = [{
             {
                 test: /\.js$/,
                 enforce: 'pre',
-                loader: 'eslint-loader'
+                loader: 'eslint-loader',
+                options: {
+                    failOnWarning: false,
+                    failOnError: false
+                }
             },
             {
                 test: /\.js$/,
@@ -76,6 +80,10 @@ module.exports = [{
             },
             {
                 from: 'fonts/**',
+                to: path.posix.join(outputPath, config.outputPathSubFolder)
+            },
+            {
+                from: 'favicons/**',
                 to: path.posix.join(outputPath, config.outputPathSubFolder)
             }
         ]),
