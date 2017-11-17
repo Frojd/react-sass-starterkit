@@ -19,6 +19,8 @@ const server = new webpackDevServer(webpack(internalServer.webpackConf(process.a
         chunks: false,
         version: false,
         hash: false,
+        cached: false,
+        moduleTrace: false
     },
     disableHostCheck: true,
     proxy: internalServer.proxy(process.argv),

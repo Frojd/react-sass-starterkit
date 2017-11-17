@@ -5,7 +5,7 @@
 /*eslint-disable no-undef*/
 
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const readline = require('readline');
 const beautify = require('js-beautify').html
 
@@ -137,7 +137,7 @@ function createComponentFiles(dir) {
     publishComponent(dir, 'index.html', dir);
 
     let staticComponent = internalServer.renderStaticServerComponent(dir);
-    let compOutput = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, dir, `${dir}.html`);
+    let compOutput = path.join(config.outputPathHtmlFolder, dir, `${dir}.html`);
     staticComponent = beautify(staticComponent);
     _writeFile(compOutput, staticComponent);
 }
