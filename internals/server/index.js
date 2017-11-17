@@ -6,20 +6,6 @@
 
 const fs = require('fs');
 const path = require('path');
-require('babel-register')({
-    'presets': [[
-        'env',
-        {
-            'targets': {
-                'browsers': ['last 2 versions', 'safari >= 7', 'ie >= 10']
-            },
-            'modules': 'commonjs'
-        }
-    ],
-        'react'
-    ],
-    'plugins': ['transform-class-properties', 'transform-object-rest-spread']
-});
 
 const ReactDOMServer = require('react-dom/server')
 const React = require('react');
@@ -37,7 +23,11 @@ const componentPath = path.join(config.appFolder, config.componentsFolder);
 const context = config.context;
 const components = getDirectories(path.join(rootFolder, componentPath));
 
-function renderComponent(componentName, useServerRendering = config.useServerRendering, cb) {
+function renderComponent(componentName, useServerRendering = config.useServerRendering, req, cb) {
+    if(req) {
+        componentName = req.query.componentName || componentName;
+    }
+
     let index = getIndexTemplate(componentName);
     let snippet = getSnippet(componentName);
     let render = getRender(componentName);

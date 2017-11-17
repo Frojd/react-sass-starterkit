@@ -1,33 +1,30 @@
-require('babel-register')({
-    "presets": [[
-        "env",
-        {
-            "targets": {
-                "browsers": ["last 2 versions", "safari >= 7", "ie >= 10"]
-            },
-            "modules": "commonjs"
-        }
-        ],
-        "react"
-    ],
-    "plugins": ["transform-class-properties", "transform-object-rest-spread"]
+const config = require('../config')();
+
+// setup file
+const Enzyme = require('enzyme');
+const Adapter = require('enzyme-adapter-react-16');
+
+Enzyme.configure({ adapter: new Adapter() });
+
+const { JSDOM } = require('jsdom');
+
+const jsdom = new JSDOM('<!doctype html><html><body></body></html>');
+const { window } = jsdom;
+
+window.matchMedia = window.matchMedia || (() => {
+    return { matches: false, addListener: () => {}, removeListener: () => {}, };
 });
 
-var jsdom = require('jsdom').jsdom;
+function copyProps(src, target) {
+    const props = Object.getOwnPropertyNames(src)
+        .filter(prop => typeof target[prop] === 'undefined')
+        .map(prop => Object.getOwnPropertyDescriptor(src, prop));
+    Object.defineProperties(target, props);
+}
 
-var exposedProperties = ['window', 'navigator', 'document'];
-
-global.document = jsdom('');
-global.window = document.defaultView;
-Object.keys(document.defaultView).forEach((property) => {
-  if (typeof global[property] === 'undefined') {
-    exposedProperties.push(property);
-    global[property] = document.defaultView[property];
-  }
-});
-
+global.window = window;
+global.document = window.document;
 global.navigator = {
-  userAgent: 'node.js'
+  userAgent: 'node.js',
 };
-
-documentRef = document;
+copyProps(window, global);

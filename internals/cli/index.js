@@ -5,7 +5,7 @@
 /*eslint-disable no-undef*/
 
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const readline = require('readline');
 const beautify = require('js-beautify').html
 
@@ -16,8 +16,15 @@ const rootFolder = process.cwd();
 const componentsFolder = path.join(rootFolder, config.appFolder, config.componentsFolder);
 const scssFolder = path.join(rootFolder, config.appFolder, config.scssFolder);
 const templatePath = path.join(rootFolder, config.rootCliTemplatePath);
-const componentName = config.componentName || '';
-const folderPath = path.join(componentsFolder, componentName);
+let componentName = config.subComponentName || config.componentName || '';
+const subComponentName = config.subComponentName || '';
+let folderPath = path.join(componentsFolder, config.componentName || '');
+let utilsPath = '../../../internals/utils';
+if(subComponentName) {
+    folderPath = path.join(componentsFolder, config.componentName, subComponentName);
+    componentName = subComponentName;
+    utilsPath = '../../../../internals/utils';
+}
 let files;
 
 function createNewComponent() {
@@ -56,7 +63,7 @@ function createNewComponent() {
             createScss();
         }
 
-        if(config.updateIndexJs) {
+        if(config.updateIndexJs && !subComponentName) {
             updateIndexJs();
         }
 
@@ -107,23 +114,40 @@ function publishAllComponents(snippet) {
     dirs.map((dir) => {
         createComponentFiles(dir);
     });
+
+    let staticList = internalServer.renderListing();
+    let indexOutput = path.join(config.outputPathHtmlFolder, `index.html`);
+    _writeFile(indexOutput, staticList);
+
+    //const rootFolder = process.cwd();
+    const rootTemplatePath = config.rootServerTemplatePath;
+    const devJsPath = `${path.posix.join(rootFolder, rootTemplatePath)}/devserver.js`;
+    const devJsOutputPath = path.join(config.outputPathHtmlFolder, `devserver.js`);
+    const devJs = fs.readFileSync(devJsPath);
+    const devCssPath = `${path.posix.join(rootFolder, rootTemplatePath)}/devserver.css`;
+    const devCssOutputPath = path.join(config.outputPathHtmlFolder, `devserver.css`);
+    const devCss = fs.readFileSync(devCssPath);
+    _writeFile(devJsOutputPath, devJs);
+    _writeFile(devCssOutputPath, devCss);
+    const statics = path.join(rootFolder, config.outputPath, config.outputPathSubFolder);
+    fs.copySync(statics, path.join(config.outputPathHtmlFolder, config.publicPath))
 }
 
 function createComponentFiles(dir) {
     publishComponent(dir, 'index.html', dir);
-    let scssPath = path.join(componentsFolder, dir, `${dir}.scss`);
-    let scssFile = fs.readFileSync(scssPath, 'utf8');
-    let scssOutput = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, dir, `${dir}.scss`);
-    _writeFile(scssOutput, scssFile);
 
     let staticComponent = internalServer.renderStaticServerComponent(dir);
-    let compOutput = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, dir, `${dir}.html`);
+    let compOutput = path.join(config.outputPathHtmlFolder, dir, `${dir}.html`);
     staticComponent = beautify(staticComponent);
     _writeFile(compOutput, staticComponent);
 }
 
 function publishComponent(customFolder = '', fileName = 'index.html', component = componentName) {
-    let template = internalServer.renderComponent(component, config.useServerRenderingOnPublish);
+    let template = internalServer.renderComponent(
+        component, 
+        config.useServerRenderingOnPublish
+    );
+
     if(customFolder.indexOf('.html') !== -1) {
         fileName = customFolder;
     }
@@ -132,12 +156,18 @@ function publishComponent(customFolder = '', fileName = 'index.html', component 
         customFolder = '';
     }
 
-    let outputDir = path.join(rootFolder, config.outputPath, config.outputPathHtmlFolder, customFolder);
+    let outputDirBase = path.join(config.outputPathHtmlFolder);
+    if (!fs.existsSync(outputDirBase)){
+        fs.mkdirSync(outputDirBase);
+    }
+
+    let outputDir = path.join(outputDirBase, customFolder);
     let outputPath = path.join(outputDir, fileName);
 
     if (!fs.existsSync(outputDir)){
         fs.mkdirSync(outputDir);
     }
+
     _log(`Published html: ${outputDir}/${fileName}`);
     _writeFile(outputPath, template);
 }
@@ -209,7 +239,10 @@ function updateIndexJs(remove = false) {
 function updateIndexScss(remove = false) {
     let filePath = path.join(scssFolder, 'index.scss')
     let index = fs.readFileSync(filePath, 'utf8');
-    const importString = `@import '../${config.componentsFolder}/${componentName}/${componentName}';
+    let filePathFolder = path.join(scssFolder);
+    let compPath = path.relative(filePathFolder, folderPath);
+    compPath = compPath.replace(/\\/g, '/');
+    const importString = `@import '${compPath}/${componentName}';
 `;
 
     if(remove) {

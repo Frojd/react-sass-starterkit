@@ -5,7 +5,7 @@
     "outputPathSubFolder": "static",
     "outputPathJsFolder": "js",
     "outputPathCssFolder": "css",
-    "outputPathHtmlFolder": "",
+    "outputPathHtmlFolder": "dist/html", // from process.cwd(), ie root folder of frontend
     "webpackConfig": "./webpack.config.js",
     "appFolder": "app",
     "componentsFolder": "components",

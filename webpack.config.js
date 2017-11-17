@@ -27,14 +27,18 @@ module.exports = [{
     output: {
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
         filename: '[name].js',
-        publicPath: path.join(staticPath, config.outputPathJsFolder),
+        publicPath: path.posix.join(staticPath, config.outputPathJsFolder),
     },
     module: {
         rules: [
             {
                 test: /\.js$/,
                 enforce: 'pre',
-                loader: 'eslint-loader'
+                loader: 'eslint-loader',
+                options: {
+                    failOnWarning: false,
+                    failOnError: false
+                }
             },
             {
                 test: /\.js$/,
@@ -57,7 +61,7 @@ module.exports = [{
     output: {
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
         filename: 'vendor.js',
-        publicPath: path.join(staticPath, config.outputPathJsFolder),
+        publicPath: path.posix.join(staticPath, config.outputPathJsFolder),
     },
     module: {
         rules: [
@@ -72,11 +76,15 @@ module.exports = [{
         new CopyWebpackPlugin([
             {
                 from: 'img/**',
-                to: path.join(outputPath, config.outputPathSubFolder)
+                to: path.posix.join(outputPath, config.outputPathSubFolder)
             },
             {
                 from: 'fonts/**',
-                to: path.join(outputPath, config.outputPathSubFolder)
+                to: path.posix.join(outputPath, config.outputPathSubFolder)
+            },
+            {
+                from: 'favicons/**',
+                to: path.posix.join(outputPath, config.outputPathSubFolder)
             }
         ]),
     ],
@@ -93,7 +101,7 @@ module.exports = [{
     output: {
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathCssFolder),
         filename: 'index.css',
-        publicPath: path.join(staticPath, config.outputPathCssFolder),
+        publicPath: path.posix.join(staticPath, config.outputPathCssFolder),
     },
     module: {
         rules: [

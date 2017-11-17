@@ -7,6 +7,25 @@
 const fs = require('fs');
 const path = require('path');
 
+require('babel-register')({
+    'presets': [[
+        'env',
+        {
+            'targets': {
+                'browsers': ['last 2 versions', 'safari >= 7', 'ie >= 10']
+            },
+            'modules': 'commonjs'
+        }
+    ],
+    'react'
+    ],
+    'plugins': [
+        'transform-class-properties', 
+        'transform-object-rest-spread',
+        'inline-react-svg'
+    ]
+});
+
 const config = (argv = process.argv) => {
     let rcfile = path.join(__dirname, '/.frontendrc');
     let defaultConf = eval('(' + fs.readFileSync(rcfile, 'utf8') + ')');
@@ -23,6 +42,9 @@ const config = (argv = process.argv) => {
     } else {
         if(argv[3]) {
             defaultConf.componentName = argv[3];
+        }
+        if(argv[4]) {
+            defaultConf.subComponentName = argv[4];
         }
     }
 
