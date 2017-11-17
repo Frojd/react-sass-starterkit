@@ -1,6 +1,6 @@
 {
   "name": "react-sass-starterkit",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Frontend setup for react with sass and webpack",
   "private": true,
   "scripts": {
