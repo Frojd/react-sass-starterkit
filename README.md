@@ -36,6 +36,12 @@ Delete a component that have been created with the cli
 
 index.scss and index.js will be automatically updated when adding a component through the cli.
 
+Subcomponents can be created as well:
+
+    npm run new ComponentName SubComponentName
+
+This will create a new component inside the first component
+
 ## Devserver
 
 Use the devserver to look at your components. It is a modified version of webpack-dev-server.
@@ -124,6 +130,12 @@ To only create the html file without running the taskrunner for assets, use publ
 
 This will only create the html file without any building of assets.
 
+You can also publish all components, to work the same as the devserver:
+
+    npm run publish:all
+
+The html files will default to the "outputPathHtmlFolder" setting
+
 ## .frontendrc and overrides ##
 
 The recommended way to change settings is by overriding the .frontendrc file that exists in internals folder.
@@ -140,7 +152,7 @@ Current settings are:
     "outputPathSubFolder": "static", // Subfolder where the files will be placed in output path 
     "outputPathJsFolder": "js", // Folder for javascript
     "outputPathCssFolder": "css", // Folder for css
-    "outputPathHtmlFolder": "", // Folder for html (empty will place in root)
+    "outputPathHtmlFolder": "dist/html", // Folder for html (empty will place in root)
     "webpackConfig": "./webpack.config.js", // Config used
     "appFolder": "app", // Foldername for the application
     "componentsFolder": "components", // Foldername where components will be created
@@ -273,9 +285,15 @@ require('expose-loader?jQuery!jquery');
 require('script-loader!jquery.flipster');  // Example plugin
 ```
 
-### Serverside rendering gets errors ###
+### Serverside rendering ###
 
-The serverside rendering is using it's own babel configuration, so you might need to add plugins twice to make it work currently. The configuration is found in internals/server/index.js
+There is support to compile out the components with babel only:
+
+    npm run ssr
+    npm run ssr:watch
+
+These components can with ease be used together with for example [Hastur](https://github.com/Frojd/Hastur) to create serverside rendering for your project.
+
 
 #### window is not defined ####
 
