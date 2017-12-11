@@ -117,7 +117,12 @@ module.exports = [{
                         {
                             loader: 'postcss-loader',
                             options: {
-                                sourceMap: 'inline'
+															sourceMap: 'inline',
+															indent: 'postcss',
+															plugins: () => [
+																require('autoprefixer')({
+																})
+															]
                             }
                         },
                         {
