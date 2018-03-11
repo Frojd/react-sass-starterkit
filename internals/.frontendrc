@@ -9,8 +9,6 @@
     "webpackConfig": "./webpack.config.js",
     "appFolder": "app",
     "componentsFolder": "components",
-    "containerId": "root",
-    "useServerRendering": false,
     "useServerRenderingOnPublish": true,
 
     // Server
@@ -23,12 +21,12 @@
     "rootCliTemplatePath": "/internals/templates/cli/",
     "scssFolder": "scss",
     "createScss": true,
-    "createHtml": false,
     "createClass": true,
     "createPure": false,
     "createIndex": true,
     "createData": true,
     "createTest": true,
     "updateIndexScss": true,
-    "updateIndexJs": true
+    "updateIndexJs": true,
+    "rootFolder": "./"
 }

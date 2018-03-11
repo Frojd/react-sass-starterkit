@@ -11,13 +11,15 @@ const beautify = require('js-beautify').html
 
 const internalServer = require('../server');
 const config = require('../config')();
-
+console.log('ett')
 const rootFolder = process.cwd();
 const componentsFolder = path.join(rootFolder, config.appFolder, config.componentsFolder);
 const scssFolder = path.join(rootFolder, config.appFolder, config.scssFolder);
 const templatePath = path.join(rootFolder, config.rootCliTemplatePath);
 let componentName = config.subComponentName || config.componentName || '';
+console.log('tva')
 const subComponentName = config.subComponentName || '';
+console.log('tre')
 let folderPath = path.join(componentsFolder, config.componentName || '');
 let utilsPath = '../../../internals/utils';
 if(subComponentName) {

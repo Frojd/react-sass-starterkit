@@ -16,7 +16,6 @@ const getData = require('../utils').getData;
 const rootFolder = process.cwd();
 const rootTemplatePath = config.rootServerTemplatePath;
 const publicPath = config.publicPath;
-const containerId = config.containerId;
 const port = config.port;
 const publicPathPrefix = config.publicPathPrefix;
 const componentPath = path.join(config.appFolder, config.componentsFolder);

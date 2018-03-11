@@ -2,9 +2,9 @@
  * ${componentName}
  */
 
-import React from 'react';
+import React, {PureComponent} from 'react';
 
-class ${componentName} extends React.PureComponent {
+class ${componentName} extends PureComponent {
     render() {
         return (
             <div className="${componentName}">

@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 const path = require('path');
 
 const config = require('./internals/config.js')();
@@ -15,12 +16,15 @@ const staticPath = config.publicPath;
 // Root app directory
 const context = path.join(__dirname, config.appFolder);
 
+
 module.exports = [{
     name: 'js',
     devtool: 'source-map',
     context: context,
     entry: {
         index: [
+            'babel-polyfill',
+            'react-hot-loader/patch',
             './index.js',
         ],
     },
@@ -28,6 +32,8 @@ module.exports = [{
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
         filename: '[name].js',
         publicPath: path.posix.join(staticPath, config.outputPathJsFolder),
+        hotUpdateChunkFilename: 'hot/hot-update.js',
+        hotUpdateMainFilename: 'hot/hot-update.json'
     },
     module: {
         rules: [
@@ -51,6 +57,11 @@ module.exports = [{
         'react': 'React',
         'react-dom': 'ReactDOM',
     },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"production"'
+        }),
+    ]
 },
 {
     name: 'vendor',
