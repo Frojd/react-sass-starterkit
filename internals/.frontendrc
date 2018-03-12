@@ -9,6 +9,7 @@
     "webpackConfig": "./webpack.config.js",
     "appFolder": "app",
     "componentsFolder": "components",
+    "containersFolder": "containers",
     "useServerRenderingOnPublish": true,
 
     // Server

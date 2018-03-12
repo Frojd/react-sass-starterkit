@@ -29,12 +29,12 @@ program
         if(options.appendIndex) {overrides.updateIndexJs = false;}
         if(options.appendScss) {overrides.updateIndexScss = false;}
         if(options.componentsFolder) {overrides.componentsFolder = options.componentsFolder}
-
+        
         if(subComponents.length) {
             overrides.updateIndexScss = false;
             overrides.updateIndexJs = false;
         }
-        
+        console.log(overrides)
         const config = require('../internals/config.js')(overrides);
         const rootFolder = path.join(
             config.rootFolder, 
@@ -57,6 +57,7 @@ program
     });
 
 program.command('delete <componentName> [subComponent...]')
+    .option('-C, --componentsFolder <cFolder>', 'Change components folder')
     .action((component, subComponents, options) => {
         //console.log(options.class, options.scss, options.test, options);
         let overrides = {}

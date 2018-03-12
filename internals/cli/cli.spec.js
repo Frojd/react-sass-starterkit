@@ -1,4 +1,4 @@
-/* global beforeAll */
+/* global beforeAll afterAll */
 
 import path from 'path';
 import fs from 'fs-extra';
@@ -17,6 +17,11 @@ const rootFolder = path.join(
     config.appFolder, 
     config.componentsFolder
 )
+const containerFolder = path.join(
+    config.rootFolder, 
+    config.appFolder, 
+    config.containersFolder
+)
 const componentName = 'MainComponent';
 const subComponentName = 'SubComponent';
 
@@ -34,6 +39,7 @@ export {
 };`;
         fs.ensureDirSync(rootFolder);
         fs.ensureDirSync(scssFolder);
+        fs.ensureDirSync(containerFolder);
         fs.writeFileSync(appIndexJs, indexJsContent);
         fs.createFileSync(appIndexScss);
     });

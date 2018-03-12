@@ -3,6 +3,7 @@
     margin:0;
     padding: 0;
     font-size: 14px;
+    font-family: arial;
 }
 
 .devserver__iframe .devserver__backlink,
@@ -74,4 +75,10 @@
 
 .devserver .MobileMenu__Content {
     min-height: calc(100vh - 150px);
+}
+
+.devserver__title {
+    font-size: 22px;
+    font-weight: bold;
+    font-family: arial;
 }

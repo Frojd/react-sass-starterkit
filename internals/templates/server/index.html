@@ -20,7 +20,15 @@
                     name='componentName'
                     onChange='devFormChangeComponent(this);'
                     >
-                    <option disabled>Välj komponent</option>
+                    <option disabled>Choose</option>
+                    <option disabled>-Containers</option>
+                    ${
+                        containers.map((comp) => {
+                            let selected = componentName === comp ? "selected" : "";
+                            return "<option "+selected+">" + comp + "</option>";
+                        })
+                    }
+                    <option disabled>-Components</option>
                     ${
                         components.map((comp) => {
                             let selected = componentName === comp ? "selected" : "";
@@ -32,7 +40,7 @@
         </div>
         
         <!-- content -->
-        
+        <div id="comp"></div>
         <script src="/devserver.js"></script>
         <script src="${path.posix.join(this.config.publicPath, this.config.outputPathJsFolder)}/vendor.js"></script>
         <script src="${path.posix.join(this.config.publicPath, this.config.outputPathJsFolder)}/index.js"></script>

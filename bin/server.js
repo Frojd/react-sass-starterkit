@@ -52,7 +52,7 @@ function paths(app) {
     });
 
     // Components
-    const components = renderer.getComponents();
+    const components = [...renderer.getComponents(), ...renderer.getContainers()];
     app.get(components.map((component) => `${config.publicPathPrefix}${component}`), (req, res) => {
         res.end(
             renderer.renderComponent(

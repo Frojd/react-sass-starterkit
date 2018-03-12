@@ -130,7 +130,10 @@ exports[`Test CLI functions Publish components Should have a component file 1`] 
                     name='componentName'
                     onChange='devFormChangeComponent(this);'
                     >
-                    <option disabled>Välj komponent</option>
+                    <option disabled>Choose</option>
+                    <option disabled>-Containers</option>
+                    
+                    <option disabled>-Components</option>
                     <option selected>MainComponent</option>
                 </select>
             </form>
@@ -138,7 +141,7 @@ exports[`Test CLI functions Publish components Should have a component file 1`] 
         
         <div id=\\"root\\"><!-- content --></div>
 
-        
+        <div id=\\"comp\\"></div>
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>
         <script src=\\"/static/js/index.js\\"></script>
@@ -170,15 +173,21 @@ exports[`Test CLI functions Publish components Should have a listing file 1`] = 
                     name='componentName'
                     onChange='devFormChangeComponent(this);'
                     >
-                    <option disabled>Välj komponent</option>
+                    <option disabled>Choose</option>
+                    <option disabled>-Containers</option>
+                    
+                    <option disabled>-Components</option>
                     <option >MainComponent</option>
                 </select>
             </form>
         </div>
         
+        <h2 class='devserver__title'>Containers</h2>
         <a href=\\"/MainComponent\\">MainComponent</a><br/>
-
+<br />
+        <h2 class='devserver__title'>Components</h2>
         
+        <div id=\\"comp\\"></div>
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>
         <script src=\\"/static/js/index.js\\"></script>

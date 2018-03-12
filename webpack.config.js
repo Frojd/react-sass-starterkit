@@ -24,7 +24,6 @@ module.exports = [{
     entry: {
         index: [
             'babel-polyfill',
-            'react-hot-loader/patch',
             './index.js',
         ],
     },

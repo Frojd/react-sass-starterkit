@@ -24,6 +24,7 @@ class Render {
         const snippet = this.getSnippet();
         const data = JSON.stringify({});
         const components = this.getComponents();
+        const containers = this.getContainers();
         const template = index.replace('<!-- content -->', snippet);
         const evaluatedTemplate = eval('`' + template + '`');
         return evaluatedTemplate;
@@ -35,10 +36,22 @@ class Render {
         const index = this.getIndexTemplate();
         const listingItemTemplate = this.getListItem();
         const components = this.getComponents();
+        const containers = this.getContainers();
         const listing = components.map((componentName) => {
             return eval('`' + listingItemTemplate + '`');
         });
-        const template = index.replace('<!-- content -->', listing.join(''));
+        const componentListing = components.map((componentName) => {
+            return eval('`' + listingItemTemplate + '`');
+        }).join('');
+        const containerListing = containers.map((componentName) => {
+            return eval('`' + listingItemTemplate + '`');
+        }).join('');
+
+        const cmpStr = `<h2 class='devserver__title'>Containers</h2>
+        ${componentListing}<br />
+        <h2 class='devserver__title'>Components</h2>
+        ${containerListing}`;
+        const template = index.replace('<!-- content -->', cmpStr);
         const evaluatedTemplate = eval('`' + template + '`');
         return evaluatedTemplate;
     }
@@ -69,6 +82,7 @@ class Render {
         
         webpackConfig[0].entry.index[indexOfindexJs] = './Container.js';//containerJsPath;
         webpackConfig[0].entry.index.unshift(
+            `react-hot-loader/patch`,
             `webpack-dev-server/client?http://localhost:${this.config.port}/`, 
             `webpack/hot/dev-server`
         );
@@ -103,9 +117,25 @@ class Render {
             this.config.componentsFolder,
         )
         
-        return fs.readdirSync(componentsFolder).filter((file) => {
+        const components = fs.readdirSync(componentsFolder).filter((file) => {
             return fs.statSync(componentsFolder + '/' + file).isDirectory();
         });
+        
+        return components;
+    }
+
+    getContainers() {
+        const containersFolder = path.join(
+            this.config.rootFolder,
+            this.config.appFolder,
+            this.config.containersFolder,
+        )
+
+        const containers = fs.readdirSync(containersFolder).filter((file) => {
+            return fs.statSync(containersFolder + '/' + file).isDirectory();
+        });
+
+        return containers;
     }
 
     getIndexTemplate() {

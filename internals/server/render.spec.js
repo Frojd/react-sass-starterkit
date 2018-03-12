@@ -18,6 +18,11 @@ const rootFolder = path.join(
     config.appFolder, 
     config.componentsFolder
 )
+const containerFolder = path.join(
+    config.rootFolder, 
+    config.appFolder, 
+    config.containersFolder
+)
 const componentName = 'MainComponent';
 
 describe('Test render of a component', () => {
@@ -32,6 +37,7 @@ describe('Test render of a component', () => {
     export {
     };`;
         fs.ensureDirSync(rootFolder);
+        fs.ensureDirSync(containerFolder);
         fs.ensureDirSync(scssFolder);
         fs.writeFileSync(appIndexJs, indexJsContent);
         fs.createFileSync(appIndexScss);

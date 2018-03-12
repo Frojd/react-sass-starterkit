@@ -40,7 +40,13 @@ Subcomponents can be created as well:
 
     npm run new ComponentName SubComponentName
 
-This will create a new component inside the first component
+This will create a new component inside the first component. Subcomponents can be added as many levels down as you need.
+
+Container components:
+
+    npm run new ContainerName -- -C containers
+
+This will add a new component inside the containers folder (and also add the scss file to index.scss)
 
 ## Devserver
 
@@ -51,32 +57,6 @@ Run it like this:
     npm start
 
 And visit your list of components at: [http://localhost:7000](http://localhost:7000)
-
-Options:
-
-Different port (must be first argument after start):
-
-    npm start 4567
-
-### Proxy ###
-
-All requests to the staticPath will go through the webpack devserver, also all components and / will do that as well.
-
-You can start the devserver with proxy with this command (change domain and port to your local devserver):
-
-    npm start proxy http://local.dev:8080
-
-Or by using ip, for instance:
-
-    npm start proxy http://127.0.0.1:8080
-
-By default the components will be served from / when using proxy, so to be able to serve your backendpages instead you should specify a different publicPathPrefix in .frontendrc, then the components will be served from that folder instead and the / will be served from your proxy.
-
-This can also be added through specifying a folder after the proxy address, eg:
-
-    npm start proxy http://local.dev:8080 /components/
-
-And then you can see your components on [http://localhost:7000/components/](http://localhost:7000/components/)
 
 ## Building css/js
 
@@ -98,7 +78,7 @@ For all tests:
 
 For single test:
 
-    npm run test:single app\components\ComponentName\ComponentName.test.js
+    npm run test:custom component.test.js
 
 ## Publishing static files ##
 
@@ -186,69 +166,6 @@ Current settings are:
 Currently all templates can be overridden, they all exists in internals/templates/cli and interal/templates/server
 
 Most of the templates can be overridden by placing a new file in the root folder, else a better way is to copy all templates and then change the rootServerTemplatePath in .frontendrc file
-
-### Base index override ###
-
-You can override the index.html if you want by adding a index.html in the rootfolder (next to webpack.config.js), and it will use that instead of the built in from server, thou if you change the id from container, you will have to edit the server.js as well.
-
-This can be used for a global addition of classes for examples to wrap the container or similar. 
-
-Ex index.html:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>React testing ground</title>
-    <script src="${publicPath}js/vendor.js"></script>
-    <script src="${publicPath}js/index.js"></script>
-    <link rel="stylesheet" href="${publicPath}css/index.css">
-</head>
-<body>
-    <!-- content -->
-    <!-- react-render -->
-</body>
-</html>
-```
-
-### Snippet in component ###
-
-You can override the snippet writing out html if you want by adding a html file in your componentfolder, eg: MyComponent.html
-The div with the id container is required as that is where the component will be rendered.
-
-```html
-<h1>My component extra!</h1>
-<div id="${containerId}"><!-- content --></div>
-```
-
-### Full component override ###
-
-You can also add a index.html file in your component folder, and that file will be used as template. It will have a global variable placed above </head> tag with the data in the json file.
-
-Example index.html inside MyComponent folder:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>React testing ground</title>
-    <script src="${publicPath}js/vendor.js"></script>
-    <script src="${publicPath}js/index.js"></script>
-    <link rel="stylesheet" href="${publicPath}css/index.css">
-</head>
-<body>
-    <h1>My component's own index!</h1>
-    <div id="${containerId}"></div>
-    <script>
-    ReactDOM.render(React.createElement(Components.${componentName}, ${data}), document.getElementById("${containerId}"));
-    </script>
-</body>
-</html>
-```
 
 ## Throubleshooting and support
 
