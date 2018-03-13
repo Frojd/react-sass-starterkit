@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const webpack = require('webpack');
 const path = require('path');
 
 const config = require('./internals/config.js')();
@@ -23,7 +22,6 @@ module.exports = [{
     context: context,
     entry: {
         index: [
-            'babel-polyfill',
             './index.js',
         ],
     },
@@ -38,15 +36,6 @@ module.exports = [{
         rules: [
             {
                 test: /\.js$/,
-                enforce: 'pre',
-                loader: 'eslint-loader',
-                options: {
-                    failOnWarning: false,
-                    failOnError: false
-                }
-            },
-            {
-                test: /\.js$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
             }
@@ -57,16 +46,21 @@ module.exports = [{
         'react-dom': 'ReactDOM',
     },
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"'
-        }),
-    ]
+    ],
+    resolve: {
+        alias: {
+            Components: path.resolve(__dirname, 'app/components/'),
+        }
+    }
 },
 {
     name: 'vendor',
     context: context,
     entry: {
-        vendor: './vendor.js',
+        vendor: [
+            'babel-polyfill',
+            './vendor.js',
+        ]
     },
     output: {
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),

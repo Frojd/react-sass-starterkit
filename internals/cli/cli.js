@@ -3,6 +3,8 @@ const path = require('path');
 const Render = require('../server/render.js');
 const Log = require('../utils').Log;
 
+/* eslint-disable indent */
+
 class Cli {
     constructor(config = {}) {
         this.config = config;

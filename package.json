@@ -7,6 +7,8 @@
     "build": "webpack",
     "build:prod": "webpack -p",
     "delete": "node bin/cli.js delete",
+    "eslint": "eslint app --ignore-pattern *.test.js",
+    "eslint:fix": "eslint app --fix --ignore-pattern *.test.js",
     "multiwatch": "concurrently \"npm run watch\"  \"npm run ssr:watch\" \"npm run start\"",
     "new": "node bin/cli.js new",
     "publish": "webpack && node bin/cli.js publish",
@@ -14,12 +16,12 @@
     "publish:only": "node bin/cli.js publish",
     "publish:all": "webpack && node bin/cli.js publishAll",
     "publish:snippet": "webpack && node bin/cli.js publishSnippet",
-    "ssr": "babel internals --out-dir ./dist/internals --no-babelrc --plugins=transform-class-properties,transform-object-rest-spread,inline-react-svg --presets=react,env",
-    "ssr:watch": "babel app --watch --out-dir ./dist/raw --no-babelrc --plugins=transform-class-properties,transform-object-rest-spread,inline-react-svg --presets=react,env",
+    "ssr": "babel app --out-dir ./dist/raw --copy-files --ignore .test.js,.scss",
+    "ssr:watch": "babel app --watch --out-dir ./dist/raw --copy-files --ignore .test.js,.scss",
     "start": "node bin/server.js",
-    "test": "jest .test",
-    "test:custom": "jest",
-    "test:watch": "jest app --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:internals": "jest --config .\\internals\\test\\jest.config.js",
     "watch": "webpack --watch"
   },
   "repository": {
@@ -34,7 +36,7 @@
     "boilerplate",
     "starterkit",
     "cli",
-    "staticgenerator"
+    "scaffold"
   ],
   "author": "Daniel Karlsson",
   "license": "MIT",
@@ -44,6 +46,13 @@
   "jest": {
     "setupFiles": [
       "./internals/test/setup-test.js"
+    ],
+    "testMatch": [
+      "**/?(*.)(test).js?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
     ]
   },
   "devDependencies": {
@@ -56,6 +65,7 @@
     "babel-plugin-inline-react-svg": "^0.5.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-webpack-alias": "^2.1.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.23.0",
     "babel-register": "^6.24.0",

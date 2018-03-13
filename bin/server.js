@@ -47,16 +47,16 @@ function paths(app) {
     });
 
     // Root
-    app.get(config.publicPathPrefix, (req, res) => {
+    app.get('/', (req, res) => {
         res.end(renderer.renderListing())
     });
 
     // Components
     const components = [...renderer.getComponents(), ...renderer.getContainers()];
-    app.get(components.map((component) => `${config.publicPathPrefix}${component}`), (req, res) => {
+    app.get(components.map((component) => `/${component}`), (req, res) => {
         res.end(
             renderer.renderComponent(
-                req.path.replace(config.publicPathPrefix, ''),
+                req.path.replace('/', ''),
             )
         )
     });

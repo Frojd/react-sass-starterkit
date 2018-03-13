@@ -2,7 +2,7 @@
 
 ## Description
 
-A slim frontend boilerplate for work with react and sass, using webpack as taskrunner and devserver for testing components. It will automatically find new components in the components folder and if you want it will reload changes automatically.
+An opinoated frontend boilerplate for work with react and sass, using webpack as taskrunner and devserver for testing components. It will automatically find new components in the components folder and if you want it will reload changes automatically.
 
 It also includes a small cli for scaffolding new components quickly.
 
@@ -20,7 +20,7 @@ That can be used for serverside rendering in for example reactjs.net
 4. `npm start`
 5. Done!
 
-Visit [http://localhost:7000](http://localhost:7000) and look at the component you just created.
+Visit [http://localhost:7001](http://localhost:7001) and look at the component you just created. It should autoopen when running the start command.
 
 ## CLI
 
@@ -64,6 +64,10 @@ For regular watch:
 
     npm run watch
 
+For a fullscale watch (serverside, testserver, files):
+
+    npm run multiwatch
+
 For a regular build:
 
     npm run build
@@ -74,13 +78,13 @@ For productionbuild
 
 For all tests:
 
-    npm run test
+    npm test
 
 For single test:
 
-    npm run test:custom component.test.js
+    npm test MyComponent
 
-## Publishing static files ##
+## Publishing static files
 
 There is now commands for publishing an index.html file that will use a component and serverrender it (then clientrender on top) for use on example Amazon S3 as a static site. By default it will also run the taskrunner for building assets.
 
@@ -116,7 +120,7 @@ You can also publish all components, to work the same as the devserver:
 
 The html files will default to the "outputPathHtmlFolder" setting
 
-## .frontendrc and overrides ##
+## .frontendrc and overrides
 
 The recommended way to change settings is by overriding the .frontendrc file that exists in internals folder.
 
@@ -136,21 +140,18 @@ Current settings are:
     "webpackConfig": "./webpack.config.js", // Config used
     "appFolder": "app", // Foldername for the application
     "componentsFolder": "components", // Foldername where components will be created
-    "containerId": "root", // Default container id that components will be rendered into
     "useServerRendering": false, // Use server rendering on develop, note that this requires restart of devserver on each change
     "useServerRenderingOnPublish": true, // Use server rendering when publishing a html file
 
     // Server
     "port": 7000,
     "rootServerTemplatePath": "/internals/templates/server/", // Templatefolder for servertemplates
-    "publicPathPrefix": "/", // Used with the proxy, to separate the componentindex from /
     "publicPath": "/static/", // External static path
 
     // Cli
     "rootCliTemplatePath": "/internals/templates/cli/", // Templatefolder for cli
     "scssFolder": "scss", // Folder for scss files
     "createScss": true, // Create a scss file with the component
-    "createHtml": false, // Create a ComponentName.html with the component
     "createClass": true, // Create the class version of a react component
     "createPure": false, // Create the functional version of a react component
     "createIndex": true, // Create an index.js file inside the ComponentName folder
@@ -161,15 +162,16 @@ Current settings are:
 }
 ```
 
-## Overriding templates ##
+## Overriding templates
 
 Currently all templates can be overridden, they all exists in internals/templates/cli and interal/templates/server
 
-Most of the templates can be overridden by placing a new file in the root folder, else a better way is to copy all templates and then change the rootServerTemplatePath in .frontendrc file
+Recommended way is to copy the templatefolders and change the rootServerTemplatePath and rootCliTemplatePath in .frontendrc file
 
 ## Throubleshooting and support
 
 ### Using react addons? Getting trouble with multiple react loaded?
+
 Change externals to look like this in your webpack.config.js
 
 ```javascript
@@ -202,7 +204,7 @@ require('expose-loader?jQuery!jquery');
 require('script-loader!jquery.flipster');  // Example plugin
 ```
 
-### Serverside rendering ###
+### Serverside rendering
 
 There is support to compile out the components with babel only:
 
@@ -211,8 +213,7 @@ There is support to compile out the components with babel only:
 
 These components can with ease be used together with for example [Hastur](https://github.com/Frojd/Hastur) to create serverside rendering for your project.
 
-
-#### window is not defined ####
+#### window is not defined
 
 Common problem with serverside rendering, if you are using window on pre componentDidMount, you will need to check if it exists. Preferably thou you will need to set a state in componentDidMount for it to be rendered correctly on the serverside, however just to check if window exists you can write this:
 
@@ -223,4 +224,5 @@ if(typeof window !== 'undefined') {
 ```
 
 ## License
+
 react-sass-starterkit is released under the [MIT License](http://www.opensource.org/licenses/MIT).

@@ -60,6 +60,17 @@ describe('Test render of a component', () => {
         expect(components).toHaveLength(1);
         expect(components).toContain(componentName);
     })
+
+    it('GetContainers returns a list of containers', () => {
+        const components = render.getContainers();
+        expect(components).toHaveLength(0);
+    })
+
+    it('Generates a devserver version of webpack.config', () => {
+        cli.config.webpackConfig = '../webpack.config';
+        const webpackConfig = render.getWebpackConfig();
+        expect(webpackConfig).toMatchSnapshot();
+    })
     
     afterAll(() => {
         cli.deleteComponentFolder(testFolder);

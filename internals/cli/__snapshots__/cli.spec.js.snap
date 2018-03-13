@@ -183,10 +183,10 @@ exports[`Test CLI functions Publish components Should have a listing file 1`] = 
         </div>
         
         <h2 class='devserver__title'>Containers</h2>
-        <a href=\\"/MainComponent\\">MainComponent</a><br/>
-<br />
+        <br />
         <h2 class='devserver__title'>Components</h2>
-        
+        <a href=\\"/MainComponent\\">MainComponent</a><br/>
+
         <div id=\\"comp\\"></div>
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>

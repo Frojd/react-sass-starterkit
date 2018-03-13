@@ -19,7 +19,6 @@ program
     .option('-I, --append-index', 'Append to index.js')
     .option('-S, --append-scss', 'Append to index.scss')
     .action((component, subComponents, options) => {
-        //console.log(options.class, options.scss, options.test, options);
         let overrides = {}
         if(options.class) {overrides.createClass = false;}
         if(options.pure) {overrides.createPure = true;}
@@ -34,7 +33,7 @@ program
             overrides.updateIndexScss = false;
             overrides.updateIndexJs = false;
         }
-        console.log(overrides)
+        
         const config = require('../internals/config.js')(overrides);
         const rootFolder = path.join(
             config.rootFolder, 
@@ -59,7 +58,6 @@ program
 program.command('delete <componentName> [subComponent...]')
     .option('-C, --componentsFolder <cFolder>', 'Change components folder')
     .action((component, subComponents, options) => {
-        //console.log(options.class, options.scss, options.test, options);
         let overrides = {}
         if(options.componentsFolder) {overrides.componentsFolder = options.componentsFolder}
 

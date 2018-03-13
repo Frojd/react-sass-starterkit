@@ -50,6 +50,7 @@ if (module.hot) {
     });
 }
 
+// Handle json props
 function importAllJsons (r) {
     r.keys().forEach((key) => {
         jsons[key.split('/').pop().split('.')[0]] = r(key)

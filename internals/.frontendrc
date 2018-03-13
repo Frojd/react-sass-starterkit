@@ -7,15 +7,14 @@
     "outputPathCssFolder": "css",
     "outputPathHtmlFolder": "dist/html", // from process.cwd(), ie root folder of frontend
     "webpackConfig": "./webpack.config.js",
+    "rootFolder": "./",
     "appFolder": "app",
     "componentsFolder": "components",
     "containersFolder": "containers",
-    "useServerRenderingOnPublish": true,
 
     // Server
     "port": 7000,
     "rootServerTemplatePath": "/internals/templates/server/",
-    "publicPathPrefix": "/",
     "publicPath": "/static/",
 
     // Cli
@@ -29,5 +28,4 @@
     "createTest": true,
     "updateIndexScss": true,
     "updateIndexJs": true,
-    "rootFolder": "./"
 }
