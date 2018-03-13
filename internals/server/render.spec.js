@@ -48,12 +48,12 @@ describe('Test render of a component', () => {
     it('Renders a component', () => {
         const renderedComponent = render.renderComponent(componentName);   
         expect(renderedComponent).toMatchSnapshot();
-    });
+    })
 
     it('Renders a list of components', () => {
         const listOfComponents = render.renderListing();
         expect(listOfComponents).toMatchSnapshot();
-    });
+    })
 
     it('GetComponents returns a list of components', () => {
         const components = render.getComponents();
@@ -72,6 +72,11 @@ describe('Test render of a component', () => {
         expect(webpackConfig).toMatchSnapshot();
     })
     
+    it('Renders a servercomponent', () => {
+        const component = render.renderServerComponent(componentName);
+        expect(component).toMatchSnapshot();
+    })
+
     afterAll(() => {
         cli.deleteComponentFolder(testFolder);
     });

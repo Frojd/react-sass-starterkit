@@ -27,7 +27,7 @@ const render = (Component, props) => {
                 <div />
             }
         </AppContainer>,
-        document.getElementById('comp'),
+        document.getElementById('root'),
     )
 }
 

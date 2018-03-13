@@ -147,18 +147,65 @@ class Cli {
     }
 
     publishComponents(outputPath) {
+        this.publishListing(outputPath);        
+        this.publishAllComponents(outputPath);
+        this.publishAllContainers(outputPath);
+        this.publishDevFiles(outputPath);
+        this.copyStaticFiles(outputPath);
+    }
+
+    copyStaticFiles(outputPath) {
+        const config = this.config;
         fs.ensureDirSync(outputPath);
-        const listingFile = path.join(outputPath, `index.html`);
-        const listing = this.render.renderListing();
-        _writeFile(listingFile, listing);
+        const statics = path.join(config.rootFolder, config.outputPath, config.outputPathSubFolder);
+        fs.copySync(statics, path.join(outputPath, config.publicPath))
+    }
+
+    publishDevFiles(outputPath) {
+        const config = this.config;
+        fs.ensureDirSync(outputPath);
+        const rootTemplatePath = this.config.rootServerTemplatePath;
+        const devJsPath = `${path.posix.join(config.rootFolder, rootTemplatePath, 'devserver.js')}`;
+        const devJsOutputPath = path.resolve(config.rootFolder, config.outputPathHtmlFolder, `devserver.js`);
+        const devJs = fs.readFileSync(devJsPath);
+        const devCssPath = `${path.posix.join(config.rootFolder, rootTemplatePath, 'devserver.css')}`;
+        const devCssOutputPath = path.resolve(config.rootFolder, config.outputPathHtmlFolder, `devserver.css`);
+        const devCss = fs.readFileSync(devCssPath);
+        _writeFile(devJsOutputPath, devJs);
+        _writeFile(devCssOutputPath, devCss);
+    }
+
+    publishAllComponents(outputPath) {
+        fs.ensureDirSync(outputPath);
         const components = this.render.getComponents();
+        
         components.map((item) => {
             const componentFolder = path.join(outputPath, item);
             fs.ensureDirSync(componentFolder);
             const componentFile = path.join(componentFolder, `index.html`);
-            const component = this.render.renderComponent(item);
+            const component = this.render.renderServerComponent(item);
             _writeFile(componentFile, component);
         })
+    }
+
+    publishAllContainers(outputPath) {
+        fs.ensureDirSync(outputPath);
+        const containers = this.render.getContainers();
+        
+        containers.map((item) => {
+            const componentFolder = path.join(outputPath, item);
+            fs.ensureDirSync(componentFolder);
+            const componentFile = path.join(componentFolder, `index.html`);
+            const component = this.render.renderServerComponent(item);
+            _writeFile(componentFile, component);
+        })
+    }
+
+    publishListing(outputPath) {
+        fs.ensureDirSync(outputPath);
+        const listingFile = path.join(outputPath, `index.html`);
+        const listing = this.render.renderListing();
+        _writeFile(listingFile, listing);
     }
 
     deleteComponentFolder(componentPath) {

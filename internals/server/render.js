@@ -4,14 +4,28 @@ const path = require('path');
 const fs = require('fs-extra');
 const webpack = require('webpack');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const ReactDOMServer = require('react-dom/server')
+const React = require('react');
+
+const getData = require('../utils').getData;
+const getFilesByExtension = require('../utils').getFilesByExtension;
 
 class Render {
     constructor(config) {
         this.config = config;
+        this.appFolder = path.join(
+            config.rootFolder, 
+            config.appFolder,
+        )
         this.componentsFolder = path.join(
             config.rootFolder, 
             config.appFolder, 
             config.componentsFolder
+        )
+        this.containersFolder = path.join(
+            config.rootFolder, 
+            config.appFolder, 
+            config.containersFolder
         )
         this.templatePath = path.join(
             process.cwd(),
@@ -22,11 +36,33 @@ class Render {
     renderComponent(componentName) {
         const index = this.getIndexTemplate();
         const snippet = this.getSnippet();
-        const data = JSON.stringify({});
         const components = this.getComponents();
         const containers = this.getContainers();
+        const data = {};
         const template = index.replace('<!-- content -->', snippet);
         const evaluatedTemplate = eval('`' + template + '`');
+        return evaluatedTemplate;
+    }
+
+    renderServerComponent(componentName) {
+        const index = this.getIndexTemplate();
+        const components = this.getComponents();
+        const containers = this.getContainers();
+        const jsonFiles = {
+            ...getFilesByExtension(this.componentsFolder, '.json'), 
+            ...getFilesByExtension(this.containersFolder, '.json')
+        };
+        
+        const data = getData(componentName, jsonFiles);
+        const componentFile = getFilesByExtension(this.appFolder, `${componentName}.js`);
+
+        const component = require(componentFile[componentName]).default;
+        const element = React.createElement(component, data);
+        const renderedComponent = ReactDOMServer.renderToString(element);
+        const snippet = this.getSnippet().replace('<!-- content -->', renderedComponent);
+        const template = index.replace('<!-- content -->', snippet);
+        const evaluatedTemplate = eval('`' + template + '`');
+        
         return evaluatedTemplate;
     }
 
@@ -50,7 +86,7 @@ class Render {
         const cmpStr = `<h2 class='devserver__title'>Containers</h2>
         ${containerListing}<br />
         <h2 class='devserver__title'>Components</h2>
-        ${componentListing}`;
+        ${componentListing}<div id="root"></div>`;
         const template = index.replace('<!-- content -->', cmpStr);
         const evaluatedTemplate = eval('`' + template + '`');
         return evaluatedTemplate;
@@ -75,12 +111,12 @@ class Render {
                 webpackConfig[0].entry.index.push(jsons[i]);
             }
         }
-        //const containerJsPath = path.resolve(this.templatePath, 'Container.js');
+        
         const indexOfindexJs = webpackConfig[0].entry.index.findIndex((i) => {
             return i === './index.js'
         });
         
-        webpackConfig[0].entry.index[indexOfindexJs] = './Container.js';//containerJsPath;
+        webpackConfig[0].entry.index[indexOfindexJs] = './Container.js';
         webpackConfig[0].entry.index.unshift(
             `react-hot-loader/patch`,
             `webpack-dev-server/client?http://localhost:${this.config.port}/`, 
@@ -161,6 +197,10 @@ class Render {
 
         let template = fs.readFileSync(templatePath, 'utf8');
         return template;
+    }
+
+    _getData(componentName, components) {
+        return getD
     }
 }
 

@@ -3849,7 +3849,7 @@ exports[`Test render of a component Renders a component 1`] = `
         
         <div id=\\"root\\"><!-- content --></div>
 
-        <div id=\\"comp\\"></div>
+        
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>
         <script src=\\"/static/js/index.js\\"></script>
@@ -3894,8 +3894,51 @@ exports[`Test render of a component Renders a list of components 1`] = `
         <br />
         <h2 class='devserver__title'>Components</h2>
         <a href=\\"/MainComponent\\">MainComponent</a><br/>
+<div id=\\"root\\"></div>
+        
+        <script src=\\"/devserver.js\\"></script>
+        <script src=\\"/static/js/vendor.js\\"></script>
+        <script src=\\"/static/js/index.js\\"></script>
+    </body>
+</html>
+"
+`;
 
-        <div id=\\"comp\\"></div>
+exports[`Test render of a component Renders a servercomponent 1`] = `
+"<!doctype html>
+<html class=\\"no-js\\" lang=\\"en\\">
+    <head>
+        <meta charset=\\"utf-8\\">
+        <meta http-equiv=\\"x-ua-compatible\\" content=\\"ie=edge\\">
+        <title>React testing ground</title>
+        <meta name=\\"description\\" content=\\"\\">
+        <meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1\\">
+
+        <link rel=\\"stylesheet\\" href=\\"/devserver.css\\">
+        <link rel=\\"stylesheet\\" href=\\"/static/css/index.css\\">
+    </head>
+    <body onload=\\"document.documentElement.classList.remove('no-js');\\">
+        <div class=\\"devserver\\">
+            <form class='devserver__themeform' id='devserver__menu'>
+                <a href='/' class='devserver__backlink'>Back to listing</a>
+                
+                <select
+                    class='devserver__themeselect'
+                    name='componentName'
+                    onChange='devFormChangeComponent(this);'
+                    >
+                    <option disabled>Choose</option>
+                    <option disabled>-Containers</option>
+                    
+                    <option disabled>-Components</option>
+                    <option selected>MainComponent</option>
+                </select>
+            </form>
+        </div>
+        
+        <div id=\\"root\\"><div class=\\"MainComponent\\" data-reactroot=\\"\\">MainComponent</div></div>
+
+        
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>
         <script src=\\"/static/js/index.js\\"></script>

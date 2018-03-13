@@ -86,39 +86,9 @@ For single test:
 
 ## Publishing static files
 
-There is now commands for publishing an index.html file that will use a component and serverrender it (then clientrender on top) for use on example Amazon S3 as a static site. By default it will also run the taskrunner for building assets.
+Will make a render to the specified folder (outputPathHtmlFolder) to simulate the devserver as a standalone app that can for instance be uploaded to amazon S3.
 
-    npm run publish ComponentName
-
-Will create index.html in the dist folder (ie dist/index.html)
-
-    npm run publish ComponentName subfolder
-
-Will create index.html in the Subfolder to dist (ie dist/subfolder/index.html)
-
-    npm run publish ComponentName filename.html
-
-Will create filename.html in the dist folder (ie dist/filename.html). This will only work if you specify .html as the ending on filename, else it will create it as a folder.
-
-    npm run publish ComponentName subfolder filename.html
-
-Will create filename.html in subfolder to dist (ie dist/subfolder/filename.html)
-
-For production version of scripts, use publish:prod instead ie:
-
-    npm run publish:prod ComponentName
-
-To only create the html file without running the taskrunner for assets, use publish:only
-
-    npm run publish:only ComponentName
-
-This will only create the html file without any building of assets.
-
-You can also publish all components, to work the same as the devserver:
-
-    npm run publish:all
-
-The html files will default to the "outputPathHtmlFolder" setting
+    npm run publish
 
 ## .frontendrc and overrides
 
@@ -140,8 +110,7 @@ Current settings are:
     "webpackConfig": "./webpack.config.js", // Config used
     "appFolder": "app", // Foldername for the application
     "componentsFolder": "components", // Foldername where components will be created
-    "useServerRendering": false, // Use server rendering on develop, note that this requires restart of devserver on each change
-    "useServerRenderingOnPublish": true, // Use server rendering when publishing a html file
+    "containersFolder": "containers", // Foldername where containers will be created
 
     // Server
     "port": 7000,

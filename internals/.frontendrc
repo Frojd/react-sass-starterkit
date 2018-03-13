@@ -7,7 +7,7 @@
     "outputPathCssFolder": "css",
     "outputPathHtmlFolder": "dist/html", // from process.cwd(), ie root folder of frontend
     "webpackConfig": "./webpack.config.js",
-    "rootFolder": "./",
+    "rootFolder": "./", // Only used for overriding in tests
     "appFolder": "app",
     "componentsFolder": "components",
     "containersFolder": "containers",

@@ -24,6 +24,7 @@ const containerFolder = path.join(
 )
 const componentName = 'MainComponent';
 const subComponentName = 'SubComponent';
+const containerName = 'MyContainer';
 
 describe('Test CLI functions', () => {
     beforeAll(() => {
@@ -33,14 +34,20 @@ describe('Test CLI functions', () => {
         // Generate essential files
         const scssFolder = path.join(config.rootFolder, config.appFolder, config.scssFolder);
         const appIndexJs = path.join(rootFolder, 'index.js');
+        const containerIndexJs = path.join(containerFolder, 'index.js');
         const appIndexScss = path.join(scssFolder, 'index.scss');
         const indexJsContent = `
 export {
 };`;
+        const devServerTemplateFolder = path.join(config.rootFolder, config.rootServerTemplatePath);
         fs.ensureDirSync(rootFolder);
         fs.ensureDirSync(scssFolder);
         fs.ensureDirSync(containerFolder);
+        fs.ensureDirSync(devServerTemplateFolder);
+        fs.writeFileSync(path.join(devServerTemplateFolder, 'devserver.css'), 'hej');
+        fs.writeFileSync(path.join(devServerTemplateFolder, 'devserver.js'), 'hej');
         fs.writeFileSync(appIndexJs, indexJsContent);
+        fs.writeFileSync(containerIndexJs, indexJsContent);
         fs.createFileSync(appIndexScss);
     });
     
@@ -154,13 +161,52 @@ export {
         });
     })
 
+    describe('Create containers', () => {
+        it('Should create a container component folder', () => {
+            const folderPath = path.join(containerFolder, containerName);
+            cli.createComponent(folderPath, containerName);
+            expect(fs.existsSync(folderPath)).toBe(true);
+        })
+
+        it('Check content of class MyContainer.js', () => {
+            const filePath = path.join(containerFolder, containerName, `${containerName}.js`);
+            const template = fs.readFileSync(filePath, 'utf8')
+            expect(template).toMatchSnapshot();
+        });
+
+        it('Should have updated container index.js', () => {
+            const filePath = path.join(containerFolder, `index.js`);
+            const template = fs.readFileSync(filePath, 'utf8')
+            expect(template).toMatchSnapshot();
+        });
+
+        it('Should have updated app index.scss', () => {
+            const scssFolder = path.join(config.rootFolder, config.appFolder, config.scssFolder);
+            const filePath = path.join(scssFolder, `index.scss`);
+            const template = fs.readFileSync(filePath, 'utf8')
+            expect(template).toMatchSnapshot();
+        });
+    })
+
     describe('Publish components', () => {
+        beforeAll(() => {
+            fs.ensureDirSync(path.join(testFolder, config.outputPath, config.publicPath))
+            fs.ensureDirSync(path.join(testFolder, config.outputPathHtmlFolder, 
+                config.publicPath, config.outputPathJsFolder))
+            fs.ensureDirSync(path.join(testFolder, config.outputPathHtmlFolder, 
+                config.publicPath, config.outputPathCssFolder))
+            fs.writeFileSync(path.join(testFolder, config.outputPathHtmlFolder, 
+                config.publicPath, config.outputPathCssFolder, 'index.css'), 'css')
+            fs.writeFileSync(path.join(testFolder, config.outputPathHtmlFolder, 
+                config.publicPath, config.outputPathJsFolder, 'index.js'), 'js')
+        });
+
         it('Should create html folder and files', () => {
             const htmlPath = path.join(testFolder, config.outputPathHtmlFolder);
             cli.publishComponents(htmlPath);
             expect(fs.existsSync(htmlPath)).toBe(true);
         });
-
+        
         it('Should have a listing file', () => {
             const htmlPath = path.join(testFolder, config.outputPathHtmlFolder, `index.html`);
             const template = fs.readFileSync(htmlPath, 'utf8')
@@ -169,6 +215,39 @@ export {
 
         it('Should have a component file', () => {
             const htmlPath = path.join(testFolder, config.outputPathHtmlFolder, `${componentName}`, `index.html`);
+            const template = fs.readFileSync(htmlPath, 'utf8')
+            expect(template).toMatchSnapshot();
+        });
+
+        it('Should have a dev css file', () => {
+            const htmlPath = path.join(testFolder, config.outputPathHtmlFolder, `devserver.css`);
+            const template = fs.readFileSync(htmlPath, 'utf8')
+            expect(template).toMatchSnapshot();
+        });
+
+        it('Should have a dev js file', () => {
+            const htmlPath = path.join(testFolder, config.outputPathHtmlFolder, `devserver.js`);
+            const template = fs.readFileSync(htmlPath, 'utf8')
+            expect(template).toMatchSnapshot();
+        });
+
+        it('Should have a static folder', () => {
+            const htmlPath = path.join(testFolder, config.outputPathHtmlFolder, config.publicPath);
+            expect(fs.existsSync(htmlPath)).toBe(true);
+        });
+
+        it('Should have a static css file', () => {
+            const htmlPath = path.join(
+                testFolder, 
+                config.outputPathHtmlFolder, config.publicPath, config.outputPathCssFolder, `index.css`);
+            const template = fs.readFileSync(htmlPath, 'utf8')
+            expect(template).toMatchSnapshot();
+        });
+
+        it('Should have a static js file', () => {
+            const htmlPath = path.join(
+                testFolder, 
+                config.outputPathHtmlFolder, config.publicPath, config.outputPathJsFolder, `index.js`);
             const template = fs.readFileSync(htmlPath, 'utf8')
             expect(template).toMatchSnapshot();
         });
