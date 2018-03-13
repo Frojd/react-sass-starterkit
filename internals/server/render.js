@@ -48,9 +48,9 @@ class Render {
         }).join('');
 
         const cmpStr = `<h2 class='devserver__title'>Containers</h2>
-        ${componentListing}<br />
+        ${containerListing}<br />
         <h2 class='devserver__title'>Components</h2>
-        ${containerListing}`;
+        ${componentListing}`;
         const template = index.replace('<!-- content -->', cmpStr);
         const evaluatedTemplate = eval('`' + template + '`');
         return evaluatedTemplate;
