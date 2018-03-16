@@ -15,6 +15,7 @@ const staticPath = config.publicPath;
 // Root app directory
 const context = path.join(__dirname, config.appFolder);
 
+
 module.exports = [{
     name: 'js',
     devtool: 'source-map',
@@ -28,18 +29,11 @@ module.exports = [{
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
         filename: '[name].js',
         publicPath: path.posix.join(staticPath, config.outputPathJsFolder),
+        hotUpdateChunkFilename: 'hot/hot-update.js',
+        hotUpdateMainFilename: 'hot/hot-update.json'
     },
     module: {
         rules: [
-            {
-                test: /\.js$/,
-                enforce: 'pre',
-                loader: 'eslint-loader',
-                options: {
-                    failOnWarning: false,
-                    failOnError: false
-                }
-            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -50,13 +44,25 @@ module.exports = [{
     externals: {
         'react': 'React',
         'react-dom': 'ReactDOM',
+        'i18next': 'i18next',
     },
+    plugins: [
+    ],
+    resolve: {
+        alias: {
+            Components: path.resolve(__dirname, 'app/components/'),
+            i18n: path.resolve(__dirname, 'app/i18n'),
+        }
+    }
 },
 {
     name: 'vendor',
     context: context,
     entry: {
-        vendor: './vendor.js',
+        vendor: [
+            'babel-polyfill',
+            './vendor.js',
+        ]
     },
     output: {
         path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),

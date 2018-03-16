@@ -8,22 +8,22 @@ const path = require('path')
 const webpack = require('webpack');
 const webpackDevServer = require('webpack-dev-server');
 
-const internalServer = require('../internals/server');
+const Renderer = require('../internals/render/render');
 const config = require('../internals/config.js')();
+const renderer = new Renderer(config);
+const webpackConfig = renderer.getWebpackConfig();
 
-const server = new webpackDevServer(webpack(internalServer.webpackConf(process.argv)), {
+const server = new webpackDevServer(webpack(webpackConfig), {
     before: paths,
     headers: { 'Access-Control-Allow-Origin': '*' },
     stats: {
         colors: true,
-        chunks: false,
-        version: false,
         hash: false,
-        cached: false,
-        moduleTrace: false
+        modules: false
     },
+    hot: true,
+    clientLogLevel: 'warning',
     disableHostCheck: true,
-    proxy: internalServer.proxy(process.argv),
     publicPath: config.publicPath,
 });
 
@@ -47,17 +47,16 @@ function paths(app) {
     });
 
     // Root
-    app.get(config.publicPathPrefix, (req, res) => {
-        res.end(internalServer.renderListing())
+    app.get('/', (req, res) => {
+        res.end(renderer.renderListing())
     });
 
     // Components
-    app.get(internalServer.components.map((component) => `${config.publicPathPrefix}${component}`), (req, res) => {
+    const components = [...renderer.getComponents(), ...renderer.getContainers()];
+    app.get(components.map((component) => `/${component}`), (req, res) => {
         res.end(
-            internalServer.renderComponent(
-                req.path.replace(config.publicPathPrefix, ''),
-                config.useServerRendering, 
-                req
+            renderer.renderComponent(
+                req.path.replace('/', ''),
             )
         )
     });

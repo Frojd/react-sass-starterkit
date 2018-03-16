@@ -3,20 +3,22 @@
  */
 
 import React from 'react';
-import { expect } from 'chai';
-import { mount } from 'enzyme';
+import renderer from 'react-test-renderer';
 import ${componentName} from './';
-import { getData } from '${utilsPath}';
-let data = getData('${componentName}');
+import data from './${componentName}.json';
 
 describe('<${componentName} />', () => {
     it('Renders an empty ${componentName}', () => {
-        const wrapper = mount(<${componentName} />);
-        expect(wrapper.find(${componentName})).to.have.length(1);
+        const componentJson = renderer
+            .create(<${componentName} />)
+            .toJSON();
+        expect(componentJson).toBeTruthy();
     });
 
     it('Renders ${componentName} with data', () => {
-        const wrapper = mount(<${componentName} {...data} />);
-        expect(wrapper.find(${componentName})).to.have.length(1);
+        const componentJson = renderer
+            .create(<${componentName} {...data} />)
+            .toJSON();
+        // expect(componentJson).toMatchSnapshot();
     });
 });

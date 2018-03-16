@@ -7,22 +7,28 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="${path.posix.join(publicPath, config.outputPathJsFolder)}/vendor.js"></script>
-        <script src="${path.posix.join(publicPath, config.outputPathJsFolder)}/index.js"></script>
         <link rel="stylesheet" href="/devserver.css">
-        <link rel="stylesheet" href="${path.posix.join(publicPath, config.outputPathCssFolder)}/index.css">
+        <link rel="stylesheet" href="${path.posix.join(this.config.publicPath, this.config.outputPathCssFolder)}/index.css">
     </head>
     <body onload="document.documentElement.classList.remove('no-js');">
         <div class="devserver">
-            <form class='devserver__themeform'>
+            <form class='devserver__themeform' id='devserver__menu'>
                 <a href='/' class='devserver__backlink'>Back to listing</a>
                 
                 <select
                     class='devserver__themeselect'
                     name='componentName'
-                    onChange='this.form.submit();'
+                    onChange='devFormChangeComponent(this);'
                     >
-                    <option disabled>Välj komponent</option>
+                    <option disabled>Choose</option>
+                    <option disabled>-Containers</option>
+                    ${
+                        containers.map((comp) => {
+                            let selected = componentName === comp ? "selected" : "";
+                            return "<option "+selected+">" + comp + "</option>";
+                        })
+                    }
+                    <option disabled>-Components</option>
                     ${
                         components.map((comp) => {
                             let selected = componentName === comp ? "selected" : "";
@@ -32,9 +38,11 @@
                 </select>
             </form>
         </div>
+        
         <!-- content -->
-        <!-- react-render -->
-
+        
         <script src="/devserver.js"></script>
+        <script src="${path.posix.join(this.config.publicPath, this.config.outputPathJsFolder)}/vendor.js"></script>
+        <script src="${path.posix.join(this.config.publicPath, this.config.outputPathJsFolder)}/index.js"></script>
     </body>
 </html>

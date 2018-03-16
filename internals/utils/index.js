@@ -8,88 +8,73 @@ const config = require('../config')();
 const rootFolder = process.cwd();
 const componentPath = path.join(config.appFolder, config.componentsFolder);
 
-
-function getData(componentName) {
-    let data = {};
-    let jsonComp = path.join(
-        rootFolder,
-        componentPath,
-        componentName,
-        `${componentName}.json`
-    )
-
-    if(!fs.existsSync(jsonComp)) {
-        jsonComp = path.join(
-            rootFolder,
-            componentPath,
-            componentName,
-            `${componentName}.json`
-        )
+const getData = (componentName, components) => {
+    let currentProp = componentName;
+    let subProp;
+    if(componentName.split('.').length) {
+        currentProp = componentName.split('.')[0];
+        subProp = componentName.split('.')[1];
     }
-
-    if(fs.existsSync(jsonComp)) {
-        data = require(jsonComp);
-        purgeCache(jsonComp);
-        let jsonString = JSON.stringify(data);
-        let res = jsonString.replace(/"###(.*?)###"/g, function(org, catched) {
-            let subData = JSON.stringify(getData(catched));
-            return subData;
-        });
-
-        data = JSON.parse(res);
-    }
-
-    return data;
+    
+    let jsonString = JSON.stringify(components[currentProp])
+    
+    let data = jsonString.replace(/"###(.*?)###"/g, (org, catched) => {
+        let subData = this.getData(catched);
+        return JSON.stringify(subData);
+    })
+    
+    let parsedData = JSON.parse(data);
+    return subProp ? parsedData[subProp] : parsedData;
 }
 
-/* eslint-disable */
-// Removes cached json
-// Taken from http://stackoverflow.com/questions/9210542/node-js-require-cache-possible-to-invalidate
-function purgeCache(moduleName) {
-    // Traverse the cache looking for the files
-    // loaded by the specified module name
-    searchCache(moduleName, function (mod) {
-        delete require.cache[mod.id];
-    });
-
-    // Remove cached paths to the module.
-    // Thanks to @bentael for pointing this out.
-    Object.keys(module.constructor._pathCache).forEach(function(cacheKey) {
-        if (cacheKey.indexOf(moduleName)>0) {
-            delete module.constructor._pathCache[cacheKey];
-        }
-    });
-};
-
-/**
- * Traverses the cache to search for all the cached
- * files of the specified module name
- */
-function searchCache(moduleName, callback) {
-    // Resolve the module identified by the specified name
-    var mod = require.resolve(moduleName);
-
-    // Check if the module has been resolved and found within
-    // the cache
-    if (mod && ((mod = require.cache[mod]) !== undefined)) {
-        // Recursively go over the results
-        (function traverse(mod) {
-            // Go over each of the module's children and
-            // traverse them
-            mod.children.forEach(function (child) {
-                traverse(child);
-            });
-
-            // Call the specified callback providing the
-            // found cached module
-            callback(mod);
-        }(mod));
+const getFilesByExtension = (startPath, filter, allFiles = {}) =>{
+    if (!fs.existsSync(startPath)){
+        return;
     }
-};
-/* eslint-enable */
+
+    let files = fs.readdirSync(startPath);
+    for(let i=0; i < files.length; i++){
+        let filename=path.join(startPath, files[i]);
+        let stat = fs.lstatSync(filename);
+        if (stat.isDirectory()){
+            getFilesByExtension(filename, filter, allFiles);
+        }
+        else if (filename.endsWith(filter)) {
+            let normalizedFile = path.posix.normalize(filename);
+            let name = normalizedFile.split(path.sep).pop().split('.')[0];
+            
+            if(filter === '.json') {
+                allFiles[name] = require(normalizedFile);
+            } else {
+                allFiles[name] = normalizedFile;
+            }
+            
+        }
+    }
+
+    return allFiles;
+}
+
+const purgeCache = (moduleName) => {
+    Object.keys(require.cache).forEach(function(key) {
+        
+        delete require.cache[key];
+        
+    });
+}
+
+class Log {
+    static info(message) {
+        console.info(message);
+    }
+    static error(message) {
+        console.error(message);
+    }
+}
 
 module.exports = {
     getData,
+    purgeCache,
+    getFilesByExtension,
+    Log
 }
-
-/* eslint-enable no-undef, no-unused-vars */

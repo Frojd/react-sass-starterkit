@@ -8,6 +8,11 @@
     "extends": "eslint:recommended",
     "globals": {
         "React": false,
+        "process": false,
+        "module": false,
+        "expect": false,
+        "global": false,
+        "require": false
     },
     "plugins": [
         "react"
