@@ -198,10 +198,6 @@ class Render {
         let template = fs.readFileSync(templatePath, 'utf8');
         return template;
     }
-
-    _getData(componentName, components) {
-        return getD
-    }
 }
 
 module.exports = Render;

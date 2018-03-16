@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
-const Render = require('../server/render.js');
+const Render = require('../render/render.js');
 const Log = require('../utils').Log;
 
 /* eslint-disable indent */

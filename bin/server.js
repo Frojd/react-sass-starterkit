@@ -8,7 +8,7 @@ const path = require('path')
 const webpack = require('webpack');
 const webpackDevServer = require('webpack-dev-server');
 
-const Renderer = require('../internals/server/render');
+const Renderer = require('../internals/render/render');
 const config = require('../internals/config.js')();
 const renderer = new Renderer(config);
 const webpackConfig = renderer.getWebpackConfig();

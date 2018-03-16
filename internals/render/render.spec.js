@@ -65,12 +65,6 @@ describe('Test render of a component', () => {
         const components = render.getContainers();
         expect(components).toHaveLength(0);
     })
-
-    it('Generates a devserver version of webpack.config', () => {
-        cli.config.webpackConfig = '../webpack.config';
-        const webpackConfig = render.getWebpackConfig();
-        expect(webpackConfig).toMatchSnapshot();
-    })
     
     it('Renders a servercomponent', () => {
         const component = render.renderServerComponent(componentName);

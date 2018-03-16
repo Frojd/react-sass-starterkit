@@ -2,11 +2,11 @@
 
 ## Description
 
-An opinoated frontend boilerplate for work with react and sass, using webpack as taskrunner and devserver for testing components. It will automatically find new components in the components folder and if you want it will reload changes automatically.
+An opinioated frontend boilerplate for work with react and sass, using webpack as taskrunner and devserver for testing components. It uses both HMR for the react frontend, and browsersync for the css.
 
 It also includes a small cli for scaffolding new components quickly.
 
-The intended use for this boilerplate is to create components for frontend use, and not a fully working site out of the box. 
+The intended use for this boilerplate is to create components for frontend use, and not a fully working site out of the box.
 It is building the js/css/img/fonts files that should be used with another backend of your choise (node, django, episerver etc)
 
 It exposes a global variable: Components
@@ -103,7 +103,7 @@ Current settings are:
 {
     // General
     "outputPath": "dist", // Where files will be placed when using watch or build
-    "outputPathSubFolder": "static", // Subfolder where the files will be placed in output path 
+    "outputPathSubFolder": "static", // Subfolder where the files will be placed in output path, ie now it will build the compiled files to dist/static 
     "outputPathJsFolder": "js", // Folder for javascript
     "outputPathCssFolder": "css", // Folder for css
     "outputPathHtmlFolder": "dist/html", // Folder for html (empty will place in root)
@@ -115,7 +115,7 @@ Current settings are:
     // Server
     "port": 7000,
     "rootServerTemplatePath": "/internals/templates/server/", // Templatefolder for servertemplates
-    "publicPath": "/static/", // External static path
+    "publicPath": "/static/", // External static path, should be the same for devserver and the actual production path
 
     // Cli
     "rootCliTemplatePath": "/internals/templates/cli/", // Templatefolder for cli
@@ -128,6 +128,7 @@ Current settings are:
     "createTest": true, // Create a ComponentName.test.js for unittesting
     "updateIndexScss": true, // Updated the default index.scss with the new component
     "updateIndexJs": true // Updated the index.js with the new component
+    "rootFolder": "./", // Only used for overriding in tests
 }
 ```
 
@@ -137,9 +138,11 @@ Currently all templates can be overridden, they all exists in internals/template
 
 Recommended way is to copy the templatefolders and change the rootServerTemplatePath and rootCliTemplatePath in .frontendrc file
 
+You can also with the same means override the devserver.css and devserver.js file that exists in rootServerTemplatePath
+
 ## Throubleshooting and support
 
-### Using react addons? Getting trouble with multiple react loaded?
+### Using react addons? Getting trouble with multiple react loaded
 
 Change externals to look like this in your webpack.config.js
 
