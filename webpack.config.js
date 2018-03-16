@@ -44,12 +44,14 @@ module.exports = [{
     externals: {
         'react': 'React',
         'react-dom': 'ReactDOM',
+        'i18next': 'i18next',
     },
     plugins: [
     ],
     resolve: {
         alias: {
             Components: path.resolve(__dirname, 'app/components/'),
+            i18n: path.resolve(__dirname, 'app/i18n'),
         }
     }
 },

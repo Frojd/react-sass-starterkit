@@ -36,11 +36,7 @@ describe('<MainComponent />', () => {
 `;
 
 exports[`Test CLI functions Create a classbased component Check content of class MainComponent.js 1`] = `
-"/**
- * MainComponent
- */
-
-import React, {PureComponent} from 'react';
+"import React, {PureComponent} from 'react';
 
 class MainComponent extends PureComponent {
     render() {
@@ -65,11 +61,7 @@ exports[`Test CLI functions Create a classbased component Check content of class
 `;
 
 exports[`Test CLI functions Create a classbased component Check content of classbased MainComponent.scss 1`] = `
-"/**
-* MainComponent
-*/
-
-.MainComponent {
+".MainComponent {
 }"
 `;
 
@@ -87,11 +79,7 @@ exports[`Test CLI functions Create a classbased component Should have updated ap
 `;
 
 exports[`Test CLI functions Create containers Check content of class MyContainer.js 1`] = `
-"/**
- * MyContainer
- */
-
-import React, {PureComponent} from 'react';
+"import React, {PureComponent} from 'react';
 
 class MyContainer extends PureComponent {
     render() {
@@ -253,11 +241,7 @@ exports[`Test CLI functions Test pure based subcomponent Check content of SubCom
 `;
 
 exports[`Test CLI functions Test pure based subcomponent Check content of SubComponent.scss 1`] = `
-"/**
-* SubComponent
-*/
-
-.SubComponent {
+".SubComponent {
 }"
 `;
 
@@ -290,11 +274,7 @@ describe('<SubComponent />', () => {
 `;
 
 exports[`Test CLI functions Test pure based subcomponent Check content of pure SubComponent.js 1`] = `
-"/**
- * SubComponent
- */
-
-import React, {PureComponent} from 'react';
+"import React, {PureComponent} from 'react';
 
 class SubComponent extends PureComponent {
     render() {
