@@ -7,10 +7,8 @@ An opinioated frontend boilerplate for work with react and sass, using webpack a
 It also includes a small cli for scaffolding new components quickly.
 
 The intended use for this boilerplate is to create components for frontend use, and not a fully working site out of the box.
-It is building the js/css/img/fonts files that should be used with another backend of your choise (node, django, episerver etc)
-
-It exposes a global variable: Components
-That can be used for serverside rendering in for example reactjs.net
+It is building the js/css/img/fonts files that should be used with another backend of your choise (node, django, episerver etc) from an exposed component (Components, Containers).
+It also have support for translations throuh i18next.
 
 ## Installation and quickstart
 
@@ -47,6 +45,10 @@ Container components:
     npm run new ContainerName -- -C containers
 
 This will add a new component inside the containers folder (and also add the scss file to index.scss)
+
+## Internationalization
+
+Support for multiple languages is served through [i18next](https://www.i18next.com/) and can be found in the app/i18n folder
 
 ## Devserver
 
