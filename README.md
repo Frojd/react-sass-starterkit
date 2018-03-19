@@ -104,8 +104,7 @@ Current settings are:
 // All paths are relative to the application root
 {
     // General
-    "outputPath": "dist", // Where files will be placed when using watch or build
-    "outputPathSubFolder": "static", // Subfolder where the files will be placed in output path, ie now it will build the compiled files to dist/static 
+    "outputPath": "dist/static", // Where files will be placed when using watch or build
     "outputPathJsFolder": "js", // Folder for javascript
     "outputPathCssFolder": "css", // Folder for css
     "outputPathHtmlFolder": "dist/html", // Folder for html (empty will place in root)

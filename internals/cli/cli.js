@@ -157,7 +157,7 @@ class Cli {
     copyStaticFiles(outputPath) {
         const config = this.config;
         fs.ensureDirSync(outputPath);
-        const statics = path.join(config.rootFolder, config.outputPath, config.outputPathSubFolder);
+        const statics = path.join(config.rootFolder, config.outputPath);
         fs.copySync(statics, path.join(outputPath, config.publicPath))
     }
 

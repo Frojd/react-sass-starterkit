@@ -168,6 +168,9 @@ exports[`Test CLI functions Publish components Should have a component file 1`] 
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>
         <script src=\\"/static/js/index.js\\"></script>
+        <script>
+    ReactDOM.hydrate(React.createElement(Components.MainComponent, {}), document.getElementById(\\"root\\"));
+</script>
     </body>
 </html>
 "
@@ -219,6 +222,7 @@ exports[`Test CLI functions Publish components Should have a listing file 1`] = 
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>
         <script src=\\"/static/js/index.js\\"></script>
+        <!-- render -->
     </body>
 </html>
 "
