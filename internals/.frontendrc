@@ -1,8 +1,7 @@
 // All paths are relative to the application root
 {
     // General
-    "outputPath": "dist",
-    "outputPathSubFolder": "static",
+    "outputPath": "dist/static",
     "outputPathJsFolder": "js",
     "outputPathCssFolder": "css",
     "outputPathHtmlFolder": "dist/html", // from process.cwd(), ie root folder of frontend

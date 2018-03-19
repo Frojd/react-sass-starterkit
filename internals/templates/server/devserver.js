@@ -1,3 +1,3 @@
 function devFormChangeComponent(option) {
-    window.location = option.value;
+    window.location = '/' + option.value;
 }

@@ -54,13 +54,19 @@ class Render {
         };
         
         const data = getData(componentName, jsonFiles);
-        const componentFile = getFilesByExtension(this.appFolder, `${componentName}.js`);
-
-        const component = require(componentFile[componentName]).default;
+        const jsonData = JSON.stringify(data);
+        const componentFiles = getFilesByExtension(this.appFolder, `${componentName}.js`);
+        const componentFile = componentFiles[componentName];
+        let renderComponent = `Components.${componentName}`;
+        if(componentFile.indexOf('containers') !== -1) {
+            renderComponent = `Containers.${componentName}`;
+        }
+        const component = require(componentFile).default;
         const element = React.createElement(component, data);
         const renderedComponent = ReactDOMServer.renderToString(element);
+        const renderer = this.getRender();
         const snippet = this.getSnippet().replace('<!-- content -->', renderedComponent);
-        const template = index.replace('<!-- content -->', snippet);
+        const template = index.replace('<!-- content -->', snippet).replace('<!-- render -->', renderer);
         const evaluatedTemplate = eval('`' + template + '`');
         
         return evaluatedTemplate;
@@ -176,6 +182,11 @@ class Render {
 
     getIndexTemplate() {
         const template = this._getTemplate('index.html');
+        return template;
+    }
+    
+    getRender() {
+        const template = this._getTemplate('render.html');
         return template;
     }
 

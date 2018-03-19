@@ -38,6 +38,7 @@ exports[`Test render of a component Renders a component 1`] = `
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>
         <script src=\\"/static/js/index.js\\"></script>
+        <!-- render -->
     </body>
 </html>
 "
@@ -84,6 +85,7 @@ exports[`Test render of a component Renders a list of components 1`] = `
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>
         <script src=\\"/static/js/index.js\\"></script>
+        <!-- render -->
     </body>
 </html>
 "
@@ -127,6 +129,9 @@ exports[`Test render of a component Renders a servercomponent 1`] = `
         <script src=\\"/devserver.js\\"></script>
         <script src=\\"/static/js/vendor.js\\"></script>
         <script src=\\"/static/js/index.js\\"></script>
+        <script>
+    ReactDOM.hydrate(React.createElement(Components.MainComponent, {}), document.getElementById(\\"root\\"));
+</script>
     </body>
 </html>
 "

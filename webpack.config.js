@@ -15,7 +15,6 @@ const staticPath = config.publicPath;
 // Root app directory
 const context = path.join(__dirname, config.appFolder);
 
-
 module.exports = [{
     name: 'js',
     devtool: 'source-map',
@@ -26,7 +25,7 @@ module.exports = [{
         ],
     },
     output: {
-        path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
+        path: path.join(outputPath, config.outputPathJsFolder),
         filename: '[name].js',
         publicPath: path.posix.join(staticPath, config.outputPathJsFolder),
         hotUpdateChunkFilename: 'hot/hot-update.js',
@@ -46,6 +45,11 @@ module.exports = [{
         'react-dom': 'ReactDOM',
         'i18next': 'i18next',
     },
+    stats: {
+        colors: true,
+        hash: false,
+        modules: false
+    },
     plugins: [
     ],
     resolve: {
@@ -53,7 +57,7 @@ module.exports = [{
             Components: path.resolve(__dirname, 'app/components/'),
             i18n: path.resolve(__dirname, 'app/i18n'),
         }
-    }
+    },
 },
 {
     name: 'vendor',
@@ -65,7 +69,7 @@ module.exports = [{
         ]
     },
     output: {
-        path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
+        path: path.join(outputPath, config.outputPathJsFolder),
         filename: 'vendor.js',
         publicPath: path.posix.join(staticPath, config.outputPathJsFolder),
     },
@@ -82,18 +86,23 @@ module.exports = [{
         new CopyWebpackPlugin([
             {
                 from: 'img/**',
-                to: path.posix.join(outputPath, config.outputPathSubFolder)
+                to: path.posix.join(outputPath)
             },
             {
                 from: 'fonts/**',
-                to: path.posix.join(outputPath, config.outputPathSubFolder)
+                to: path.posix.join(outputPath)
             },
             {
                 from: 'favicons/**',
-                to: path.posix.join(outputPath, config.outputPathSubFolder)
+                to: path.posix.join(outputPath)
             }
         ]),
     ],
+    stats: {
+        colors: true,
+        hash: false,
+        modules: false
+    },
 },
 {
     name: 'style',
@@ -105,7 +114,7 @@ module.exports = [{
         ],
     },
     output: {
-        path: path.join(outputPath, config.outputPathSubFolder, config.outputPathCssFolder),
+        path: path.join(outputPath, config.outputPathCssFolder),
         filename: 'index.css',
         publicPath: path.posix.join(staticPath, config.outputPathCssFolder),
     },
@@ -152,6 +161,11 @@ module.exports = [{
             allChunks: true,
         })
     ],
+    stats: {
+        colors: true,
+        hash: false,
+        modules: false
+    },
 }
 ];
 /* eslint-enable */
