@@ -65,17 +65,17 @@ exports[`Test CLI functions Create a classbased component Check content of class
 }"
 `;
 
+exports[`Test CLI functions Create a classbased component Should have updated app components.scss 1`] = `
+"@import '../components/MainComponent/MainComponent';
+"
+`;
+
 exports[`Test CLI functions Create a classbased component Should have updated app index.js 1`] = `
 "import MainComponent from './MainComponent';
 
 export {
     MainComponent,
 };"
-`;
-
-exports[`Test CLI functions Create a classbased component Should have updated app index.scss 1`] = `
-"@import '../components/MainComponent/MainComponent';
-"
 `;
 
 exports[`Test CLI functions Create containers Check content of class MyContainer.js 1`] = `
@@ -98,10 +98,7 @@ export default MyContainer;
 "
 `;
 
-exports[`Test CLI functions Create containers Should have updated app index.scss 1`] = `
-"@import '../components/MainComponent/MainComponent';
-"
-`;
+exports[`Test CLI functions Create containers Should have updated app containers.scss 1`] = `""`;
 
 exports[`Test CLI functions Create containers Should have updated container index.js 1`] = `
 "
@@ -297,15 +294,15 @@ export default SubComponent;
 "
 `;
 
+exports[`Test CLI functions Test pure based subcomponent Should NOT have updated app components.scss 1`] = `
+"@import '../components/MainComponent/MainComponent';
+"
+`;
+
 exports[`Test CLI functions Test pure based subcomponent Should NOT have updated app index.js 1`] = `
 "import MainComponent from './MainComponent';
 
 export {
     MainComponent,
 };"
-`;
-
-exports[`Test CLI functions Test pure based subcomponent Should NOT have updated app index.scss 1`] = `
-"@import '../components/MainComponent/MainComponent';
-"
 `;

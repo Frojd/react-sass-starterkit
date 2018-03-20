@@ -136,7 +136,15 @@ class Cli {
             this.config.appFolder, 
             this.config.scssFolder,
         );
-        const filePath = path.join(scssFolder, 'index.scss');
+        let scssFile = 'index.scss';
+        if(componentPath.indexOf(this.config.componentsFolder) !== -1) {
+            scssFile = 'components.scss';
+        }
+        if(componentPath.indexOf(this.config.containersFolder) !== -1) {
+            scssFile = 'containers.scss';
+        }
+        
+        const filePath = path.join(scssFolder, scssFile);
 
         let index = fs.readFileSync(filePath, 'utf8');
         let compPath = path.relative(scssFolder, componentPath);
