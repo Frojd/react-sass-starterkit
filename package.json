@@ -3,6 +3,9 @@
   "version": "3.1.0",
   "description": "Opinionated frontend setup for react with sass and webpack with hot module reload",
   "private": true,
+  "engines" : { 
+    "node" : ">=8.5"
+  },
   "scripts": {
     "build": "webpack",
     "build:prod": "cross-env BABEL_ENV=production webpack -p",
