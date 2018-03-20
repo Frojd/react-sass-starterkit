@@ -15,6 +15,7 @@
     "multiwatch": "concurrently \"npm run watch\"  \"npm run ssr:watch\" \"npm run start\"",
     "new": "node bin/cli.js new",
     "publish": "webpack && node bin/cli.js publish",
+    "scaffold": "node bin/cli scaffold",
     "ssr": "babel app --out-dir ./dist/raw --copy-files --ignore .test.js,.scss",
     "ssr:prod": "cross-env BABEL_ENV=production babel app --out-dir ./dist/raw --copy-files --ignore .test.js,.scss",
     "ssr:watch": "babel app --watch --out-dir ./dist/raw --copy-files --ignore .test.js,.scss",

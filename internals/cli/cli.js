@@ -3,7 +3,7 @@ const path = require('path');
 const Render = require('../render/render.js');
 const Log = require('../utils').Log;
 
-/* eslint-disable indent */
+/* eslint-disable indent, no-unused-vars */
 
 class Cli {
     constructor(config = {}) {
@@ -99,6 +99,14 @@ class Cli {
         const filePath = path.join(componentPath, `${componentName}.json`);
         const message = `Created ${componentName}.json at: ${filePath}`;
         this._createFile(filePath, componentName, 'componentData', message);
+    }
+
+    scaffoldComponent(componentPath, componentName, subComponentName) {
+        const templateString = this._getTemplateString('containerWithComponent');
+        const template = eval('`' + templateString + '`');
+        _writeFile(componentPath, template);
+        const message = `Updated ${componentName}.js at: ${componentPath}`;
+        Log.info(message)
     }
 
     addToIndexJs(componentName, remove=false) {
@@ -246,7 +254,7 @@ const _writeFile = (filePath, content) => {
     try {
         fs.writeFileSync(filePath, content);
     } catch(e) {
-        Log.error(`Failed to write filepath ${filePath} with content ${content}`, e);
+        Log.error(`Failed to write filepath ${filePath} with content\n${content}\n\n${e}`, e);
     }
 }
 
