@@ -55,7 +55,9 @@ module.exports = [{
     resolve: {
         alias: {
             Components: path.resolve(__dirname, 'app/components/'),
+            Containers: path.resolve(__dirname, 'app/containers/'),
             i18n: path.resolve(__dirname, 'app/i18n'),
+            utils: path.resolve(__dirname, 'app/utils'),
         }
     },
 },
