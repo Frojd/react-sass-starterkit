@@ -116,7 +116,7 @@ program.command('scaffold [outputPath]')
         }
         cli.createComponent(componentPath, componentName);
 
-        const containerName = options.containerName || 'PageHome';
+        const containerName = options.containerName || 'HomePage';
         const containerPath = path.join(rootFolder, config.containersFolder, containerName);
         cli.componentsFolder = path.join(rootFolder, config.containersFolder);
         cli.createComponent(containerPath, containerName);
