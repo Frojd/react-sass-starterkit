@@ -11,9 +11,9 @@ $breakpoints: (
     xl: 1280px,
 );
 
-$mobileWidth: map-get($breakpoints, 'xs');
-$tabletWidth: map-get($breakpoints, 'sm');
-$desktopWidth: map-get($breakpoints, 'lg');
+$smallWidth: map-get($breakpoints, 'xs');
+$mediumWidth: map-get($breakpoints, 'sm');
+$largeWidth: map-get($breakpoints, 'lg');
 
 $z-index: (
     d: 10,

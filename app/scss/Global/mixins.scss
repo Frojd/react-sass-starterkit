@@ -11,20 +11,20 @@
     }
 }
 
-@mixin mobile {
-    @media (min-width: $mobileWidth) {
+@mixin small {
+    @media (min-width: $smallWidth) {
         @content;
     }
 }
 
-@mixin tablet {
-    @media (min-width: $tabletWidth) {
+@mixin medium {
+    @media (min-width: $mediumWidth) {
         @content;
     }
 }
 
-@mixin desktop {
-    @media (min-width: $desktopWidth) {
+@mixin large {
+    @media (min-width: $largeWidth) {
         @content;
     }
 }
