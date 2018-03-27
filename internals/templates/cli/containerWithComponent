@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import ${subComponentName} from 'Components/${subComponentName}';
 
 class ${componentName} extends PureComponent {
