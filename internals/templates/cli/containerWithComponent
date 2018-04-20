@@ -1,7 +1,13 @@
 import React, { PureComponent } from 'react';
 import ${subComponentName} from 'Components/${subComponentName}';
 
-class ${componentName} extends PureComponent {
+export default class ${componentName} extends PureComponent {
+    state = {
+    }
+
+    static defaultProps = {
+    }
+
     render() {
         return (
             <div className="${componentName}">
@@ -11,8 +17,3 @@ class ${componentName} extends PureComponent {
         );
     }
 }
-
-${componentName}.defaultProps = {
-};
-
-export default ${componentName};

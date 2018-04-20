@@ -1,17 +1,17 @@
 {
   "name": "react-sass-starterkit",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Opinionated frontend setup for react with sass and webpack with hot module reload",
   "private": true,
-  "engines" : { 
-    "node" : ">=8.5"
+  "engines": {
+    "node": ">=8.5"
   },
   "scripts": {
     "build": "webpack",
     "build:prod": "cross-env BABEL_ENV=production webpack -p",
     "delete": "node bin/cli.js delete",
-    "eslint": "eslint app --ignore-pattern *.test.js",
-    "eslint:fix": "eslint app --fix --ignore-pattern *.test.js",
+    "eslint": "eslint app",
+    "eslint:fix": "eslint app --fix",
     "multiwatch": "concurrently \"npm run watch\"  \"npm run ssr:watch\" \"npm run start\"",
     "new": "node bin/cli.js new",
     "publish": "webpack && node bin/cli.js publish",
@@ -89,9 +89,9 @@
     "file-loader": "^1.1.6",
     "fs-extra": "^5.0.0",
     "jest": "^22.1.4",
-    "js-beautify": "^1.7.5",
     "node-sass": "^4.8.1",
     "postcss-loader": "^2.1.0",
+    "prettier": "^1.12.1",
     "react-hot-loader": "^4.0.0",
     "react-test-renderer": "^16.2.0",
     "sass-loader": "^6.0.6",
