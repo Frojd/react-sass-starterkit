@@ -146,8 +146,6 @@ module.exports = [{
     plugins: [
         new ExtractTextPlugin({
             filename: 'index.css',
-            disable: false,
-            allChunks: true,
         })
     ],
     stats: {
