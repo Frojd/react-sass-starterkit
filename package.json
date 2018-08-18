@@ -48,7 +48,7 @@
   ],
   "jest": {
     "setupFiles": [
-      "./internals/test/setup-test.js"
+      "./.setup-test.js"
     ],
     "testMatch": [
       "**/?(*.)(test).js?(x)"
