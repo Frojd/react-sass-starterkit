@@ -9,26 +9,24 @@ export default MainComponent;
 
 exports[`Test CLI functions Create a classbased component Check content of MainComponent.test.js 1`] = `
 "import React from 'react';
-import renderer from 'react-test-renderer';
+import { 
+    shallow,
+    // mount 
+} from 'enzyme';
+
 import MainComponent from './';
 // import data from './MainComponent.json';
 
 describe('<MainComponent />', () => {
     it('Renders an empty MainComponent', () => {
-        const componentJson = renderer
-            .create(<MainComponent />)
-            .toJSON();
-        expect(componentJson).toBeTruthy();
+        const maincomponent = shallow(<MainComponent />);
+        expect(maincomponent).toBeTruthy();
     });
 
-    /*
-    it('Renders MainComponent with data', () => {
-        const componentJson = renderer
-            .create(<MainComponent {...data} />)
-            .toJSON();
-        expect(componentJson).toMatchSnapshot();
-    });
-    */
+    // it('Renders MainComponent with data', () => {
+    //     const maincomponent = mount(<MainComponent {...data} />);
+    //     expect(maincomponent).toMatchSnapshot();
+    // });
 });
 "
 `;
@@ -248,26 +246,24 @@ exports[`Test CLI functions Test pure based subcomponent Check content of SubCom
 
 exports[`Test CLI functions Test pure based subcomponent Check content of SubComponent.test.js 1`] = `
 "import React from 'react';
-import renderer from 'react-test-renderer';
+import { 
+    shallow,
+    // mount 
+} from 'enzyme';
+
 import SubComponent from './';
 // import data from './SubComponent.json';
 
 describe('<SubComponent />', () => {
     it('Renders an empty SubComponent', () => {
-        const componentJson = renderer
-            .create(<SubComponent />)
-            .toJSON();
-        expect(componentJson).toBeTruthy();
+        const subcomponent = shallow(<SubComponent />);
+        expect(subcomponent).toBeTruthy();
     });
 
-    /*
-    it('Renders SubComponent with data', () => {
-        const componentJson = renderer
-            .create(<SubComponent {...data} />)
-            .toJSON();
-        expect(componentJson).toMatchSnapshot();
-    });
-    */
+    // it('Renders SubComponent with data', () => {
+    //     const subcomponent = mount(<SubComponent {...data} />);
+    //     expect(subcomponent).toMatchSnapshot();
+    // });
 });
 "
 `;

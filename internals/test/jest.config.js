@@ -1,7 +1,7 @@
 module.exports = {
     verbose: true,
     setupFiles: [
-        './setup-test.js'
+        './../../.setup-test.js'
     ],
     roots: [
         '../'
