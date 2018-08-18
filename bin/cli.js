@@ -31,7 +31,6 @@ program
         if(options.componentsFolder) {overrides.componentsFolder = options.componentsFolder}
         
         if(subComponents.length) {
-            overrides.updateIndexScss = false;
             overrides.updateIndexJs = false;
         }
         
