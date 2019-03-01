@@ -1,6 +1,6 @@
 {
   "name": "react-sass-starterkit",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "An opinionated react starterkit",
   "main": "index.js",
   "engines": {
@@ -21,10 +21,27 @@
     "ssr:prod": "cross-env NODE_ENV=production webpack --mode=production --config ./webpack.ssr.config.js -p",
     "ssr:watch": "cross-env NODE_ENV=production webpack --mode=development --config ./webpack.ssr.config.js --watch",
     "start": "node ./bin/dev-server",
-    "styleguide": "styleguidist server",
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "storybook:out": "build-storybook -c .storybook -o dist/storybook",
     "test": "jest",
     "watch": "webpack --mode=development --watch"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:frojd/react-sass-starterkit.git"
+  },
+  "keywords": [
+    "webpack",
+    "sass",
+    "scss",
+    "hmr",
+    "react",
+    "frontend",
+    "boilerplate",
+    "starterkit",
+    "cli",
+    "scaffold"
+  ],
   "author": "Daniel Karlsson",
   "license": "MIT",
   "browserslist": [
@@ -60,11 +77,18 @@
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
+    "@hot-loader/react-dom": "^16.8.3",
+    "@storybook/addon-actions": "^4.1.13",
+    "@storybook/addon-info": "^4.1.13",
+    "@storybook/addon-knobs": "^4.1.13",
+    "@storybook/addon-options": "^4.1.13",
+    "@storybook/react": "^4.1.13",
     "autoprefixer": "^9.4.9",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
+    "babel-plugin-react-docgen": "^2.0.2",
     "babel-plugin-webpack-alias": "^2.1.2",
     "commander": "^2.19.0",
     "concurrently": "^4.1.0",
@@ -94,6 +118,7 @@
     "react-hot-loader": "^4.7.1",
     "react-styleguidist": "^9.0.1",
     "sass-loader": "^7.1.0",
+    "storybook-addon-smart-knobs": "^4.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
