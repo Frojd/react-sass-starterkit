@@ -1,6 +1,6 @@
 {
   "name": "react-sass-starterkit",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "An opinionated react starterkit",
   "main": "index.js",
   "engines": {
@@ -26,6 +26,22 @@
     "test": "jest",
     "watch": "webpack --mode=development --watch"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:frojd/react-sass-starterkit.git"
+  },
+  "keywords": [
+    "webpack",
+    "sass",
+    "scss",
+    "hmr",
+    "react",
+    "frontend",
+    "boilerplate",
+    "starterkit",
+    "cli",
+    "scaffold"
+  ],
   "author": "Daniel Karlsson",
   "license": "MIT",
   "browserslist": [
@@ -61,6 +77,7 @@
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
+    "@hot-loader/react-dom": "^16.8.3",
     "@storybook/addon-actions": "^4.1.13",
     "@storybook/addon-info": "^4.1.13",
     "@storybook/addon-knobs": "^4.1.13",
