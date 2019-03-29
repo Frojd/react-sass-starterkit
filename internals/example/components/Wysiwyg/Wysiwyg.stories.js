@@ -4,7 +4,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import Wysiwyg from './Wysiwyg';
 
-import data from './Wysiwyg.json';
+import data from './Wysiwyg.data';
 
 storiesOf('Components|Wysiwyg', module)
     .add('without data', () => <Wysiwyg />)

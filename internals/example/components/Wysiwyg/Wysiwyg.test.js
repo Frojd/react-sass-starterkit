@@ -5,7 +5,7 @@ import {
 } from 'enzyme';
 
 import Wysiwyg from './';
-// const data = __jsons['Wysiwyg'];
+// import data from './Wysiwyg.data';
 
 describe('<Wysiwyg />', () => {
     it('Renders an empty Wysiwyg', () => {

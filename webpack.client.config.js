@@ -1,4 +1,4 @@
-/* global __dirname module */
+/* global __dirname module process */
 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -33,7 +33,7 @@ const config = {
             {
                 test: /\.(css|scss)$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    process.env !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
