@@ -11,10 +11,24 @@ This will create a base set of containers and components in the app folder that 
 
 ## CLI commands ##
 
+### Devserver ###
+
 Start the devserver:
 ```
 npm start
 ```
+
+Start the devserver with a different port:
+```
+npm start -- --port 7777
+```
+
+Start the devserver as a hot proxy:
+```
+npm start -- --proxy http://localhost:8081
+```
+
+### Creation commands ###
 
 Create a new component:
 ```

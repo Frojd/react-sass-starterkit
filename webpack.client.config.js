@@ -33,7 +33,7 @@ const config = {
             {
                 test: /\.(css|scss)$/,
                 use: [
-                    process.env !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
