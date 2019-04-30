@@ -1,3 +1,3 @@
 export default {
-    'title': 'Hero title'
+    title: 'Hero title',
 };

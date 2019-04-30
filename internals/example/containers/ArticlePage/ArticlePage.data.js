@@ -1,6 +1,6 @@
-import wysiwyg from '../../components/Wysiwyg/Wysiwyg.data';
+import rawHtml from '../../components/RawHtml/RawHtml.data';
 
 export default {
     'title': 'Article title',
-    'wysiwyg': wysiwyg.wysiwyg
+    'richText': rawHtml.html
 };
