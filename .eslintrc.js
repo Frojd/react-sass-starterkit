@@ -1,4 +1,9 @@
 module.exports = {
+    "settings": {
+        "react": {
+            "version": "detect",
+        }
+    },
     "env": {
         "browser": true,
         "es6": true,
@@ -6,7 +11,10 @@ module.exports = {
         "node": true
     },
     "parser": "babel-eslint",
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -17,6 +25,7 @@ module.exports = {
     "plugins": [
         "react"
     ],
+
     "rules": {
         "react/display-name": 0,
         "indent": [2, 4, { "SwitchCase": 1 }],

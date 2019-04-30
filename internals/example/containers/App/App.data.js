@@ -1,4 +1,4 @@
 export default {
-    'componentName': 'BasePage',
-    'componentProps': {}
+    componentName: 'BasePage',
+    componentProps: {},
 };

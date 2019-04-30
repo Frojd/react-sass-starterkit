@@ -21,10 +21,12 @@ try {
 
 let props = {};
 try {
-    props = require(`../../app/components/${queryJson}/${queryJson}.data`).default;
+    props = require(`../../app/components/${queryJson}/${queryJson}.data`)
+        .default;
 } catch (e) {
     try {
-        props = require(`../../app/containers/${queryJson}/${queryJson}.data`).default;
+        props = require(`../../app/containers/${queryJson}/${queryJson}.data`)
+            .default;
     } catch (e) {
         console.log(e);
     }
