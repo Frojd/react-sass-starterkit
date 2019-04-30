@@ -1,4 +1,4 @@
-/* global __dirname module */
+/* global __dirname module process */
 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
