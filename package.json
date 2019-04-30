@@ -1,6 +1,6 @@
 {
   "name": "react-sass-starterkit",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "An opinionated react starterkit",
   "main": "index.js",
   "engines": {
