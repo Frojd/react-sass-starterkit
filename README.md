@@ -96,3 +96,12 @@ Autofix via eslint:
 ```
 npm run eslint:fix
 ```
+
+### Additional commands and troubleshooting ###
+
+To run webpack analyzer to check your bundle and packagesizes you can append --analyze to a command
+```
+npm start -- --analyze
+npm run build -- --analyze
+npm run build:prod -- --analyze
+```
