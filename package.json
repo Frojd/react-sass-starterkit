@@ -23,7 +23,7 @@
     "start": "node ./bin/dev-server",
     "storybook": "cross-env CORE_JS=2 start-storybook -p 9001 -c .storybook",
     "storybook:out": "cross-env CORE_JS=2 build-storybook -c .storybook -o dist/storybook",
-    "test": "jest",
+    "test": "jest -i",
     "watch": "webpack --mode=development --watch"
   },
   "repository": {
