@@ -21,8 +21,8 @@
     "ssr:prod": "cross-env NODE_ENV=production webpack --mode=production --config ./webpack.ssr.config.js -p",
     "ssr:watch": "cross-env NODE_ENV=production webpack --mode=development --config ./webpack.ssr.config.js --watch",
     "start": "node ./bin/dev-server",
-    "storybook": "cross-env CORE_JS=2 start-storybook -p 9001 -c .storybook",
-    "storybook:out": "cross-env CORE_JS=2 build-storybook -c .storybook -o dist/storybook",
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "storybook:out": "build-storybook -c .storybook -o dist/storybook",
     "test": "jest",
     "watch": "webpack --mode=development --watch"
   },
@@ -48,7 +48,8 @@
   "browserslist": [
     "last 1 version",
     "> 1%",
-    "not dead"
+    "not dead",
+    "ie>=11"
   ],
   "jest": {
     "moduleNameMapper": {
@@ -119,7 +120,6 @@
     "react-hot-loader": "^4.12.5",
     "react-styleguidist": "^9.1.11",
     "sass-loader": "^7.1.0",
-    "storybook-addon-smart-knobs": "^4.1.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.35.2",
     "webpack-bundle-analyzer": "^3.3.2",

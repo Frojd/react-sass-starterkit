@@ -1,5 +1,5 @@
 module.exports = {
     "outputPath": "dist/static/",
-    "publicPath": "/static/",
+    "publicPath": "/static/core/",
     "port": 7000
 }
