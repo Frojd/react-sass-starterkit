@@ -119,6 +119,7 @@
     "react-hot-loader": "^4.12.11",
     "react-styleguidist": "^9.1.16",
     "sass-loader": "^7.2.0",
+    "storybook-addon-smart-knobs": "^5.0.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.39.2",
     "webpack-bundle-analyzer": "^3.4.1",

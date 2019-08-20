@@ -1,11 +1,15 @@
 import { configure, addDecorator } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
 import { withKnobs } from '@storybook/addon-knobs';
+import { withSmartKnobs } from 'storybook-addon-smart-knobs'
 
 addDecorator(
     withInfo({
         inline: false,
     })
+);
+addDecorator(
+    withSmartKnobs
 );
 addDecorator(
     withKnobs
@@ -20,3 +24,4 @@ function loadStories() {
 }
 
 configure(loadStories, module);
+
