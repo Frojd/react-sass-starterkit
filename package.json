@@ -126,7 +126,6 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.4",
     "core-js": "^3.2.1",
     "i18next": "^17.0.11",
     "react": "^16.9.0",
