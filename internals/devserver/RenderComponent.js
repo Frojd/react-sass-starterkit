@@ -1,4 +1,6 @@
-//import 'core-js/stable';
+// import 'core-js/stable';
+// import 'regenerator-runtime/runtime';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../../app/styles/index.scss';
